@@ -11,3 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.webLink {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 400;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.mobileLink {
+  color: #555;
+  text-decoration: none;
+  font-weight: 400;
+  margin-left: 10;
+  margin-right: 10;
+}
