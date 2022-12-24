@@ -1,22 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import useGetDocs from "./useGetDocs";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { staffAtom, loggedInStaffAtom } from "../recoil/atoms";
 import { StaffInterface } from "../interfaces/interfaces";
-import { useAuth } from "./useAuth";
-
-const parseStaffResponse = (response: StaffInterface[]): StaffInterface[] =>
-  response.map((staff: StaffInterface) => ({
-    id: staff?.id ?? "",
-    firstName: staff?.firstName ?? "",
-    lastName: staff?.lastName ?? "",
-    email: staff?.email ?? "",
-    permissions: staff?.permissions ?? [],
-  }));
+import { AuthContext } from "../providers/AuthProvider";
+import { parseStaffResponse } from "../libraries/parsers";
 
 const useBootstrapEffect = () => {
   const { sendRequest: getDocs } = useGetDocs();
-  const { currentAuthUser } = useAuth();
+  const { currentAuthUser } = useContext(AuthContext);
   const staff = useRecoilValue(staffAtom);
   const setStaff = useSetRecoilState<StaffInterface[]>(staffAtom);
   const setLoggedInStaff = useSetRecoilState<StaffInterface | null>(loggedInStaffAtom);

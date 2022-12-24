@@ -24,7 +24,6 @@ const useUpdateDoc = () => {
         return null;
       } catch (err: any) {
         setError(err.message || "Something went wrong!");
-        console.log(err);
         setIsLoading(false);
         return null;
       }

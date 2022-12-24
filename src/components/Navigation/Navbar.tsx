@@ -1,37 +1,55 @@
-import { FC } from "react";
-import { Link } from "react-router-dom";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
+import { useContext, useState, useCallback } from "react";
+import { AppBar, Box, Toolbar, Typography, Button, IconButton, Menu } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useAuth } from "../../hooks/useAuth";
-import { PERMISSION } from "../../libraries/objects";
-import { loggedInStaffAtom } from "../../recoil/atoms";
-import { useRecoilValue } from "recoil";
+import { AuthContext } from "../../providers/AuthProvider";
+import Weblinks from "./Weblinks";
+import MobileLinks from "./MobileLinks";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 
-const Navbar: FC = () => {
-  const { logout } = useAuth();
-  const loggedInStaff = useRecoilValue(loggedInStaffAtom);
-  console.log(loggedInStaff)
+const Navbar = () => {
+  const { logout } = useContext(AuthContext);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const { width } = useWindowDimensions();
+  const collapse = width > 1000 ? false : true;
+
+  const handleClose = useCallback(() => {
+    setAnchorEl(null);
+  }, []);
+
+  const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  }, []);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            TGP Student Data Tracker
-          </Typography>
-          {loggedInStaff && loggedInStaff.permissions?.includes(PERMISSION.EDIT_STAFF) && (
-            <Link className="webLink" to="/staff">
-              Staff
-            </Link>
+          {collapse && (
+            <>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+                onClick={handleClick}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="collapse-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MobileLinks handleClose={handleClose} />
+              </Menu>
+            </>
           )}
-          <Button color="inherit" onClick={logout}>
+          <Typography sx={{ flexGrow: 1, fontWeight: 700 }}>Report Manager</Typography>
+          {!collapse && <Weblinks />}
+          <Button className="webLink" color="inherit" onClick={logout} sx={{ fontWeight: 700 }}>
             LogOut
           </Button>
         </Toolbar>

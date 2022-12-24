@@ -1,32 +1,38 @@
-import React, { useEffect, FC } from "react";
+import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Paper, Typography, Container, CircularProgress, Avatar, Button, Box } from "@mui/material";
 import Copyright from "./Copyright";
-import { useAuth } from "../hooks/useAuth";
+import { AuthContext } from "../../providers/AuthProvider";
 
-const LoginContainer: FC = () => {
+const LoginContainer = () => {
   const navigate = useNavigate();
-  const { currentAuthUser, isLoading, signInWithGoogle } = useAuth();
+  const { currentAuthUser, loading, signInWithGoogle } = useContext(AuthContext);
 
   useEffect(() => {
-    if (!isLoading && currentAuthUser) {
+    if (!loading && currentAuthUser) {
       navigate("/");
     }
-  }, [currentAuthUser, navigate, isLoading]);
+  }, [currentAuthUser, navigate, loading]);
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ height: "100vh" }}>
-      {isLoading ? (
+    <Container component="main" maxWidth="xs" sx={{ minHeight: "100vh", pt: 8 }}>
+      {loading ? (
         <div>
           <CircularProgress />
         </div>
       ) : (
         <Paper
-          sx={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "8em" }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: 4,
+            textAlign: "center",
+          }}
         >
           <Avatar sx={{ width: 200, height: 200 }} src="../TGPicon.png"></Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
+          <Typography variant="h4" sx={{ pt: 2 }}>
+            Incident Report System
           </Typography>
           <Button
             type="submit"
@@ -34,7 +40,7 @@ const LoginContainer: FC = () => {
             variant="contained"
             color="primary"
             onClick={signInWithGoogle}
-            sx={{ marginTop: "2em" }}
+            sx={{ mt: 2 }}
           >
             Sign In With Google
           </Button>

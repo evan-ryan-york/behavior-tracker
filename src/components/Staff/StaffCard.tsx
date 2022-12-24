@@ -1,18 +1,10 @@
-import * as React from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  Avatar,
-  CardHeader,
-} from "@mui/material";
+import { Card, CardContent, Typography, Grid, Avatar, CardHeader } from "@mui/material";
 import SetPermissions from "./SetPermissions";
 import { StaffInterface } from "../../interfaces/interfaces";
 
 type Props = {
-  staff: StaffInterface
-}
+  staff: StaffInterface;
+};
 
 export default function StaffCard({ staff }: Props) {
   return (
@@ -27,7 +19,7 @@ export default function StaffCard({ staff }: Props) {
           }
         />
         <CardContent>
-            <SetPermissions staff={staff} />
+          <SetPermissions staff={staff} />
         </CardContent>
       </Card>
     </Grid>

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRecoilValue } from "recoil";
 import { staffAtom } from "../../recoil/atoms";
-import { Container, Fab, Grid, Typography } from "@mui/material";
+import { Fab, Grid, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import StaffCard from "./StaffCard";
 import CreateDialog from "../Staff/CreateDialog";
@@ -10,12 +10,12 @@ const StaffContainer = () => {
   const [createOpen, setCreateOpen] = useState(false);
   const staff = useRecoilValue(staffAtom);
 
-  const handleNewStaff = () => {
+  const handleNewStaff = useCallback(() => {
     setCreateOpen(true);
-  };
+  }, []);
 
   return (
-    <Container>
+    <>
       <Typography variant="h1" sx={{ mt: 3 }}>
         Staff
       </Typography>
@@ -31,7 +31,7 @@ const StaffContainer = () => {
         <AddIcon />
       </Fab>
       <CreateDialog open={createOpen} onOpen={setCreateOpen} />
-    </Container>
+    </>
   );
 };
 

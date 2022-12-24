@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import LoginContainer from "./Login/LoginContainer";
+import LoginContainer from "./components/Login/LoginContainer";
 import StaffPage from "./pages/StaffPage";
 import CustomRoute from "./CustomRoute";
 import { PERMISSION } from "./libraries/objects";

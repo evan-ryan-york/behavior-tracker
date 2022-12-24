@@ -1,22 +1,22 @@
-import { FC } from "react";
+import { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "./hooks/useAuth";
-import {PERMISSION} from "./libraries/objects"
+import { AuthContext } from "./providers/AuthProvider";
+import { PERMISSION } from "./libraries/objects";
 
 interface CustomRouteProps {
   children: React.ReactNode;
   permission: PERMISSION;
 }
 
-const CustomRoute: FC<CustomRouteProps> = ({ children, permission }) => {
-  const { isLoading, currentAuthUser } = useAuth();
+const CustomRoute = ({ children, permission }: CustomRouteProps) => {
+  const { loading, currentAuthUser } = useContext(AuthContext);
 
   return (
     <>
-      {currentAuthUser && !isLoading && children }
-      {!currentAuthUser && !isLoading && (<Navigate to="/login" />)}
+      {currentAuthUser && !loading && children}
+      {!currentAuthUser && !loading && <Navigate to="/login" />}
     </>
-  )
+  );
 };
 
 export default CustomRoute;

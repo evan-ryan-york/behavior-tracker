@@ -15,8 +15,8 @@ interface SendRequestProps {
   col: string;
   config?: {
     where?: [string, WhereFilterOp, any];
-    orderBy: [string, OrderByDirection?];
-    limit: number;
+    orderBy?: [string, OrderByDirection?];
+    limit?: number;
   };
 }
 
@@ -25,8 +25,8 @@ type DBRecord = {
 };
 
 type GetDocsType = {
-  sendRequest:  <T extends DBRecord>(requestProps: SendRequestProps) => Promise<T[]>;
-}
+  sendRequest: <T extends DBRecord>(requestProps: SendRequestProps) => Promise<T[]>;
+};
 
 const useGetDocs = (): GetDocsType => {
   const sendRequest = useCallback(
@@ -43,16 +43,21 @@ const useGetDocs = (): GetDocsType => {
       }
       const docRef = collection(db, col);
       let snapshot;
-      if (conditions.length > 0) {
-        snapshot = await getDocs(query(docRef, ...conditions));
-      } else {
-        snapshot = await getDocs(docRef);
+      try {
+        if (conditions.length > 0) {
+          snapshot = await getDocs(query(docRef, ...conditions));
+        } else {
+          snapshot = await getDocs(docRef);
+        }
+      } catch (err) {
+        console.log(err);
       }
       const tempArray: T[] = [];
-
-      snapshot.forEach((s) => {
-        tempArray.push({ id: s.id, ...s.data() } as DBRecord as T);
-      });
+      if (snapshot) {
+        snapshot.forEach((s) => {
+          tempArray.push({ ...s.data(), id: s.id } as DBRecord as T);
+        });
+      }
 
       return tempArray;
     },
