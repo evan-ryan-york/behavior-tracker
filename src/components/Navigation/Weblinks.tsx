@@ -3,11 +3,10 @@ import { useNavigate } from "react-router-dom";
 // import { loggedInStaffAtom } from "../../recoil/staffAtoms";
 // import { useRecoilValue } from "recoil";
 import { Button, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import { sitesObjAtom } from "../../recoil/sitesAtoms";
-import { groupsObjAtom } from "../../recoil/groupAtoms";
+
 import { availableSitesAtom, selectedSiteIdAtom } from "../../recoil/sitesAtoms";
 import { availableGroupsAtom, selectedGroupIdAtom } from "../../recoil/groupAtoms";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { GroupRecord } from "../../types/types";
 import { organizationAtom } from "../../recoil/organizationAtoms";
 

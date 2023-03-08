@@ -1,4 +1,3 @@
-import { organizationAtom } from "../recoil/organizationAtoms";
 import {
   AntecedentRecord,
   BehaviorPlanRecord,

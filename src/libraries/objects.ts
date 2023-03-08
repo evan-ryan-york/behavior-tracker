@@ -14,7 +14,6 @@ export enum SettingsSections {
   ANTECEDENTS = "Antecedents",
   BEHAVIORS = "Behaviors",
   CONSEQUENCES = "Consequences",
-  FUNCTIONS_OF_BEHAVIOR = "Functions of Behavior",
   ORG_PROFILE = "Organization Profile",
   STAFF = "Staff",
   STUDENTS = "Students",
@@ -23,6 +22,9 @@ export enum SettingsSections {
   ENROLL_STATUSES = "Enrollment Statuses",
   PERIODS = "Periods of the Day",
   REPLACEMENT_BEHAVIORS = "Replacement Behaviors",
+  PREVENT_STRATEGIES = "Prevention Strategies",
+  REINFORCEMENT_STRATEGIES = "Reinforcement Strategies",
+  EXTINGUISH_STRATEGIES = "Extinguish Strategies",
 }
 
 export enum FUNCTIONS_OF_BEHAVIOR {

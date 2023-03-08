@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Paper, Typography, Container, CircularProgress, Avatar, Button, Box } from "@mui/material";
+import { Paper, Typography, Container, CircularProgress, Button, Box } from "@mui/material";
 import Copyright from "./Copyright";
 import { AuthContext } from "../../providers/AuthProvider";
 
@@ -29,7 +29,7 @@ const LoginContainer = () => {
             padding: 4,
             textAlign: "center",
             backgroundColor: "#eee",
-            mt: 8
+            mt: 8,
           }}
         >
           <Typography variant="h4" sx={{ pt: 2 }}>
