@@ -1,6 +1,5 @@
-import { ColumnInterface } from "../interfaces/interfaces";
-
-export const perChildColumns: ColumnInterface[] = [
+import { Column } from "../types/types";
+export const perChildColumns: Column[] = [
   {
     field: "firstName",
     headerName: "First Name",

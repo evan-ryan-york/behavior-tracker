@@ -1,6 +1,11 @@
 import React, { createContext, useState, useEffect, useCallback } from "react";
 import { signInWithPopup, UserCredential, User as FirebaseUser } from "firebase/auth";
+import useGetDocs from "../hooks/useGetDocs";
 import { auth, provider } from "../firebase";
+import { useSetRecoilState } from "recoil";
+import { loggedInStaffAtom } from "../recoil/staffAtoms";
+import { StaffRecord } from "../types/types";
+import { parseStaffResponse } from "../libraries/parsers";
 
 interface AuthContextInterface {
   loading: boolean;
@@ -26,8 +31,28 @@ type Props = {
 const AuthProvider = ({ children }: Props) => {
   const [loading, setLoading] = useState(true);
   const [currentAuthUser, setCurrentAuthUser] = useState<FirebaseUser | null>(null);
+  const { sendRequest: getDocs } = useGetDocs();
+  const setLoggedInStaff = useSetRecoilState(loggedInStaffAtom);
 
-  const signInWithGoogle = useCallback(() => {
+  const getStaffRecord = useCallback(
+    async (user: FirebaseUser) => {
+      const matchingStaff = await getDocs<StaffRecord>({
+        col: "staff",
+        config: { where: ["email", "==", user.email] },
+      });
+      const parsedResults = parseStaffResponse(matchingStaff);
+      if (parsedResults.length === 0) {
+        console.log("No Matching User");
+      } else if (parsedResults.length > 1) {
+        console.log("Multiple Matching Users");
+      } else {
+        return parsedResults[0];
+      }
+    },
+    [getDocs]
+  );
+
+  const signInWithGoogle = useCallback(async () => {
     setLoading(true);
     signInWithPopup(auth, provider).then(async ({ user }: UserCredential) => {
       if (!user || !user.email) {
@@ -35,9 +60,10 @@ const AuthProvider = ({ children }: Props) => {
         setLoading(false);
         return;
       }
-      user.email.split("@")[1] === "thegatheringplacek12.org" || auth.signOut();
+      const staffRecord = await getStaffRecord(user);
+      staffRecord ? setLoggedInStaff(staffRecord) : auth.signOut();
     });
-  }, []);
+  }, [getStaffRecord, setLoggedInStaff]);
 
   const logout = useCallback(() => {
     setCurrentAuthUser(null);
@@ -48,6 +74,8 @@ const AuthProvider = ({ children }: Props) => {
     const unsubscribe = auth.onAuthStateChanged(async (user: FirebaseUser | null) => {
       if (user) {
         setCurrentAuthUser(user);
+        const staffRecord = await getStaffRecord(user);
+        staffRecord ? setLoggedInStaff(staffRecord) : auth.signOut();
       } else {
         setCurrentAuthUser(null);
       }
@@ -55,7 +83,7 @@ const AuthProvider = ({ children }: Props) => {
     });
 
     return unsubscribe;
-  }, []);
+  }, [getStaffRecord, setLoggedInStaff]);
 
   useEffect(() => {
     if (currentAuthUser) {

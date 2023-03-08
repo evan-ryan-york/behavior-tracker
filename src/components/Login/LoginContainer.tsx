@@ -28,19 +28,19 @@ const LoginContainer = () => {
             alignItems: "center",
             padding: 4,
             textAlign: "center",
+            backgroundColor: "#eee",
+            mt: 8
           }}
         >
-          <Avatar sx={{ width: 200, height: 200 }} src="../TGPicon.png"></Avatar>
           <Typography variant="h4" sx={{ pt: 2 }}>
-            Incident Report System
+            Behavior Data Tracker
           </Typography>
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
             onClick={signInWithGoogle}
-            sx={{ mt: 2 }}
+            sx={{ mt: 2, backgroundColor: "#aaa" }}
           >
             Sign In With Google
           </Button>

@@ -1,6 +1,6 @@
 import { MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
-import { loggedInStaffAtom } from "../../recoil/atoms";
+import { loggedInStaffAtom } from "../../recoil/staffAtoms";
 import { useRecoilValue } from "recoil";
 
 type Props = {

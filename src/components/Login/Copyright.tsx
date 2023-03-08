@@ -6,8 +6,8 @@ const Copyright: FC = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="primary" to="tgpk12.org">
-        The Gathering Place
+      <Link color="primary" to="">
+        Firestarters LLC
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
