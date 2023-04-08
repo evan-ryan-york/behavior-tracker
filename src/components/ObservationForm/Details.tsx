@@ -10,34 +10,41 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { DURATIONS, INTENSITIES } from "../../libraries/objects";
-import { periodsAtom } from "../../recoil/periodsAtoms";
+import { settingsAtom } from "../../recoil/settingsAtoms";
 import { useRecoilValue } from "recoil";
 
 type Props = {
   duration: string;
   intensity: string;
-  periodId: string | null;
+  settingId: string | null;
   setDuration: (value: string) => void;
   setIntensity: (value: string) => void;
-  setPeriodId: (value: string) => void;
+  setSettingId: (value: string) => void;
 };
 
-function Details({ duration, intensity, setDuration, setIntensity, periodId, setPeriodId }: Props) {
-  const periods = useRecoilValue(periodsAtom);
+function Details({
+  duration,
+  intensity,
+  setDuration,
+  setIntensity,
+  settingId,
+  setSettingId,
+}: Props) {
+  const settings = useRecoilValue(settingsAtom);
   const handleDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDuration(event.target.value);
   };
   const handleIntensityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIntensity(event.target.value);
   };
-  const handlePeriodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPeriodId(event.target.value);
+  const handleSettingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSettingId(event.target.value);
   };
 
   useEffect(() => {
-    if (!periods || periods.length === 0 || periodId) return;
-    setPeriodId(periods[0].id);
-  }, [periods, periodId, setPeriodId]);
+    if (!settings || settings.length === 0 || settingId) return;
+    setSettingId(settings[0].id);
+  }, [settings, settingId, setSettingId]);
   return (
     <>
       <Box sx={{ mt: 2, mb: 2 }}>
@@ -45,7 +52,7 @@ function Details({ duration, intensity, setDuration, setIntensity, periodId, set
         <Divider />
       </Box>
       <Grid container spacing={1}>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
+        <Grid item xs={12} sm={12} md={6} lg={6}>
           <Box sx={{ backgroundColor: "#fff", padding: 1, margin: 0 }}>
             <Typography variant="h6">Duration</Typography>
             <Divider />
@@ -63,36 +70,18 @@ function Details({ duration, intensity, setDuration, setIntensity, periodId, set
             </FormControl>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={8}>
+        <Grid item xs={12} sm={12} md={6} lg={6}>
           <Box sx={{ backgroundColor: "#fff", padding: 1, margin: 0 }}>
             <Typography variant="h6">Part of Day</Typography>
             <Divider />
             <FormControl>
-              <RadioGroup row name="part-of-day" value={periodId} onChange={handlePeriodChange}>
-                {periods.map((period) => (
+              <RadioGroup row name="part-of-day" value={settingId} onChange={handleSettingChange}>
+                {settings.map((setting) => (
                   <FormControlLabel
-                    value={period.id}
-                    key={period.id}
+                    value={setting.id}
+                    key={setting.id}
                     control={<Radio />}
-                    label={<Typography variant="body2">{period.name}</Typography>}
-                  />
-                ))}
-              </RadioGroup>
-            </FormControl>
-          </Box>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={4}>
-          <Box sx={{ backgroundColor: "#fff", padding: 1, margin: 0 }}>
-            <Typography variant="h6">Intensity</Typography>
-            <Divider />
-            <FormControl>
-              <RadioGroup row name="intensity" value={intensity} onChange={handleIntensityChange}>
-                {INTENSITIES.map((intensity) => (
-                  <FormControlLabel
-                    value={intensity}
-                    key={intensity}
-                    control={<Radio />}
-                    label={<Typography variant="body2">{intensity}</Typography>}
+                    label={<Typography variant="body2">{setting.name}</Typography>}
                   />
                 ))}
               </RadioGroup>

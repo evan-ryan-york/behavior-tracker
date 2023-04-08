@@ -2,7 +2,7 @@ import { GetRecoilValue } from "recoil";
 import { BehaviorReports, ObservationRecord } from "../types/types";
 import { behaviorsAtom } from "./behaviorsAtoms";
 import { filtersAtom } from "./filtersAtoms";
-import { selectedStudentObservationsAtom } from "./observationAtoms";
+import { observationsAtom } from "./observationAtoms";
 import { studentsAtom } from "./studentAtoms";
 
 type Props = {
@@ -52,16 +52,23 @@ const getFunctionsOfBehaviorByBehavior = (observations: ObservationRecord[], beh
 };
 
 export const observationsGroupedByBehaviorGetter = ({ get }: Props) => {
-  const observations = get(selectedStudentObservationsAtom);
+  const observations = get(observationsAtom);
   const behaviors = get(behaviorsAtom);
   const filters = get(filtersAtom);
   if (!observations || !behaviors) return;
+  const startDateMS = filters.dateRange[0] ? new Date(filters.dateRange[0]).getTime() : 0;
+  const endDateMS = filters.dateRange[1] ? new Date(filters.dateRange[1]).getTime() : 9999999999999;
   const observationsForReports = observations.filter(
     (observation) =>
-      observation.createdAt?.toMillis() ??
-      (1 > (filters.dateRange[0] || 0) &&
-        (observation.createdAt?.toMillis() ?? 1 < (filters.dateRange[1] || 2)))
+      (observation.createdAt?.toMillis() ?? 0) > startDateMS &&
+      (observation.createdAt?.toMillis() ?? 0) < endDateMS
   );
+
+  observationsForReports.forEach((observation) => {
+    const createdAt = observation.createdAt?.toMillis() ?? 0;
+    console.log(createdAt > startDateMS && createdAt < endDateMS);
+  });
+
   const behaviorObj: BehaviorReports = {};
   behaviors.forEach((behavior) => {
     behaviorObj[behavior.id] = {

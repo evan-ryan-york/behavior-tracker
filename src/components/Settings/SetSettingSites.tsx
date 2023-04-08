@@ -3,22 +3,22 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { Divider, TextField, Autocomplete, Typography } from "@mui/material";
 import { sitesAtom, sitesObjAtom } from "../../recoil/sitesAtoms";
 import { SiteRecord } from "../../types/types";
-import { periodFormAtom } from "../../recoil/periodsAtoms";
+import { settingFormAtom } from "../../recoil/settingsAtoms";
 
-export default function SetPeriodSites() {
-  const [periodForm, setPeriodForm] = useRecoilState(periodFormAtom);
+export default function SetSettingSites() {
+  const [settingForm, setSettingForm] = useRecoilState(settingFormAtom);
   const sites = useRecoilValue(sitesAtom);
   const [selectedSites, setSelectedSites] = useState<SiteRecord[]>([]);
   const sitesObj = useRecoilValue(sitesObjAtom);
 
   useEffect(() => {
-    if (!periodForm || !sitesObj) return;
+    if (!settingForm || !sitesObj) return;
     const tempSites: SiteRecord[] = [];
-    periodForm.siteIds.forEach((siteId) => {
+    settingForm.siteIds.forEach((siteId) => {
       tempSites.push(sitesObj[siteId]);
     });
     setSelectedSites(tempSites);
-  }, [sitesObj, periodForm]);
+  }, [sitesObj, settingForm]);
 
   const handleSiteSelect = useCallback(
     (event: any, values: SiteRecord[]) => {
@@ -29,15 +29,15 @@ export default function SetPeriodSites() {
         siteArray.push(s.id);
       });
       setSelectedSites(currentSelectedSites);
-      setPeriodForm((pV) => ({ ...pV, siteIds: siteArray }));
+      setSettingForm((pV) => ({ ...pV, siteIds: siteArray }));
     },
-    [setPeriodForm]
+    [setSettingForm]
   );
 
   return (
     <>
       <Typography variant="h6" sx={{ mt: 2 }}>
-        Period Sites
+        Setting Sites
       </Typography>
       <Divider />
       <Autocomplete

@@ -1,29 +1,27 @@
 import { Box, Paper, Typography, Button, Chip, Grid } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { PeriodRecord } from "../../types/types";
-import { periodFormAtom } from "../../recoil/periodsAtoms";
+import { SettingRecord } from "../../types/types";
+import { settingFormAtom } from "../../recoil/settingsAtoms";
 import { sitesObjAtom } from "../../recoil/sitesAtoms";
 
 type Props = {
-  period: PeriodRecord;
+  setting: SettingRecord;
   setManageOpen: (value: boolean) => void;
   setDeleteOpen: (value: boolean) => void;
   setDeleteId: (value: string | null) => void;
 };
 
-function PeriodCard({ period, setManageOpen, setDeleteOpen, setDeleteId }: Props) {
-  const setPeriodForm = useSetRecoilState(periodFormAtom);
+function SettingCard({ setting, setManageOpen, setDeleteOpen, setDeleteId }: Props) {
+  const setSettingForm = useSetRecoilState(settingFormAtom);
   const sitesObj = useRecoilValue(sitesObjAtom);
-  const handleFieldEdit = (antecedent: PeriodRecord) => {
-    setPeriodForm(period);
+  const handleFieldEdit = (antecedent: SettingRecord) => {
+    setSettingForm(setting);
     setManageOpen(true);
   };
 
-  console.log(period);
-
-  const handleDeleteGroup = () => {
+  const handleDeleteSetting = () => {
     setDeleteOpen(true);
-    setDeleteId(period.id);
+    setDeleteId(setting.id);
   };
   return (
     <>
@@ -32,21 +30,21 @@ function PeriodCard({ period, setManageOpen, setDeleteOpen, setDeleteId }: Props
           <Paper sx={{ padding: 2 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={6}>
-                <Typography variant="body1">{`Group: ${period.name}`}</Typography>
+                <Typography variant="body1">{`Group: ${setting.name}`}</Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Box sx={{ display: "flex", justifyContent: "end" }}>
-                  {period.siteIds.map((siteId) => (
+                  {setting.siteIds.map((siteId) => (
                     <Chip key={siteId} label={sitesObj[siteId].name} />
                   ))}
                   <Button
                     sx={{ mr: 2, ml: 2 }}
                     variant="outlined"
-                    onClick={() => handleFieldEdit(period)}
+                    onClick={() => handleFieldEdit(setting)}
                   >
                     Edit
                   </Button>
-                  <Button variant="outlined" color="error" onClick={handleDeleteGroup}>
+                  <Button variant="outlined" color="error" onClick={handleDeleteSetting}>
                     Delete
                   </Button>
                 </Box>
@@ -59,4 +57,4 @@ function PeriodCard({ period, setManageOpen, setDeleteOpen, setDeleteId }: Props
   );
 }
 
-export default PeriodCard;
+export default SettingCard;

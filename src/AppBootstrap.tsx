@@ -1,5 +1,6 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import useBootstrapEffect from "./hooks/useBootstrapEffect";
+import useStudentBootstrapEffect from "./hooks/useStudentBootstrapEffect";
 import { ThemeProvider } from "@mui/material/styles";
 import { routes } from "./Routes";
 import { createTheme } from "@mui/material/styles";
@@ -34,6 +35,7 @@ declare module "@mui/material/Typography" {
 
 function AppBootstrap() {
   useBootstrapEffect();
+  useStudentBootstrapEffect();
   const organization = useRecoilValue(organizationAtom);
   const loading = !Boolean(organization);
   const { currentAuthUser } = useContext(AuthContext);

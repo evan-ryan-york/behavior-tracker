@@ -62,6 +62,27 @@ export default function SettingsSideMenu({ setActiveSettingSection }: Props) {
             </ListItemButton>
           </ListItem>
           <Divider />
+
+          <ListItem disablePadding sx={{ pl: 1 }}>
+            <ListItemButton
+              onClick={() => {
+                setActiveSettingSection(SettingsSections.STRATEGIES);
+              }}
+            >
+              <ListItemText primary={SettingsSections.STRATEGIES} />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding sx={{ pl: 1 }}>
+            <ListItemButton
+              onClick={() => {
+                setActiveSettingSection(SettingsSections.FUNCTION_SURVEY_QUESTIONS);
+              }}
+            >
+              <ListItemText primary={SettingsSections.FUNCTION_SURVEY_QUESTIONS} />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
           <Typography sx={{ fontWeight: 700, backgroundColor: "#eee", fontSize: 17, pl: 1, pt: 2 }}>
             School Settings
           </Typography>
@@ -128,10 +149,10 @@ export default function SettingsSideMenu({ setActiveSettingSection }: Props) {
           <ListItem disablePadding sx={{ pl: 1 }}>
             <ListItemButton
               onClick={() => {
-                setActiveSettingSection(SettingsSections.PERIODS);
+                setActiveSettingSection(SettingsSections.SETTINGS);
               }}
             >
-              <ListItemText primary={SettingsSections.PERIODS} />
+              <ListItemText primary={SettingsSections.SETTINGS} />
             </ListItemButton>
           </ListItem>
           <Divider />

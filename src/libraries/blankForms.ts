@@ -1,4 +1,9 @@
-import { BehaviorPlan } from "../types/types";
+import {
+  BehaviorPlan,
+  FunctionSurveyQuestion,
+  FunctionSurveyResult,
+  Strategy,
+} from "../types/types";
 
 export const BLANK_LABEL_FORM = {
   label: "",
@@ -66,7 +71,7 @@ export const BLANK_ENROLL_STATUS_FORM = {
   showByDefault: false,
 };
 
-export const BLANK_PERIOD_FORM = {
+export const BLANK_SETTING_FORM = {
   name: "",
   organizationId: "",
   order: 0,
@@ -85,4 +90,31 @@ export const BLANK_PLAN_FORM: BehaviorPlan = {
   extinguishStrategies: [],
   studentId: "",
   organizationId: "",
+};
+
+export const BLANK_STRATEGY_FORM: Strategy = {
+  title: "",
+  content: "",
+  antecedentIds: [],
+  consequenceIds: [],
+  targetBehaviorsIds: [],
+  replacementBehaviorIds: [],
+  organizationId: "",
+  authorId: "",
+  type: "EXTINGUISH",
+};
+
+export const BLANK_FUNCTION_SURVEY_QUESTION_FORM: FunctionSurveyQuestion = {
+  label: "",
+  functionOfBehavior: "",
+  order: 0,
+};
+
+export const BLANK_FUNCTION_SURVEY_RESULT_FORM: FunctionSurveyResult = {
+  submitter: "",
+  relationship: "",
+  studentId: "",
+  behaviorId: "",
+  descriptionOfBehavior: "",
+  responses: {},
 };

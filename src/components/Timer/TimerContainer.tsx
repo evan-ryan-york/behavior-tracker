@@ -42,7 +42,7 @@ const Timer = () => {
     const db = getDatabase();
     const observationPeriodsRef = ref(
       db,
-      `observationPeriods/${organization.id}/${loggedInStaff.id}/${selectedStudentId}`
+      `observationPeriods/${organization.id}/${selectedStudentId}`
     );
     onValue(observationPeriodsRef, (snapshot) => {
       const data = snapshot.val();

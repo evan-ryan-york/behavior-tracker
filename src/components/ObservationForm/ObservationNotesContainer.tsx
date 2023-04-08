@@ -40,7 +40,6 @@ function ObservationNotesContainer({ notesArray, setNotesArray }: Props) {
         <Box
           sx={{
             mt: 1,
-            mb: 1,
             borderRadius: 1,
             padding: 1,
             maxHeight: 200,
@@ -56,7 +55,7 @@ function ObservationNotesContainer({ notesArray, setNotesArray }: Props) {
           multiline
           rows={2}
           fullWidth
-          sx={{ mt: 2, backgroundColor: "#fafafa" }}
+          sx={{ mt: 0, backgroundColor: "#fafafa" }}
           value={text}
           onChange={handleChange}
         />

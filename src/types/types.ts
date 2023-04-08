@@ -31,13 +31,6 @@ export type Consequence = {
 
 export type ConsequenceRecord = Consequence & BaseRecord;
 
-export type FunctionOfBehavior = {
-  label: string;
-  order: number;
-};
-
-export type FunctionOfBehaviorRecord = FunctionOfBehavior & BaseRecord;
-
 export type Staff = {
   firstName: string;
   lastName: string;
@@ -103,7 +96,7 @@ export type Observation = {
   notes: Note[];
   authorId: FIREBASE_ID;
   studentId: FIREBASE_ID;
-  periodId: FIREBASE_ID;
+  settingId: FIREBASE_ID;
 };
 
 export type ObservationRecord = Observation & BaseRecord;
@@ -114,6 +107,7 @@ export type ObservationPeriod = {
   authorId: FIREBASE_ID;
   organizationId: FIREBASE_ID;
   studentId: FIREBASE_ID;
+  label: string;
 };
 
 export type Organization = {
@@ -160,14 +154,14 @@ export type EnrollStatus = {
 
 export type EnrollStatusRecord = EnrollStatus & BaseRecord;
 
-export type Period = {
+export type Setting = {
   name: string;
   order: number;
   organizationId: FIREBASE_ID;
   siteIds: FIREBASE_ID[];
 };
 
-export type PeriodRecord = Period & BaseRecord;
+export type SettingRecord = Setting & BaseRecord;
 
 export type BehaviorReports = {
   [key: string]: {
@@ -205,3 +199,55 @@ export type ReplacementBehavior = {
 };
 
 export type ReplacementBehaviorRecord = ReplacementBehavior & BaseRecord;
+
+export type Strategy = {
+  title: string;
+  content: ReactQuill.Value;
+  antecedentIds: FIREBASE_ID[];
+  consequenceIds: FIREBASE_ID[];
+  targetBehaviorsIds: FIREBASE_ID[];
+  replacementBehaviorIds: FIREBASE_ID[];
+  organizationId: FIREBASE_ID;
+  authorId: FIREBASE_ID;
+  type: "PREVENTION" | "EXTINGUISH" | "REINFORCE";
+};
+
+export type StrategyRecord = Strategy & BaseRecord;
+
+export type FunctionSurveyQuestion = {
+  label: string;
+  functionOfBehavior: string;
+  order: number;
+};
+
+export type FunctionSurveyQuestionRecord = FunctionSurveyQuestion & BaseRecord;
+
+export type FunctionSurveyResult = {
+  submitter: string;
+  relationship: string;
+  studentId: FIREBASE_ID;
+  behaviorId: FIREBASE_ID;
+  descriptionOfBehavior: string;
+  responses: { [key: string]: string };
+};
+
+export type FunctionSurveyResultRecord = FunctionSurveyResult & BaseRecord;
+
+export type SurveyLink = {
+  studentId: FIREBASE_ID;
+  passcode: string;
+  email: string;
+  compleated: boolean;
+};
+
+export type SurveyLinkRecord = SurveyLink & BaseRecord;
+
+export type StudentFile = {
+  studentId: FIREBASE_ID;
+  filePath: string;
+  fileName: string;
+  authorId: FIREBASE_ID;
+  fileType: string;
+};
+
+export type StudentFileRecord = StudentFile & BaseRecord;

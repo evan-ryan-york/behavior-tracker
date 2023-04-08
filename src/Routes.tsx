@@ -6,11 +6,13 @@ import CustomRoute from "./CustomRoute";
 import { PERMISSION } from "./libraries/objects";
 import ReportsPage from "./pages/ReportsPage";
 import LogsPage from "./pages/LogsPage";
-import PlansPage from "./pages/BehaviorPlansPage";
+import StudentDashboardPage from "./pages/StudentDashboardPage";
+import SurveyLinkPage from "./pages/SurveyLinkPage";
 
 export const routes = (
   <Routes>
     <Route path="/login" element={<LoginContainer />} />
+    <Route path="/behavior-survey" element={<SurveyLinkPage />} />
     <Route
       path="/settings"
       element={
@@ -36,10 +38,10 @@ export const routes = (
       }
     />
     <Route
-      path="/plans"
+      path="/student-dashboard"
       element={
         <CustomRoute permission={PERMISSION.EDIT_SETTINGS}>
-          <PlansPage />
+          <StudentDashboardPage />
         </CustomRoute>
       }
     />

@@ -37,7 +37,7 @@ function ObservationPeriodDelete({
     set(
       ref(
         db,
-        `observationPeriods/${observationPeriod.organizationId}/${observationPeriod.authorId}/${observationPeriod.studentId}`
+        `observationPeriods/${observationPeriod.organizationId}/${observationPeriod.studentId}`
       ),
       mutablePeriods
     );

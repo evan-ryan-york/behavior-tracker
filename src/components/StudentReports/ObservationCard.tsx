@@ -11,7 +11,7 @@ import NoteCard from "./NoteCard";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteDialog from "../shared/DeleteDialog";
 import { observationsResetAtom } from "../../recoil/observationAtoms";
-import { periodsObjAtom } from "../../recoil/periodsAtoms";
+import { settingsObjAtom } from "../../recoil/settingsAtoms";
 
 type Props = {
   observation: ObservationRecord;
@@ -24,7 +24,7 @@ function ObservationCard({ observation }: Props) {
   const staffObj = useRecoilValue(staffObjAtom);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const setObservationsReset = useSetRecoilState(observationsResetAtom);
-  const periodsObj = useRecoilValue(periodsObjAtom);
+  const settingsObj = useRecoilValue(settingsObjAtom);
 
   const renderTimestamp = (timestamp: Timestamp | null) => {
     if (!timestamp) return;
@@ -128,12 +128,12 @@ function ObservationCard({ observation }: Props) {
               </Typography>
               <Typography component="span">{observation.intensity}</Typography>
             </Box>
-            {periodsObj && (
+            {settingsObj && (
               <Box>
                 <Typography component="span">
                   <b>Part of Day: </b>
                 </Typography>
-                <Typography component="span">{periodsObj[observation.periodId]?.name}</Typography>
+                <Typography component="span">{settingsObj[observation.settingId]?.name}</Typography>
               </Box>
             )}
           </Grid>

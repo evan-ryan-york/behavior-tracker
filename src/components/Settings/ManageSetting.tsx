@@ -11,11 +11,11 @@ import {
 } from "@mui/material";
 import useUpdateDoc from "../../hooks/useUpdateDoc";
 import useAddDoc from "../../hooks/useAddDoc";
-import { BLANK_PERIOD_FORM } from "../../libraries/blankForms";
+import { BLANK_SETTING_FORM } from "../../libraries/blankForms";
 import DialogTitle from "@mui/material/DialogTitle";
 import { loggedInStaffAtom } from "../../recoil/staffAtoms";
-import { periodFormAtom, periodsResetAtom } from "../../recoil/periodsAtoms";
-import SetPeriodSites from "./SetPeriodSites";
+import { settingFormAtom, settingsResetAtom } from "../../recoil/settingsAtoms";
+import SetSettingSites from "./SetSettingSites";
 
 type Props = {
   open: boolean;
@@ -28,51 +28,51 @@ type FormState = EventTarget & {
   checked: string;
 };
 
-export default function ManagePeriod({ open, setOpen }: Props) {
+export default function ManageSetting({ open, setOpen }: Props) {
   const loggedInStaff = useRecoilValue(loggedInStaffAtom);
   const { sendRequest: updateDoc } = useUpdateDoc();
   const { sendRequest: addDoc } = useAddDoc();
-  const [periodForm, setPeriodForm] = useRecoilState(periodFormAtom);
-  const setPeriodsReset = useSetRecoilState(periodsResetAtom);
+  const [settingForm, setSettingForm] = useRecoilState(settingFormAtom);
+  const setSettingsReset = useSetRecoilState(settingsResetAtom);
 
   const handleChange = (event: SyntheticEvent) => {
     const formState = event.target as FormState;
-    setPeriodForm((pV) => {
+    setSettingForm((pV) => {
       return { ...pV, [formState.name]: formState.value };
     });
   };
 
   const handleClose = () => {
     setOpen(false);
-    setPeriodForm(BLANK_PERIOD_FORM);
+    setSettingForm(BLANK_SETTING_FORM);
   };
 
   const handleSave = async () => {
     if (!loggedInStaff) return;
-    const formToSubmit = { ...periodForm, organizationId: loggedInStaff.organizationId };
+    const formToSubmit = { ...settingForm, organizationId: loggedInStaff.organizationId };
     if ("id" in formToSubmit) {
-      await updateDoc({ col: "periods", data: formToSubmit, id: formToSubmit.id });
+      await updateDoc({ col: "settings", data: formToSubmit, id: formToSubmit.id });
     } else {
-      await addDoc({ col: "periods", data: formToSubmit });
+      await addDoc({ col: "settings", data: formToSubmit });
     }
     handleClose();
-    setPeriodForm(BLANK_PERIOD_FORM);
-    setPeriodsReset((pV) => !pV);
+    setSettingForm(BLANK_SETTING_FORM);
+    setSettingsReset((pV) => !pV);
   };
 
   return (
     <>
-      {periodForm && (
+      {settingForm && (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
           <DialogTitle sx={{ fontSize: 44, textAlign: "center" }}>{`${
-            "id" in periodForm ? "Edit" : "New"
-          } Group`}</DialogTitle>
+            "id" in settingForm ? "Edit" : "New"
+          } Setting`}</DialogTitle>
           <DialogContent>
-            <Typography sx={{ mb: 1 }}>Group Name</Typography>
-            <TextField fullWidth name="name" value={periodForm.name} onChange={handleChange} />
+            <Typography sx={{ mb: 1 }}>Setting Name</Typography>
+            <TextField fullWidth name="name" value={settingForm.name} onChange={handleChange} />
             <Box>
-              <Typography sx={{ mb: 1, mt: 2 }}>Select Site for Period</Typography>
-              <SetPeriodSites />
+              <Typography sx={{ mb: 1, mt: 2 }}>Select Site for Setting</Typography>
+              <SetSettingSites />
             </Box>
           </DialogContent>
           <DialogActions>

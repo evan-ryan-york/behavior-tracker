@@ -33,11 +33,6 @@ export const observationPeriodIsActiveAtom = atom({
   default: false,
 });
 
-export const selectedStudentObservationsAtom = selector({
-  key: "selectedStudentObservations",
-  get: selectedStudentObservationsGetter,
-});
-
 export const observationsGroupedByBehaviorAtom = selector({
   key: "observationsGroupedByBehavior",
   get: observationsGroupedByBehaviorGetter,

@@ -3,36 +3,35 @@ import useGetDocs from "./useGetDocs";
 import useGetDoc from "./useGetDoc";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { staffAtom, loggedInStaffAtom, staffResetAtom } from "../recoil/staffAtoms";
-import { observationsAtom, observationsResetAtom } from "../recoil/observationAtoms";
 import {
   parseAntecedentResponse,
-  parseBehaviorPlanResponse,
   parseBehaviorResponse,
   parseConsequenceResponse,
   parseEnrollStatusesResponse,
   parseGroupResponse,
-  parseObservationResponse,
   parseOrganization,
-  parsePeriodResponse,
+  parseSettingResponse,
   parseReplacementBehaviorsResponse,
   parseSiteResponse,
   parseStaffResponse,
+  parseStrategyResponse,
   parseStudentResponse,
+  parseFunctionSurveyQuestionResponse,
 } from "../libraries/parsers";
 import {
   AntecedentRecord,
   BehaviorRecord,
   ConsequenceRecord,
-  ObservationRecord,
   StaffRecord,
   OrganizationRecord,
   SiteRecord,
   GroupRecord,
   EnrollStatusRecord,
   StudentRecord,
-  PeriodRecord,
+  SettingRecord,
   ReplacementBehaviorRecord,
-  BehaviorPlanRecord,
+  StrategyRecord,
+  FunctionSurveyQuestionRecord,
 } from "../types/types";
 import { antecedentsAtom, antecedentsResetAtom } from "../recoil/antecedentsAtoms";
 import { behaviorsAtom, behaviorsResetAtom } from "../recoil/behaviorsAtoms";
@@ -42,12 +41,16 @@ import { sitesAtom, sitesResetAtom } from "../recoil/sitesAtoms";
 import { groupsAtom, groupsResetAtom } from "../recoil/groupAtoms";
 import { enrollStatusesAtom, enrollStatusesResetAtom } from "../recoil/enrollStatusAtoms";
 import { studentsAtom, studentsResetAtom } from "../recoil/studentAtoms";
-import { periodsAtom, periodsResetAtom } from "../recoil/periodsAtoms";
+import { settingsAtom, settingsResetAtom } from "../recoil/settingsAtoms";
 import {
   replacementBehaviorsAtom,
   replacementBehaviorsResetAtom,
 } from "../recoil/replacementBehaviorsAtoms";
-import { behaviorPlansAtom } from "../recoil/behaviorPlansAtoms";
+import { strategiesAtom, strategiesResetAtom } from "../recoil/strategiesAtoms";
+import {
+  functionSurveyQuestionsAtom,
+  functionSurveyQuestionsResetAtom,
+} from "../recoil/functionSurveyAtoms";
 
 const useBootstrapEffect = () => {
   const { sendRequest: getDocs } = useGetDocs();
@@ -57,15 +60,17 @@ const useBootstrapEffect = () => {
   const setAntecedents = useSetRecoilState<AntecedentRecord[]>(antecedentsAtom);
   const setBehaviors = useSetRecoilState<BehaviorRecord[]>(behaviorsAtom);
   const setConsequences = useSetRecoilState<ConsequenceRecord[]>(consequencesAtom);
-  const setObservations = useSetRecoilState<ObservationRecord[]>(observationsAtom);
   const setOrganization = useSetRecoilState<OrganizationRecord | null>(organizationAtom);
-  const setBehaviorPlans = useSetRecoilState<BehaviorPlanRecord[]>(behaviorPlansAtom);
+  const setStrategies = useSetRecoilState<StrategyRecord[]>(strategiesAtom);
   const setSites = useSetRecoilState<SiteRecord[]>(sitesAtom);
   const setGroups = useSetRecoilState<GroupRecord[]>(groupsAtom);
-  const setPeriods = useSetRecoilState<PeriodRecord[]>(periodsAtom);
+  const setSettings = useSetRecoilState<SettingRecord[]>(settingsAtom);
   const setEnrollStatuses = useSetRecoilState<EnrollStatusRecord[]>(enrollStatusesAtom);
   const setReplacementBehaviors =
     useSetRecoilState<ReplacementBehaviorRecord[]>(replacementBehaviorsAtom);
+  const setFunctionSurveyQuestions = useSetRecoilState<FunctionSurveyQuestionRecord[]>(
+    functionSurveyQuestionsAtom
+  );
 
   //RESETS
   const antecedentsReset = useRecoilValue(antecedentsResetAtom);
@@ -74,13 +79,13 @@ const useBootstrapEffect = () => {
   const replacementBehaviorsReset = useRecoilValue(replacementBehaviorsResetAtom);
   const staffReset = useRecoilValue(staffResetAtom);
   const studentsReset = useRecoilValue(studentsResetAtom);
-  const observationsReset = useRecoilValue(observationsResetAtom);
   const organizationReset = useRecoilValue(organizationResetAtom);
   const sitesReset = useRecoilValue(sitesResetAtom);
   const groupsReset = useRecoilValue(groupsResetAtom);
   const enrollStatusesReset = useRecoilValue(enrollStatusesResetAtom);
-  const periodsReset = useRecoilValue(periodsResetAtom);
-  const behaviorPlansReset = useRecoilValue(behaviorsResetAtom);
+  const settingsReset = useRecoilValue(settingsResetAtom);
+  const strategiesReset = useRecoilValue(strategiesResetAtom);
+  const functionSurveyQuestionReset = useRecoilValue(functionSurveyQuestionsResetAtom);
 
   //VALUES
   const loggedInStaff = useRecoilValue(loggedInStaffAtom);
@@ -138,23 +143,6 @@ const useBootstrapEffect = () => {
 
   useEffect(() => {
     if (!loggedInStaff) return;
-    const getBehaviorPlans = async () => {
-      const response = await getDocs<BehaviorPlanRecord>({
-        col: "behaviorPlans",
-        config: {
-          where: ["organizationId", "==", loggedInStaff.organizationId],
-          orderBy: ["createdAt", "desc"],
-        },
-      });
-      if (response) {
-        setBehaviorPlans(parseBehaviorPlanResponse(response));
-      }
-    };
-    getBehaviorPlans();
-  }, [setBehaviorPlans, getDocs, behaviorPlansReset, loggedInStaff]);
-
-  useEffect(() => {
-    if (!loggedInStaff) return;
     const getReplacementBehaviors = async () => {
       const response = await getDocs<ReplacementBehaviorRecord>({
         col: "replacementBehaviors",
@@ -171,16 +159,20 @@ const useBootstrapEffect = () => {
   }, [setReplacementBehaviors, getDocs, replacementBehaviorsReset, loggedInStaff]);
 
   useEffect(() => {
-    const getObservations = async () => {
-      const response = await getDocs<ObservationRecord>({
-        col: "observations",
+    if (!loggedInStaff) return;
+    const getStrategies = async () => {
+      const response = await getDocs<StrategyRecord>({
+        col: "strategies",
+        config: {
+          where: ["organizationId", "==", loggedInStaff.organizationId],
+        },
       });
       if (response) {
-        setObservations(parseObservationResponse(response));
+        setStrategies(parseStrategyResponse(response));
       }
     };
-    getObservations();
-  }, [setObservations, getDocs, observationsReset]);
+    getStrategies();
+  }, [setStrategies, getDocs, strategiesReset, loggedInStaff]);
 
   useEffect(() => {
     if (!loggedInStaff) return;
@@ -235,20 +227,20 @@ const useBootstrapEffect = () => {
 
   useEffect(() => {
     if (!loggedInStaff) return;
-    const getPeriods = async () => {
-      const response = await getDocs<PeriodRecord>({
-        col: "periods",
+    const getSettings = async () => {
+      const response = await getDocs<SettingRecord>({
+        col: "settings",
         config: {
           where: ["organizationId", "==", loggedInStaff?.organizationId],
           orderBy: ["order"],
         },
       });
       if (response) {
-        setPeriods(parsePeriodResponse(response));
+        setSettings(parseSettingResponse(response));
       }
     };
-    getPeriods();
-  }, [setPeriods, getDocs, periodsReset, loggedInStaff]);
+    getSettings();
+  }, [setSettings, getDocs, settingsReset, loggedInStaff]);
 
   useEffect(() => {
     if (!loggedInStaff) return;
@@ -297,6 +289,23 @@ const useBootstrapEffect = () => {
     };
     getEnrollStatuses();
   }, [setEnrollStatuses, getDocs, enrollStatusesReset, loggedInStaff]);
+
+  useEffect(() => {
+    if (!loggedInStaff) return;
+    const getFunctionSurveyQuestions = async () => {
+      const response = await getDocs<FunctionSurveyQuestionRecord>({
+        col: "functionSurveyQuestions",
+        config: {
+          where: ["organizationId", "==", loggedInStaff?.organizationId],
+          orderBy: ["order"],
+        },
+      });
+      if (response) {
+        setFunctionSurveyQuestions(parseFunctionSurveyQuestionResponse(response));
+      }
+    };
+    getFunctionSurveyQuestions();
+  }, [setFunctionSurveyQuestions, getDocs, functionSurveyQuestionReset, loggedInStaff]);
 };
 
 export default useBootstrapEffect;

@@ -2,28 +2,28 @@ import { useState, useCallback, useEffect } from "react";
 import { Box, Button } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import DeleteDialog from "../shared/DeleteDialog";
-import { DropResult, PeriodRecord } from "../../types/types";
+import { DropResult, SettingRecord } from "../../types/types";
 import { Container, Draggable } from "react-smooth-dnd";
 import { updateDragArray } from "../../libraries/functions";
 import useUpdateDoc from "../../hooks/useUpdateDoc";
 import ManageGroup from "./ManageGroup";
-import { periodsAtom, periodsResetAtom } from "../../recoil/periodsAtoms";
-import PeriodCard from "./PeriodCard";
-import ManagePeriod from "./ManagePeriod";
+import { settingsAtom, settingsResetAtom } from "../../recoil/settingsAtoms";
+import SettingCard from "./SettingCard";
+import ManageSetting from "./ManageSetting";
 
-function PeriodsContainer() {
-  const periods = useRecoilValue(periodsAtom);
-  const [periodsForDisplay, setPeriodsForDisplay] = useState<PeriodRecord[]>([]);
+function ObservationSettingsContainer() {
+  const settings = useRecoilValue(settingsAtom);
+  const [settingsForDisplay, setSettingsForDisplay] = useState<SettingRecord[]>([]);
   const [manageOpen, setManageOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const setPeriodsReset = useSetRecoilState(periodsResetAtom);
+  const setSettingsReset = useSetRecoilState(settingsResetAtom);
   const { sendRequest: updateDoc } = useUpdateDoc();
 
   useEffect(() => {
-    if (!periods) return;
-    setPeriodsForDisplay(periods);
-  }, [periods]);
+    if (!settings) return;
+    setSettingsForDisplay(settings);
+  }, [settings]);
 
   const handleManageClick = () => {
     setManageOpen(true);
@@ -31,20 +31,20 @@ function PeriodsContainer() {
 
   const handleDrop = useCallback(
     async (dropResult: DropResult) => {
-      if (!periods) return;
-      const result = updateDragArray<PeriodRecord>({ dropResult, arr: periods });
+      if (!settings) return;
+      const result = updateDragArray<SettingRecord>({ dropResult, arr: settings });
       if (!result) return;
-      setPeriodsForDisplay(result);
+      setSettingsForDisplay(result);
       const promises: Array<Promise<string | null>> = [];
 
       result.forEach((group, index) => {
-        promises.push(updateDoc({ col: "periods", data: { order: index }, id: group.id }));
+        promises.push(updateDoc({ col: "settings", data: { order: index }, id: group.id }));
       });
       await Promise.all(promises);
 
-      setPeriodsReset((pV) => !pV);
+      setSettingsReset((pV) => !pV);
     },
-    [periods, setPeriodsReset, updateDoc]
+    [settings, setSettingsReset, updateDoc]
   );
 
   const handleOnDrop = (dropResult: DropResult) => {
@@ -60,15 +60,15 @@ function PeriodsContainer() {
           color="secondary"
           sx={{ padding: 1, fontSize: 16 }}
         >
-          Add New Period
+          Add New Setting
         </Button>
         <Container style={{ minHeight: 40 }} lockAxis="y" onDrop={handleOnDrop}>
-          {periodsForDisplay &&
-            periodsForDisplay.map((period) => (
-              <Draggable key={period.id} className="overflowVisible">
-                <PeriodCard
-                  key={period.id}
-                  period={period}
+          {settingsForDisplay &&
+            settingsForDisplay.map((setting) => (
+              <Draggable key={setting.id} className="overflowVisible">
+                <SettingCard
+                  key={setting.id}
+                  setting={setting}
                   setManageOpen={setManageOpen}
                   setDeleteOpen={setDeleteOpen}
                   setDeleteId={setDeleteId}
@@ -77,19 +77,19 @@ function PeriodsContainer() {
             ))}
         </Container>
       </Box>
-      <ManagePeriod open={manageOpen} setOpen={setManageOpen} />
+      <ManageSetting open={manageOpen} setOpen={setManageOpen} />
       {deleteId && deleteOpen && (
         <DeleteDialog
           open={deleteOpen}
           setOpen={setDeleteOpen}
-          message={"Are you sure you want to delete this Period? This can not be undone."}
+          message={"Are you sure you want to delete this Setting? This can not be undone."}
           collection="groups"
           id={deleteId}
-          setReset={setPeriodsReset}
+          setReset={setSettingsReset}
         />
       )}
     </>
   );
 }
 
-export default PeriodsContainer;
+export default ObservationSettingsContainer;

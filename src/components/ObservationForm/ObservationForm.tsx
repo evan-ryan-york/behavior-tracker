@@ -22,7 +22,7 @@ function ObservationForm({ setOpen }: Props) {
   const [duration, setDuration] = useState("<1 min");
   const [intensity, setIntensity] = useState("low");
   const [notesArray, setNotesArray] = useState<Note[]>([]);
-  const [periodId, setPeriodId] = useState<string | null>(null);
+  const [settingId, setSettingId] = useState<string | null>(null);
   const { sendRequest: addDoc } = useAddDoc();
   const loggedInStaff = useRecoilValue(loggedInStaffAtom);
   const selectedStudentId = useRecoilValue(selectedStudentIdAtom);
@@ -37,7 +37,7 @@ function ObservationForm({ setOpen }: Props) {
     setIntensity("low");
     setNotesArray([]);
     setOpen(false);
-    setPeriodId(null);
+    setSettingId(null);
   };
 
   const handleSubmit = async () => {
@@ -52,7 +52,7 @@ function ObservationForm({ setOpen }: Props) {
       intensity: intensity,
       authorId: loggedInStaff.id,
       studentId: selectedStudentId,
-      periodId: periodId,
+      settingId: settingId,
     };
     await addDoc({ col: "observations", data: data });
     resetForm();
@@ -74,8 +74,8 @@ function ObservationForm({ setOpen }: Props) {
         intensity={intensity}
         setDuration={setDuration}
         setIntensity={setIntensity}
-        periodId={periodId}
-        setPeriodId={setPeriodId}
+        settingId={settingId}
+        setSettingId={setSettingId}
       />
 
       <ObservationNotesContainer notesArray={notesArray} setNotesArray={setNotesArray} />

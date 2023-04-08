@@ -41,6 +41,7 @@ body {
   color: #333;
   text-decoration: none;
   font-size: 12;
+  width: 100%
 }
 
 .MuiDataGrid-columnHeaderTitle {

@@ -7,11 +7,15 @@ import {
   GroupRecord,
   ObservationRecord,
   OrganizationRecord,
-  PeriodRecord,
+  SettingRecord,
   ReplacementBehaviorRecord,
   SiteRecord,
   StaffRecord,
+  StrategyRecord,
   StudentRecord,
+  FunctionSurveyQuestionRecord,
+  FunctionSurveyResultRecord,
+  StudentFileRecord,
 } from "../types/types";
 
 export const parseStaffResponse = (response: StaffRecord[]): StaffRecord[] =>
@@ -118,7 +122,7 @@ export const parseObservationResponse = (response: ObservationRecord[]): Observa
     lastUpdatedAt: record?.lastUpdatedAt ?? null,
     id: record?.id ?? "",
     studentId: record?.studentId ?? "",
-    periodId: record?.periodId ?? "",
+    settingId: record?.settingId ?? "",
   }));
 
 export const parseOrganization = (response: OrganizationRecord): OrganizationRecord => {
@@ -168,8 +172,8 @@ export const parseGroupResponse = (response: GroupRecord[]): GroupRecord[] =>
     siteId: record?.siteId ?? "",
   }));
 
-export const parsePeriodResponse = (response: PeriodRecord[]): PeriodRecord[] =>
-  response.map((record: PeriodRecord) => ({
+export const parseSettingResponse = (response: SettingRecord[]): SettingRecord[] =>
+  response.map((record: SettingRecord) => ({
     id: record?.id ?? "",
     name: record?.name ?? "",
     organizationId: record?.organizationId ?? 0,
@@ -177,4 +181,59 @@ export const parsePeriodResponse = (response: PeriodRecord[]): PeriodRecord[] =>
     lastUpdatedAt: record?.lastUpdatedAt ?? null,
     order: record?.order ?? 0,
     siteIds: record?.siteIds ?? [],
+  }));
+
+export const parseStrategyResponse = (response: StrategyRecord[]): StrategyRecord[] =>
+  response.map((record: StrategyRecord) => ({
+    id: record?.id ?? "",
+    title: record?.title ?? "",
+    content: record?.content ?? "",
+    createdAt: record?.createdAt ?? null,
+    lastUpdatedAt: record?.lastUpdatedAt ?? null,
+    antecedentIds: record?.antecedentIds ?? [],
+    consequenceIds: record?.consequenceIds ?? [],
+    targetBehaviorsIds: record?.targetBehaviorsIds ?? [],
+    replacementBehaviorIds: record?.replacementBehaviorIds ?? [],
+    organizationId: record?.organizationId ?? "",
+    authorId: record?.authorId ?? "",
+    type: record?.type ?? "EXTINGUISH",
+  }));
+
+export const parseFunctionSurveyQuestionResponse = (
+  response: FunctionSurveyQuestionRecord[]
+): FunctionSurveyQuestionRecord[] =>
+  response.map((record: FunctionSurveyQuestionRecord) => ({
+    id: record?.id ?? "",
+    label: record?.label ?? "",
+    functionOfBehavior: record?.functionOfBehavior ?? "",
+    createdAt: record?.createdAt ?? null,
+    lastUpdatedAt: record?.lastUpdatedAt ?? null,
+    order: record?.order ?? 0,
+  }));
+
+export const parseFunctionSurveyResultsResponse = (
+  response: FunctionSurveyResultRecord[]
+): FunctionSurveyResultRecord[] =>
+  response.map((record: FunctionSurveyResultRecord) => ({
+    id: record?.id ?? "",
+    submitter: record?.submitter ?? "",
+    relationship: record?.relationship ?? "",
+    studentId: record?.studentId ?? "",
+    behaviorId: record?.behaviorId ?? "",
+    descriptionOfBehavior: record?.descriptionOfBehavior ?? "",
+    responses: record?.responses ?? "",
+    createdAt: record?.createdAt ?? null,
+    lastUpdatedAt: record?.lastUpdatedAt ?? null,
+  }));
+
+export const parseStudentFilesResponse = (response: StudentFileRecord[]): StudentFileRecord[] =>
+  response.map((record: StudentFileRecord) => ({
+    id: record?.id ?? "",
+    authorId: record?.authorId ?? "",
+    filePath: record?.filePath ?? "",
+    fileName: record?.fileName ?? "",
+    studentId: record?.studentId ?? "",
+    fileType: record?.fileType ?? "",
+    createdAt: record?.createdAt ?? null,
+    lastUpdatedAt: record?.lastUpdatedAt ?? null,
   }));

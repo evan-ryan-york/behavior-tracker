@@ -3,7 +3,7 @@ import { ObservationPeriod, ObservationRecord } from "../../types/types";
 import { Typography, Box, Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { getDifferenceForDisplay, dateRangeForDisplay } from "../../libraries/functions";
-import { selectedStudentObservationsAtom } from "../../recoil/observationAtoms";
+import { observationsAtom } from "../../recoil/observationAtoms";
 import { useRecoilValue } from "recoil";
 import ObservationCard from "./ObservationCard";
 import ObservationPeriodInfoBar from "./ObservationPeriodInfoBar";
@@ -15,7 +15,7 @@ type Props = {
 function ObservationPeriodAccordion({ observationPeriod }: Props) {
   const [rangeMessage, setRangeMessage] = useState("");
   const [durationMessage, setDurationMessage] = useState("");
-  const selectedStudentObservations = useRecoilValue(selectedStudentObservationsAtom);
+  const selectedStudentObservations = useRecoilValue(observationsAtom);
   const [filteredObservations, setFilteredObservations] = useState<ObservationRecord[]>([]);
 
   useEffect(() => {
@@ -61,6 +61,7 @@ function ObservationPeriodAccordion({ observationPeriod }: Props) {
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Box>
+          <Typography variant="h6" component="span">{observationPeriod.label}</Typography>
             <Typography component="span">{rangeMessage}</Typography>
             <Typography component="span">
               <b>{durationMessage}</b>

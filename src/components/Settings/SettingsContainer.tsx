@@ -11,8 +11,10 @@ import StaffContainer from "./StaffContainer";
 import GroupsContainer from "./GroupsContainer";
 import StudentsContainer from "./StudentsContainer";
 import EnrollStatusContainer from "./EnrollStatusContainer";
-import PeriodsContainer from "./PeriodsContainer";
+import ObservationSettingsContainer from "./ObservationSettingsContainer";
 import ReplacementBehaviorsContainer from "./ReplacementBehaviorsContainer";
+import StrategiesContainer from "./StrategiesContainer";
+import FunctionSurveyQuestionsContainer from "./FunctionSurveyQuestionsContainer";
 
 export default function SettingsContainer() {
   const [activeSettingSection, setActiveSettingSection] = useState<string>(
@@ -44,7 +46,11 @@ export default function SettingsContainer() {
               <ReplacementBehaviorsContainer />
             )}
             {activeSettingSection === SettingsSections.ENROLL_STATUSES && <EnrollStatusContainer />}
-            {activeSettingSection === SettingsSections.PERIODS && <PeriodsContainer />}
+            {activeSettingSection === SettingsSections.SETTINGS && <ObservationSettingsContainer />}
+            {activeSettingSection === SettingsSections.STRATEGIES && <StrategiesContainer />}
+            {activeSettingSection === SettingsSections.FUNCTION_SURVEY_QUESTIONS && (
+              <FunctionSurveyQuestionsContainer />
+            )}
           </Box>
         </Grid>
       </Grid>

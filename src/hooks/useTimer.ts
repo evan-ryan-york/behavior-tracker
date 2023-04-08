@@ -19,12 +19,12 @@ type WriteToRTDBProps = {
 const useTimer = (initialState: number = 0) => {
   const [timer, setTimer] = useState<number>(initialState);
   const [isActive, setIsActive] = useState(false);
-//   const [isPaused, setIsPaused] = useState(false);
+  //   const [isPaused, setIsPaused] = useState(false);
   const countRef = useRef<NodeJS.Timer>();
 
   function writeToRTDB({ organizationId, authorId, studentId, data }: WriteToRTDBProps) {
     const db = getDatabase();
-    set(ref(db, `observationPeriods/${organizationId}/${authorId}/${studentId}`), data);
+    set(ref(db, `observationPeriods/${organizationId}/${studentId}`), data);
   }
 
   const handleStart = ({ studentId, organizationId, authorId, observationWindows }: StartProps) => {
@@ -40,6 +40,7 @@ const useTimer = (initialState: number = 0) => {
       authorId: authorId,
       startTime: Date.now(),
       endTime: 0,
+      label: "",
     });
     writeToRTDB({
       studentId,

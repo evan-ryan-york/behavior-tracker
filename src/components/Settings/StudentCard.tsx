@@ -23,6 +23,7 @@ import { enrollStatusesObjAtom } from "../../recoil/enrollStatusAtoms";
 import { groupsObjAtom } from "../../recoil/groupAtoms";
 import { sitesObjAtom } from "../../recoil/sitesAtoms";
 import { getAge } from "../../libraries/functions";
+import StudentCardProfile from "./StudentCardProfile";
 
 type Props = {
   student: StudentRecord;
@@ -81,88 +82,8 @@ export default function StudentCard({ student, setManageOpen, setDeleteOpen, set
       {avatarURL && enrollStatusesObj && groupsObj && sitesObj && (
         <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
           <Card>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                pt: 2,
-                textAlign: "center",
-              }}
-            >
-              <Badge
-                overlap="circular"
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                badgeContent={
-                  <>
-                    <label htmlFor={`icon-button-${student.id}`}>
-                      <input
-                        hidden
-                        accept="image/*"
-                        id={`icon-button-${student.id}`}
-                        type="file"
-                        onChange={handleSelectImage}
-                      />
-                      <IconButton aria-label="upload picture" component="span">
-                        <EditIcon sx={{ width: 15, height: 15 }} />
-                      </IconButton>
-                    </label>
-                  </>
-                }
-              >
-                <Avatar alt={student.firstName} src={avatarURL} sx={{ width: 100, height: 100 }} />
-              </Badge>
-            </Box>
             <CardContent sx={{ textAlign: "center" }}>
-              <Typography variant="h4">{`${student.firstName} ${student.lastName}`}</Typography>
-              <Box>
-                <Typography variant="body1" component="span" sx={{ fontWeight: 800 }}>
-                  Age:{" "}
-                </Typography>
-                <Typography variant="body1" component="span">
-                  {age}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="body1" component="span" sx={{ fontWeight: 800 }}>
-                  Birthday:{" "}
-                </Typography>
-                <Typography variant="body1" component="span">
-                  {birthday.toLocaleDateString()}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="body1" component="span" sx={{ fontWeight: 800 }}>
-                  Enrollment Status:{" "}
-                </Typography>
-                <Typography variant="body1" component="span">
-                  {enrollStatusesObj[student.enrollStatus].name}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 800 }}>
-                  Sites
-                </Typography>
-                <Divider />
-                {student.siteIds.map((siteId) => (
-                  <Chip label={sitesObj[siteId].name} key={siteId} sx={{ margin: 1 }} />
-                ))}
-              </Box>
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 800 }}>
-                  Groups
-                </Typography>
-                <Divider />
-                {student.groupIds.map((groupId) => (
-                  <Chip
-                    label={`${sitesObj[groupsObj[groupId].siteId].name}: ${
-                      groupsObj[groupId].name
-                    }`}
-                    key={groupId}
-                    sx={{ margin: 1 }}
-                  />
-                ))}
-              </Box>
+              <StudentCardProfile student={student} />
             </CardContent>
             <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
               <Button sx={{ mr: 2 }} variant="outlined" onClick={() => handleFieldEdit(student)}>

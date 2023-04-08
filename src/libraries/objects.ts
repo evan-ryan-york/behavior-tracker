@@ -20,11 +20,24 @@ export enum SettingsSections {
   GROUPS = "Groups",
   SITES = "Sites",
   ENROLL_STATUSES = "Enrollment Statuses",
-  PERIODS = "Periods of the Day",
+  SETTINGS = "Environment Settings",
   REPLACEMENT_BEHAVIORS = "Replacement Behaviors",
-  PREVENT_STRATEGIES = "Prevention Strategies",
-  REINFORCEMENT_STRATEGIES = "Reinforcement Strategies",
-  EXTINGUISH_STRATEGIES = "Extinguish Strategies",
+  STRATEGIES = "Strategies",
+  FUNCTION_SURVEY_QUESTIONS = "Function Survey Questions",
+}
+
+export enum BEHAVIOR_PLAN_STEPS {
+  STEP_ONE = "Step 1",
+  STEP_TWO = "Step 2",
+  STEP_THREE = "Step 3",
+  STEP_FOUR = "Step 4",
+}
+
+export enum FUNCTION_SURVEY_OPTIONS {
+  DISAGREE = "Disagree",
+  AGREE = "Agree",
+  STRONGLY_AGREE = "Strongly Agree",
+  NA = "N/A",
 }
 
 export enum FUNCTIONS_OF_BEHAVIOR {
@@ -69,3 +82,9 @@ export const toolbarOptions = [
 
   ["clean"], // remove formatting button
 ];
+
+export enum STRATEGY_TYPES {
+  PREVENTION = "Prevent Target Behavior Strategies",
+  EXTINGUISH = "Extinguish Target Behavior Strategies",
+  REINFORCE = "Reinforce Replacement Behavior Strategies",
+}

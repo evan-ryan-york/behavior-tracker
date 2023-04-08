@@ -61,7 +61,8 @@ export const getFirstItemId = (array: ObjectWithId[]) => {
   return array[0].id;
 };
 
-export const timestampToDisplay = (timestamp: Timestamp) => {
+export const timestampToDisplay = (timestamp: Timestamp | null) => {
+  if (!timestamp) return "";
   const createdDate = timestamp.toDate();
   return createdDate.toLocaleDateString() + " at " + createdDate.toLocaleTimeString();
 };

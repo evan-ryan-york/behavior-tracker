@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import { selectedStudentObservationsAtom } from "../../recoil/observationAtoms";
+import { observationsAtom } from "../../recoil/observationAtoms";
 import { behaviorsAtom } from "../../recoil/behaviorsAtoms";
 import BehaviorReportChart from "./BehaviorReportChart";
 
@@ -15,7 +15,7 @@ type ChartReport = {
 };
 
 function BehaviorFrequency() {
-  const observations = useRecoilValue(selectedStudentObservationsAtom);
+  const observations = useRecoilValue(observationsAtom);
   const behaviors = useRecoilValue(behaviorsAtom);
   const [chartData, setChartData] = useState<ChartReport[]>([]);
 
