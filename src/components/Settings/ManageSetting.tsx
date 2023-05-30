@@ -15,7 +15,7 @@ import { BLANK_SETTING_FORM } from "../../libraries/blankForms";
 import DialogTitle from "@mui/material/DialogTitle";
 import { loggedInStaffAtom } from "../../recoil/staffAtoms";
 import { settingFormAtom, settingsResetAtom } from "../../recoil/settingsAtoms";
-import SetSettingSites from "./SetSettingSites";
+import { selectedSiteIdAtom } from "../../recoil/sitesAtoms";
 
 type Props = {
   open: boolean;
@@ -34,6 +34,7 @@ export default function ManageSetting({ open, setOpen }: Props) {
   const { sendRequest: addDoc } = useAddDoc();
   const [settingForm, setSettingForm] = useRecoilState(settingFormAtom);
   const setSettingsReset = useSetRecoilState(settingsResetAtom);
+  const selectedSiteId = useRecoilValue(selectedSiteIdAtom);
 
   const handleChange = (event: SyntheticEvent) => {
     const formState = event.target as FormState;
@@ -49,7 +50,11 @@ export default function ManageSetting({ open, setOpen }: Props) {
 
   const handleSave = async () => {
     if (!loggedInStaff) return;
-    const formToSubmit = { ...settingForm, organizationId: loggedInStaff.organizationId };
+    const formToSubmit = {
+      ...settingForm,
+      organizationId: loggedInStaff.organizationId,
+      siteId: selectedSiteId,
+    };
     if ("id" in formToSubmit) {
       await updateDoc({ col: "settings", data: formToSubmit, id: formToSubmit.id });
     } else {
@@ -70,10 +75,6 @@ export default function ManageSetting({ open, setOpen }: Props) {
           <DialogContent>
             <Typography sx={{ mb: 1 }}>Setting Name</Typography>
             <TextField fullWidth name="name" value={settingForm.name} onChange={handleChange} />
-            <Box>
-              <Typography sx={{ mb: 1, mt: 2 }}>Select Site for Setting</Typography>
-              <SetSettingSites />
-            </Box>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleSave}>Save</Button>

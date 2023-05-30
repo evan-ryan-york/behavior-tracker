@@ -10,6 +10,7 @@ import { consequencesObjAtom } from "../../recoil/consequencesAtoms";
 import { behaviorsObjAtom } from "../../recoil/behaviorsAtoms";
 import { replacementBehaviorsObjAtom } from "../../recoil/replacementBehaviorsAtoms";
 import { strategyFormAtom } from "../../recoil/strategiesAtoms";
+import { FUNCTIONS_OF_BEHAVIOR } from "../../libraries/objects";
 
 type Props = {
   strategy: StrategyRecord;
@@ -33,6 +34,12 @@ function StrategyCard({ strategy, manageOpen, setManageOpen, setDeleteOpen, setD
   const behaviorsObj = useRecoilValue(behaviorsObjAtom);
   const setStrategyForm = useSetRecoilState(strategyFormAtom);
   const replacementBehaviorsObj = useRecoilValue(replacementBehaviorsObjAtom);
+  const strategyType =
+    strategy.type === "EXTINGUISH"
+      ? "Extinguish Target Behavior Strategy"
+      : strategy.type === "PREVENTION"
+      ? "Proactively Prevent Target Behavior Strategy"
+      : "Reinforce Replacement Behavior Strategy";
 
   const handleEdit = () => {
     setStrategyForm(strategy);
@@ -48,7 +55,8 @@ function StrategyCard({ strategy, manageOpen, setManageOpen, setDeleteOpen, setD
       <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
         {staffObj && staffObj[strategy.authorId] && strategy.createdAt && (
           <Box>
-            <Typography component="span">
+            <Typography variant="h5">{strategyType}</Typography>
+            <Typography component="span" variant="body2">
               <b>{` Created By: ${staffObj[strategy.authorId].firstName} ${
                 staffObj[strategy.authorId].lastName
               }`}</b>
@@ -104,6 +112,17 @@ function StrategyCard({ strategy, manageOpen, setManageOpen, setDeleteOpen, setD
             ))}
           </>
         )}
+        {strategy.functionsOfBehavior.length > 0 && (
+          <>
+            <Typography variant="h6">Functions Of Behavior</Typography>
+            <Divider />
+            {strategy.functionsOfBehavior.map((functionOfBehavior) => (
+              <Box component="span" key={functionOfBehavior}>
+                <Chip color="secondary" label={functionOfBehavior} sx={{ mt: 1, mb: 1, mr: 1 }} />
+              </Box>
+            ))}
+          </>
+        )}
         {behaviorsObj && strategy.targetBehaviorsIds.length > 0 && (
           <>
             <Typography variant="h6">Target Behaviors</Typography>
@@ -114,23 +133,6 @@ function StrategyCard({ strategy, manageOpen, setManageOpen, setDeleteOpen, setD
                   <Chip
                     color="secondary"
                     label={behaviorsObj[targetBehaviorId].label}
-                    sx={{ mt: 1, mb: 1, mr: 1 }}
-                  />
-                )}
-              </Box>
-            ))}
-          </>
-        )}
-        {replacementBehaviorsObj && strategy.replacementBehaviorIds.length > 0 && (
-          <>
-            <Typography variant="h6">Replacement Behaviors</Typography>
-            <Divider />
-            {strategy.replacementBehaviorIds.map((replacementBehaviorsId) => (
-              <Box component="span" key={replacementBehaviorsId}>
-                {replacementBehaviorsObj[replacementBehaviorsId] && (
-                  <Chip
-                    color="secondary"
-                    label={replacementBehaviorsObj[replacementBehaviorsId].label}
                     sx={{ mt: 1, mb: 1, mr: 1 }}
                   />
                 )}

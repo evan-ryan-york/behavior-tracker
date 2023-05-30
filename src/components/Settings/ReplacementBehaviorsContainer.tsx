@@ -96,7 +96,7 @@ function ReplacementBehaviorsContainer() {
           open={deleteOpen}
           setOpen={setDeleteOpen}
           message={
-            "Are you sure you want to delete this replacement behavior? This can not be undone."
+            "Are you sure you want to delete this replacement behavior? This cannot be undone."
           }
           collection="replacementBehaviors"
           id={deleteId}

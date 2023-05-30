@@ -1,18 +1,16 @@
 import { Dialog, Box, Typography, DialogContent } from "@mui/material";
 import ObservationForm from "./ObservationForm";
 import { selectedStudentIdAtom, studentsObjAtom } from "../../recoil/studentAtoms";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { organizationAtom } from "../../recoil/organizationAtoms";
+import { manageObservationOpenAtom } from "../../recoil/observationAtoms";
 
-type Props = {
-  open: boolean;
-  setOpen: (value: boolean) => void;
-};
-
-export default function ObservationFormDialog({ open, setOpen }: Props) {
+export default function ObservationFormDialog() {
   const selectedStudentId = useRecoilValue(selectedStudentIdAtom);
   const studentObj = useRecoilValue(studentsObjAtom);
   const organization = useRecoilValue(organizationAtom);
+  const [open, setOpen] = useRecoilState(manageObservationOpenAtom);
+
   const handleClose = () => {
     setOpen(false);
   };

@@ -1,5 +1,10 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { staffFormAtom, staffResetAtom } from "../../recoil/staffAtoms";
+import {
+  allPermissionsAtom,
+  staffFormAtom,
+  staffResetAtom,
+  userPermissionAtom,
+} from "../../recoil/staffAtoms";
 import {
   DialogTitle,
   DialogContentText,
@@ -15,6 +20,7 @@ import SetStaffSites from "./SetStaffSites";
 import useUpdateDoc from "../../hooks/useUpdateDoc";
 import { organizationAtom } from "../../recoil/organizationAtoms";
 import SetStaffGroups from "./SetStaffGroups";
+import SetStaffPermissions from "./SetStaffPermissions";
 type Props = {
   open: boolean;
   setOpen: (newValue: boolean) => void;
@@ -31,6 +37,10 @@ const ManageStaff = ({ open, setOpen }: Props) => {
   const { sendRequest: updateDoc } = useUpdateDoc();
   const setStaffReset = useSetRecoilState(staffResetAtom);
   const organization = useRecoilValue(organizationAtom);
+  const allPermissions = useRecoilValue(allPermissionsAtom);
+  const selectedStaffPermissions = allPermissions.find(
+    (permission) => permission.id === staffForm.permissionId
+  );
 
   const handleChange = (event: React.SyntheticEvent) => {
     const formState = event.target as FormState;
@@ -99,8 +109,9 @@ const ManageStaff = ({ open, setOpen }: Props) => {
           variant="outlined"
           onChange={handleChange}
         />
-        <SetStaffSites />
-        <SetStaffGroups />
+        <SetStaffPermissions />
+        {selectedStaffPermissions?.access === "site" && <SetStaffSites />}
+        {selectedStaffPermissions?.access === "group" && <SetStaffGroups />}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleSave}>Submit</Button>

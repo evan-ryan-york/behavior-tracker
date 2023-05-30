@@ -1,6 +1,7 @@
-import { Box, Paper, Typography, Button } from "@mui/material";
+import { Box, Paper, Typography, Button, Grid } from "@mui/material";
 import { useSetRecoilState } from "recoil";
 import { ReplacementBehaviorRecord } from "../../types/types";
+import parse from "html-react-parser";
 import { replacementBehaviorFormAtom } from "../../recoil/replacementBehaviorsAtoms";
 
 type Props = {
@@ -32,24 +33,25 @@ function ReplacementBehaviorCard({
         <Paper
           sx={{
             padding: 2,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
           }}
         >
-          <Typography>{`Replacement Behavior: ${replacementBehavior.label}`}</Typography>
-          <Box>
-            <Button
-              sx={{ mr: 2 }}
-              variant="outlined"
-              onClick={() => handleFieldEdit(replacementBehavior)}
-            >
-              Edit
-            </Button>
-            <Button variant="outlined" color="error" onClick={handleDeleteAntecedent}>
-              Delete
-            </Button>
-          </Box>
+          <Grid container spacing={2} sx={{ alignItems: "center" }}>
+            <Grid item lg={9} md={8} sm={12} xs={12}>
+              <Box>{parse(replacementBehavior.content as string)}</Box>
+            </Grid>
+            <Grid item lg={3} md={4} sm={12} xs={12} sx={{ textAlign: "right" }}>
+              <Button
+                sx={{ mr: 2 }}
+                variant="outlined"
+                onClick={() => handleFieldEdit(replacementBehavior)}
+              >
+                Edit
+              </Button>
+              <Button variant="outlined" color="error" onClick={handleDeleteAntecedent}>
+                Delete
+              </Button>
+            </Grid>
+          </Grid>
         </Paper>
       </Box>
     </>

@@ -48,7 +48,7 @@ function StudentsContainer() {
         <DeleteDialog
           open={deleteOpen}
           setOpen={setDeleteOpen}
-          message={"Are you sure you want to delete this Student? This can not be undone."}
+          message={"Are you sure you want to delete this Student? This cannot be undone."}
           collection="students"
           id={deleteId}
           setReset={setStudentsReset}

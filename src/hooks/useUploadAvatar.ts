@@ -22,7 +22,6 @@ const useUploadAvatar = () => {
         const storageRef = ref(storage, fileName);
         await uploadBytes(storageRef, image);
         try {
-          console.log("the file name is: ", fileName);
           const docRef = doc(db, col, id);
           await updateDoc(docRef, { avatar: fileName });
           setIsLoading(false);

@@ -22,7 +22,6 @@ const useUploadFile = () => {
     async ({ file, col }: SendRequestProps): Promise<string | null> => {
       if (file && loggedInStaff && selectedStudent) {
         setIsLoading(true);
-        console.log(file.name);
         let extension = "";
         if (file.type === "application/pdf") {
           extension = ".pdf";
@@ -31,7 +30,6 @@ const useUploadFile = () => {
         const storageRef = ref(storage, filePath);
         await uploadBytes(storageRef, file);
         try {
-          console.log("the file path is: ", filePath);
           const docRef = collection(db, col);
           await addDoc(docRef, {
             fileName: file.name,

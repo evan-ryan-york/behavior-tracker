@@ -9,7 +9,7 @@ export default function SetStudentGroups() {
   const [studentForm, setStudentForm] = useRecoilState(studentFormAtom);
   const groups = useRecoilValue(groupsAtom);
   const [selectedGroups, setSelectedGroups] = useState<GroupRecord[]>([]);
-  //students can not be added to groups at sites they are not assigned to
+  //students cannot be added to groups at sites they are not assigned to
   const [filteredGroups, setFilteredGroups] = useState<GroupRecord[]>([]);
   const groupsObj = useRecoilValue(groupsObjAtom);
 

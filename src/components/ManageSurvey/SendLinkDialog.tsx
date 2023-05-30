@@ -57,7 +57,6 @@ function SendLinkDialog({ open, setOpen }: Props) {
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
-    console.log(makeid());
   };
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {

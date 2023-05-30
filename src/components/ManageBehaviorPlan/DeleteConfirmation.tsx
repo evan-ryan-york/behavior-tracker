@@ -29,7 +29,7 @@ function DeleteConfirmation({ open, setOpen, index, arrayOfOptions, key, setPlan
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
         <DialogTitle sx={{ fontSize: 44, textAlign: "center" }}>Delete</DialogTitle>
         <DialogContent>
-          Are you sure you want to delete this strategy? This can not be undone.
+          Are you sure you want to delete this strategy? This cannot be undone.
         </DialogContent>
         <DialogActions>
           <Button color="error" onClick={handleDelete}>

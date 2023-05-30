@@ -35,6 +35,7 @@ const useAddDoc = (): AddDocType => {
     } catch (error: unknown) {
       const firebaseError = error as FirestoreError;
       setError(firebaseError.message);
+      console.log(`Error adding document: ${error}`);
       return null;
     }
   }, []);

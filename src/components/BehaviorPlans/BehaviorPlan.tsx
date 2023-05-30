@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import { behaviorsObjAtom } from "../../recoil/behaviorsAtoms";
 import { replacementBehaviorsObjAtom } from "../../recoil/replacementBehaviorsAtoms";
 import { organizationAtom } from "../../recoil/organizationAtoms";
+import { selectedStudentAtom } from "../../recoil/studentAtoms";
 
 type Props = {
   selectedBehaviorPlan: BehaviorPlanRecord | null;
@@ -14,10 +15,11 @@ function BehaviorPlan({ selectedBehaviorPlan }: Props) {
   const behaviorObj = useRecoilValue(behaviorsObjAtom);
   const replacementBehaviorObj = useRecoilValue(replacementBehaviorsObjAtom);
   const organization = useRecoilValue(organizationAtom);
+  const selectedStudent = useRecoilValue(selectedStudentAtom);
 
   return (
     <>
-      {selectedBehaviorPlan && behaviorObj && organization && (
+      {selectedStudent && selectedBehaviorPlan && behaviorObj && organization && (
         <Box>
           <Typography variant="h5">{`Target Behavior: ${
             behaviorObj[selectedBehaviorPlan.targetBehavior].label
@@ -71,11 +73,11 @@ function BehaviorPlan({ selectedBehaviorPlan }: Props) {
           {replacementBehaviorObj && (
             <>
               <Typography sx={{ mt: 3 }} variant="h5">
-                Replacement Behavior
+                Replacement Behaviors
               </Typography>
-              <Typography sx={{ mt: 1 }}>{`${
-                replacementBehaviorObj[selectedBehaviorPlan.replacementBehavior].label
-              }`}</Typography>
+              {selectedBehaviorPlan.replacementBehaviors.map((replacementBehavior) => (
+                <Box key={replacementBehavior as string}>{parse(replacementBehavior as string)}</Box>
+              ))}
             </>
           )}
           <Typography sx={{ mt: 3 }} variant="h5">
@@ -96,6 +98,14 @@ function BehaviorPlan({ selectedBehaviorPlan }: Props) {
           {selectedBehaviorPlan.reinforcementStrategies.map((strategy) => (
             <Box key={strategy as string}>{parse(strategy as string)}</Box>
           ))}
+          <Typography sx={{ mt: 3 }} variant="h5">
+            The Behavior Plan Will Be Met When
+          </Typography>
+          <Typography>{`${selectedStudent.firstName} is observed ${
+            behaviorObj[selectedBehaviorPlan.targetBehavior].label
+          } ${
+            selectedBehaviorPlan.frequencyNumerator
+          } times per ${selectedBehaviorPlan.frequencyDenominator.toLowerCase()} or less.`}</Typography>
         </Box>
       )}
     </>

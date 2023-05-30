@@ -1,4 +1,4 @@
-import { Avatar, Chip, Grid, Typography } from "@mui/material";
+import { Avatar, Box, Chip, Grid, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { antecedentsAtom, antecedentsObjAtom } from "../../recoil/antecedentsAtoms";
@@ -46,31 +46,27 @@ function Antecedents({ behaviorId, setPlanForm }: Props) {
 
   return (
     <>
-      <Grid container spacing={2} sx={{ mt: 2 }}>
-        <Grid item xs={12} sm={4}>
-          <Typography variant="h6">What are the Triggers (antecedents)?</Typography>
-        </Grid>
-        <Grid item xs={12} sm={8}>
-          {organization &&
-            antecedentsForDisplay.map((antecedent) => (
-              <Chip
-                key={antecedent.label}
-                label={antecedent.label}
-                sx={{ margin: 1 }}
-                avatar={
-                  <Avatar
-                    sx={{
-                      bgcolor: organization.secondaryColor,
-                      color: `${organization.secondaryTextColor} !important`,
-                    }}
-                  >
-                    {antecedent.count}
-                  </Avatar>
-                }
-              />
-            ))}
-        </Grid>
-      </Grid>
+      <Box sx={{ padding: 2, backgroundColor: "#eee", mt: 2, borderRadius: 2 }}>
+        <Typography variant="h6">What are the Triggers (antecedents)?</Typography>
+        {organization &&
+          antecedentsForDisplay.map((antecedent) => (
+            <Chip
+              key={antecedent.label}
+              label={antecedent.label}
+              sx={{ margin: 1 }}
+              avatar={
+                <Avatar
+                  sx={{
+                    bgcolor: organization.secondaryColor,
+                    color: `${organization.secondaryTextColor} !important`,
+                  }}
+                >
+                  {antecedent.count}
+                </Avatar>
+              }
+            />
+          ))}
+      </Box>
     </>
   );
 }

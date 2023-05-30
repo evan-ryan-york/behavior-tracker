@@ -3,6 +3,8 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ReplacementBehaviorRecord } from "../../types/types";
 import { strategyFormAtom } from "../../recoil/strategiesAtoms";
+import parse from "html-react-parser";
+
 import {
   replacementBehaviorsAtom,
   replacementBehaviorsObjAtom,
@@ -38,32 +40,7 @@ function ReplacementBehaviorsSelect() {
     },
     [setStrategyForm]
   );
-  return (
-    <>
-      <Autocomplete
-        multiple
-        sx={{ mt: 2 }}
-        options={replacementBehaviors}
-        getOptionLabel={(replacementBehavior) => replacementBehavior.label}
-        onChange={handleAReplacementBehaviorSelect}
-        value={selectedReplacementBehaviors}
-        filterSelectedOptions
-        renderOption={(props, option) => (
-          <li {...props} key={option.id}>
-            {`${option.label}`}
-          </li>
-        )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="outlined"
-            label="Selected Replacement Behaviors"
-            placeholder="Select Replacement Behaviors"
-          />
-        )}
-      />
-    </>
-  );
+  return <></>;
 }
 
 export default ReplacementBehaviorsSelect;

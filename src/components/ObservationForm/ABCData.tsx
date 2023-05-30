@@ -14,7 +14,7 @@ type Props = {
   setConsequencesArray: (value: string[]) => void;
 };
 
-const HEIGHT = 250;
+const HEIGHT = 300;
 
 function ABCData({
   antecedentsArray,

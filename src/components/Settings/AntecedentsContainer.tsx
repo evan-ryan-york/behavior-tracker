@@ -81,7 +81,7 @@ function AntecedentsContainer() {
         <DeleteDialog
           open={deleteOpen}
           setOpen={setDeleteOpen}
-          message={"Are you sure you want to delete this antecedent? This can not be undone."}
+          message={"Are you sure you want to delete this antecedent? This cannot be undone."}
           collection="antecedents"
           id={deleteId}
           setReset={setAntecedentsReset}

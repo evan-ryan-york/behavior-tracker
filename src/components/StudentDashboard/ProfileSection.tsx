@@ -21,7 +21,7 @@ function ProfileSection() {
   return (
     <>
       {organization && selectedStudent && (
-        <Paper sx={{ height: "95%" }}>
+        <Paper>
           <Box
             sx={{
               padding: 1,
@@ -32,7 +32,7 @@ function ProfileSection() {
           >
             <Typography variant="h4">Student Profile</Typography>
           </Box>
-          <Box sx={{ padding: 2, height: 350, overflow: "scroll", textAlign: "center" }}>
+          <Box sx={{ padding: 2, height: 450, overflow: "scroll", textAlign: "center" }}>
             <StudentCardProfile student={selectedStudent} />
             <Button sx={{ mt: 2 }} variant="outlined" fullWidth onClick={handleEditClick}>
               Edit

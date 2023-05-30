@@ -44,7 +44,7 @@ function StrategiesContainer() {
       <DeleteDialog
         open={deleteOpen}
         setOpen={setDeleteOpen}
-        message="Are you sure you want to delete this strategy? This can not be undone"
+        message="Are you sure you want to delete this strategy? This cannot be undone"
         collection="strategies"
         id={deleteId}
         setReset={setStrategiesReset}

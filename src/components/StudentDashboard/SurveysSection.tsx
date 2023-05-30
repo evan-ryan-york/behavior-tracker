@@ -9,8 +9,8 @@ import {
 import SurveyCard from "./SurveyCard";
 import { FunctionSurveyResultRecord } from "../../types/types";
 import ManageSurveyDialog from "../ManageSurvey/ManageSurveyDialog";
-import SurveyDialog from "../Surveys/SurveyDialog";
 import DeleteDialog from "../shared/DeleteDialog";
+import SurveyDialog from "../Surveys/SurveyDialog";
 
 function SurveysSection() {
   const organization = useRecoilValue(organizationAtom);
@@ -28,7 +28,7 @@ function SurveysSection() {
   return (
     <>
       {organization && (
-        <Paper sx={{ height: "95%" }}>
+        <Paper>
           <Box
             sx={{
               padding: 1,
@@ -44,7 +44,7 @@ function SurveysSection() {
               New
             </Button>
           </Box>
-          <Box sx={{ padding: 2, height: 350, overflow: "scroll" }}>
+          <Box sx={{ padding: 2, height: 400, overflow: "scroll" }}>
             {functionSurveyResults &&
               functionSurveyResults.map((surveyResult) => (
                 <SurveyCard
@@ -65,7 +65,7 @@ function SurveysSection() {
         open={deleteOpen}
         setOpen={setDeleteOpen}
         message={
-          "Are you sure you want to delete this Survey? This can not be undone and the results of the survey will be removed from the system."
+          "Are you sure you want to delete this Survey? This cannot be undone and the results of the survey will be removed from the system."
         }
         collection="functionSurveyResults"
         id={deleteId}

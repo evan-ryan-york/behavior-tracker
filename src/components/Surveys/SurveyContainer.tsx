@@ -25,7 +25,9 @@ function SurveyContainer({ selectedSurvey }: Props) {
       {questions && selectedSurvey && behaviorsObj && (
         <Box sx={{ mt: 1, textAlign: "center" }}>
           <Typography variant="h5">{behaviorsObj[selectedSurvey.behaviorId].label}</Typography>
+          <Box sx={{overflow: "scroll"}}>
           <FunctionOfBehaviorContainer selectedSurvey={selectedSurvey} />
+          </Box>
           {questions.map((question, index) => (
             <Question
               key={question.id}

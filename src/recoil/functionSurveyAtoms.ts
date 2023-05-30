@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { GetRecoilValue, atom, selector } from "recoil";
 import {
   FunctionSurveyQuestion,
   FunctionSurveyQuestionRecord,
@@ -9,10 +9,40 @@ import {
   BLANK_FUNCTION_SURVEY_QUESTION_FORM,
   BLANK_FUNCTION_SURVEY_RESULT_FORM,
 } from "../libraries/blankForms";
+import { behaviorDataDateRangeAtom } from "./behaviorPlansAtoms";
+
+const filterSurveysByDateGetter = ({ get }: { get: GetRecoilValue }) => {
+  const dateRange = get(behaviorDataDateRangeAtom);
+  const surveyResults = get(functionSurveyResultsAtom);
+  const [start, end] = dateRange;
+  if (!start || !end || !surveyResults) return [];
+  const filteredSurveyResults = surveyResults.filter(
+    (surveyResult) =>
+      surveyResult.createdAt &&
+      surveyResult.createdAt.toMillis() > start.toMillis() &&
+      surveyResult.createdAt.toMillis() < end.toMillis()
+  );
+  return filteredSurveyResults;
+};
+
+export const questionsObjectGetter = ({ get }: { get: GetRecoilValue }) => {
+  const questions = get(functionSurveyQuestionsAtom);
+  if (!questions) return null;
+  const tempObj: { [key: string]: FunctionSurveyQuestionRecord } = {};
+  questions.forEach((question) => {
+    tempObj[question.id] = question;
+  });
+  return tempObj;
+};
 
 export const functionSurveyQuestionsAtom = atom<FunctionSurveyQuestionRecord[]>({
   key: "functionSurveyQuestions",
   default: [],
+});
+
+export const functionSurveyQuestionsObjAtom = selector({
+  key: "functionSurveyQuestionsObj",
+  get: questionsObjectGetter,
 });
 
 export const functionSurveyQuestionFormAtom = atom<
@@ -45,4 +75,9 @@ export const functionSurveyResultsResetAtom = atom({
 export const functionSurveyFormAtom = atom<FunctionSurveyResult | FunctionSurveyResultRecord>({
   key: "functionSurveyForm",
   default: BLANK_FUNCTION_SURVEY_RESULT_FORM,
+});
+
+export const filteredSurveysByDateAtom = selector({
+  key: "filteredSurveysByDate",
+  get: filterSurveysByDateGetter,
 });

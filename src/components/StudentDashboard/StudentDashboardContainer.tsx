@@ -10,7 +10,7 @@ import LogsSection from "./LogsSection";
 function StudentDashboardContainer() {
   return (
     <>
-      <Box sx={{ padding: 2 }}>
+      <Box sx={{ pl: 2, pr: 2, pb: 3 }}>
         <StudentDashboardHeader />
         <Grid container spacing={2} sx={{ mt: 1 }}>
           <Grid item xs={12} sm={12} md={4}>

@@ -1,108 +1,94 @@
-import React, { useState, useEffect } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useState, useEffect } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { behaviorsAtom } from "../../recoil/behaviorsAtoms";
-import { BehaviorPlan, BehaviorRecord, ReplacementBehaviorRecord } from "../../types/types";
-import { replacementBehaviorsAtom } from "../../recoil/replacementBehaviorsAtoms";
-import { observationsAtom } from "../../recoil/observationAtoms";
+import { BehaviorRecord } from "../../types/types";
+import { filteredObservationsByPeriodsAtom } from "../../recoil/observationAtoms";
 import { BLANK_PLAN_FORM } from "../../libraries/blankForms";
 import useAddDoc from "../../hooks/useAddDoc";
 import { selectedStudentIdAtom } from "../../recoil/studentAtoms";
 import { organizationAtom } from "../../recoil/organizationAtoms";
-import { behaviorPlansResetAtom } from "../../recoil/behaviorPlansAtoms";
-import DataSelectForm from "./DataSelectForm";
-import BehaviorSelectForm from "./BehaviorSelectForm";
-import { BEHAVIOR_PLAN_STEPS } from "../../libraries/objects";
-import StrategiesForm from "./StrategiesForm";
+import { behaviorPlanFormAtom, behaviorPlansResetAtom } from "../../recoil/behaviorPlansAtoms";
+import BehaviorSelectSection from "./BehaviorSelectSection";
+import StrategiesSelectSection from "./StrategiesSelectSection";
 import MeasureForm from "./MeasureForm";
+import { Button } from "@mui/material";
+import useUpdateDoc from "../../hooks/useUpdateDoc";
 
 type Props = {
   setOpen: (value: boolean) => void;
-  selectedMenuItem: string;
+  behaviorPlanStage: number;
+  setBehaviorPlanStage: (pV: number) => void;
 };
 
-function PlanForm({ setOpen, selectedMenuItem }: Props) {
-  const [planForm, setPlanForm] = useState<BehaviorPlan>(BLANK_PLAN_FORM);
-  const [stepNumber, setStepNumber] = useState<number>(1);
-  const [dataDateRange, setDataDateRange] = useState<[string | null, string | null]>([null, null]);
+function PlanForm({ setOpen, behaviorPlanStage, setBehaviorPlanStage }: Props) {
+  const [planForm, setPlanForm] = useRecoilState(behaviorPlanFormAtom);
   const [behaviorsForForm, setBehaviorsForForm] = useState<BehaviorRecord[]>([]);
   const { sendRequest: addDoc } = useAddDoc();
-  const observations = useRecoilValue(observationsAtom);
+  const { sendRequest: updateDoc } = useUpdateDoc();
+  const filteredObservations = useRecoilValue(filteredObservationsByPeriodsAtom);
   const behaviors = useRecoilValue(behaviorsAtom);
   const selectedStudentId = useRecoilValue(selectedStudentIdAtom);
   const organization = useRecoilValue(organizationAtom);
-  const replacementBehaviors = useRecoilValue(replacementBehaviorsAtom);
-  const [fitleredReplacementBehaviors, setFilteredReplacementBehaviors] = useState<
-    ReplacementBehaviorRecord[]
-  >([]);
   const setBehaviorPlansReset = useSetRecoilState(behaviorPlansResetAtom);
 
   useEffect(() => {
-    if (!observations || !behaviors) return;
+    if (!filteredObservations || !behaviors) return;
     const tempArray: BehaviorRecord[] = [];
     behaviors.forEach((behavior) => {
-      const behaviorCount = observations.filter((observation) =>
+      const behaviorCount = filteredObservations.filter((observation) =>
         observation.behaviors.includes(behavior.id)
       );
-      const label = behavior.label + " " + behaviorCount.length;
+      const label =
+        behavior.label +
+        ": " +
+        behaviorCount.length +
+        ` instance${behaviorCount.length === 1 ? "" : "s"} recorded`;
       tempArray.push({ ...behavior, label: label });
     });
     setBehaviorsForForm(tempArray);
-  }, [behaviors, observations]);
-
-  useEffect(() => {
-    switch (selectedMenuItem) {
-      case BEHAVIOR_PLAN_STEPS.STEP_ONE:
-        setStepNumber(1);
-        break;
-      case BEHAVIOR_PLAN_STEPS.STEP_TWO:
-        setStepNumber(2);
-        break;
-      case BEHAVIOR_PLAN_STEPS.STEP_THREE:
-        setStepNumber(3);
-        break;
-      case BEHAVIOR_PLAN_STEPS.STEP_FOUR:
-        setStepNumber(4);
-        break;
-      default:
-        setStepNumber(1);
-    }
-  }, [selectedMenuItem]);
+  }, [behaviors, filteredObservations]);
 
   const handleSubmit = async () => {
     if (!selectedStudentId || !organization) return;
-    await addDoc({
-      col: "behaviorPlans",
-      data: { ...planForm, studentId: selectedStudentId, organizationId: organization.id },
-    });
+    if ("id" in planForm) {
+      await updateDoc({ col: "behaviorPlans", id: planForm.id, data: planForm });
+    } else {
+      await addDoc({
+        col: "behaviorPlans",
+        data: { ...planForm, studentId: selectedStudentId, organizationId: organization.id },
+      });
+    }
     setPlanForm(BLANK_PLAN_FORM);
     setOpen(false);
     setBehaviorPlansReset((pV) => !pV);
   };
 
-  useEffect(() => {
-    if (!replacementBehaviors || !planForm) return;
-    const tempFilteredBehaviors = replacementBehaviors.filter(
-      (behavior) => behavior.behaviorId === planForm.targetBehavior
-    );
-    setFilteredReplacementBehaviors(tempFilteredBehaviors);
-  }, [replacementBehaviors, planForm]);
-
   return (
     <>
-      {<DataSelectForm dataDateRange={dataDateRange} setDataDateRange={setDataDateRange} />}
-      {stepNumber > 1 && (
-        <BehaviorSelectForm
-          planForm={planForm}
-          setPlanForm={setPlanForm}
-          setOpen={setOpen}
-          behaviorsForForm={behaviorsForForm}
-          fitleredReplacementBehaviors={fitleredReplacementBehaviors}
-        />
-      )}
-      {stepNumber > 2 && (
-        <StrategiesForm setOpen={setOpen} planForm={planForm} setPlanForm={setPlanForm} />
-      )}
-      {stepNumber > 3 && <MeasureForm handleSubmit={handleSubmit} />}
+      <BehaviorSelectSection
+        setOpen={setOpen}
+        behaviorsForForm={behaviorsForForm}
+        behaviorPlanStage={behaviorPlanStage}
+        setBehaviorPlanStage={setBehaviorPlanStage}
+      />
+      <StrategiesSelectSection
+        setOpen={setOpen}
+        behaviorPlanStage={behaviorPlanStage}
+        setBehaviorPlanStage={setBehaviorPlanStage}
+      />
+      <MeasureForm
+        behaviorPlanStage={behaviorPlanStage}
+        setBehaviorPlanStage={setBehaviorPlanStage}
+      />
+      <Button
+        variant="contained"
+        color="secondary"
+        fullWidth
+        sx={{ padding: 2, mb: 1, mt: 2 }}
+        onClick={handleSubmit}
+      >
+        {"id" in planForm ? "Save Behavior Plan" : "Create Behavior Plan"}
+      </Button>
     </>
   );
 }

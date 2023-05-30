@@ -20,7 +20,6 @@ export default function DateRange() {
     if (dateRange[1] !== null) {
       endDate = dateRange[1].toLocaleString();
     }
-    console.log(filters)
     setFilters((pV) => ({ ...pV, dateRange: [startDate, endDate] }));
   };
 

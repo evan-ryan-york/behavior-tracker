@@ -83,7 +83,7 @@ function ConsequencesContainer() {
         <DeleteDialog
           open={deleteOpen}
           setOpen={setDeleteOpen}
-          message={"Are you sure you want to delete this consequence? This can not be undone."}
+          message={"Are you sure you want to delete this consequence? This cannot be undone."}
           collection="consequences"
           id={deleteId}
           setReset={setConsequencesReset}

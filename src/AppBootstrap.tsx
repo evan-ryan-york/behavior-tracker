@@ -34,20 +34,20 @@ declare module "@mui/material/Typography" {
 }
 
 function AppBootstrap() {
+  const { currentAuthUser } = useContext(AuthContext);
   useBootstrapEffect();
   useStudentBootstrapEffect();
   const organization = useRecoilValue(organizationAtom);
-  const loading = !Boolean(organization);
-  const { currentAuthUser } = useContext(AuthContext);
+  const loading = currentAuthUser ? !Boolean(organization) : false;
 
   const theme = createTheme({
     palette: {
       primary: {
-        main: organization?.primaryColor ?? "#ffffff",
-        contrastText: organization?.primaryTextColor ?? "#ffffff",
+        main: organization?.primaryColor ?? "#ffc032",
+        contrastText: organization?.primaryTextColor ?? "#222",
       },
       secondary: {
-        main: organization?.secondaryColor ?? "#ffffff",
+        main: organization?.secondaryColor ?? "#333",
         contrastText: organization?.secondaryTextColor ?? "#ffffff",
       },
     },
@@ -60,11 +60,7 @@ function AppBootstrap() {
   });
   return (
     <>
-      {currentAuthUser && loading ? (
-        <Backdrop open={loading}>
-          <CircularProgress />
-        </Backdrop>
-      ) : (
+      {!loading && (
         <ThemeProvider theme={theme}>
           <Router>
             <main className="root">{routes}</main>

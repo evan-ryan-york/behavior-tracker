@@ -50,7 +50,7 @@ const useGetDocs = (): GetDocsType => {
           snapshot = await getDocs(docRef);
         }
       } catch (err) {
-        console.log(err);
+        console.log(`[ERROR] useGetDocs: ${err} - ${col} collection`);
       }
       const tempArray: T[] = [];
       if (snapshot) {

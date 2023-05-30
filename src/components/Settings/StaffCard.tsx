@@ -11,7 +11,6 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
-import SetStaffPermissions from "./SetStaffPermissions";
 import { StaffRecord } from "../../types/types";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import useUploadAvatar from "../../hooks/useUploadAvatar";
@@ -20,6 +19,7 @@ import { useSetRecoilState } from "recoil";
 import EditIcon from "@mui/icons-material/Edit";
 import StaffSites from "./StaffSites";
 import StaffGroups from "./StaffGroups";
+import usePermissions from "../../hooks/usePermissions";
 
 type Props = {
   staffMember: StaffRecord;
@@ -43,6 +43,7 @@ export default function StaffCard({
   const { uploadAvatar } = useUploadAvatar();
   const setStaffReset = useSetRecoilState(staffResetAtom);
   const setStaffForm = useSetRecoilState(staffFormAtom);
+  const { editor } = usePermissions();
 
   useEffect(() => {
     if (!staffMember || !staffMember.avatar) return;
@@ -90,18 +91,20 @@ export default function StaffCard({
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
             badgeContent={
               <>
-                <label htmlFor="icon-button-file">
-                  <input
-                    hidden
-                    accept="image/*"
-                    id="icon-button-file"
-                    type="file"
-                    onChange={handleSelectImage}
-                  />
-                  <IconButton aria-label="upload picture" component="span">
-                    <EditIcon sx={{ width: 15, height: 15 }} />
-                  </IconButton>
-                </label>
+                {editor && (
+                  <label htmlFor="icon-button-file">
+                    <input
+                      hidden
+                      accept="image/*"
+                      id="icon-button-file"
+                      type="file"
+                      onChange={handleSelectImage}
+                    />
+                    <IconButton aria-label="upload picture" component="span">
+                      <EditIcon sx={{ width: 15, height: 15 }} />
+                    </IconButton>
+                  </label>
+                )}
               </>
             }
           >
@@ -110,18 +113,20 @@ export default function StaffCard({
         </Box>
         <CardContent sx={{ textAlign: "center" }}>
           <Typography variant="h4">{`${staffMember.firstName} ${staffMember.lastName}`}</Typography>
-          {/* <SetStaffPermissions staffMember={staffMember} /> */}
+
           <StaffSites staffMember={staffMember} />
           <StaffGroups staffMember={staffMember} />
         </CardContent>
-        <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Button sx={{ mr: 2 }} variant="outlined" onClick={() => handleFieldEdit(staffMember)}>
-            Edit
-          </Button>
-          <Button variant="outlined" color="error" onClick={handleDeleteStaff}>
-            Delete
-          </Button>
-        </CardActions>
+        {editor && (
+          <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Button sx={{ mr: 2 }} variant="outlined" onClick={() => handleFieldEdit(staffMember)}>
+              Edit
+            </Button>
+            <Button variant="outlined" color="error" onClick={handleDeleteStaff}>
+              Delete
+            </Button>
+          </CardActions>
+        )}
       </Card>
     </Grid>
   );

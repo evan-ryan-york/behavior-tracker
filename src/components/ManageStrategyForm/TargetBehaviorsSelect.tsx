@@ -29,7 +29,7 @@ function TargetBehaviorsSelect() {
         targetBehaviorIds.push(s.id);
       });
       setSelectedTargetBehaviors(currentSelectedTargetBehaviors);
-      setStrategyForm((pV) => ({ ...pV, targetBehaviorIds: targetBehaviorIds }));
+      setStrategyForm((pV) => ({ ...pV, targetBehaviorsIds: targetBehaviorIds }));
     },
     [setStrategyForm]
   );
@@ -37,7 +37,7 @@ function TargetBehaviorsSelect() {
     <>
       <Autocomplete
         multiple
-        sx={{ mt: 2 }}
+        sx={{ mt: 4 }}
         options={targetBehaviors}
         getOptionLabel={(targetBehavior) => targetBehavior.label}
         onChange={handleTargetBehaviorSelect}

@@ -22,7 +22,7 @@ function FunctionOfBehaviorChart({ chart }: Props) {
   return (
     <>
       <Box sx={{ mt: 2 }}>
-        <ResponsiveContainer height={400}>
+        <ResponsiveContainer height={400} minWidth={600}>
           <BarChart
             data={chart.bars}
             margin={{
@@ -33,7 +33,7 @@ function FunctionOfBehaviorChart({ chart }: Props) {
             }}
           >
             <CartesianGrid strokeDasharray="4 3" />
-            <XAxis dataKey="name" interval={0} height={60} />
+            <XAxis  dataKey="name" interval={0} height={30} angle={0} />
             <YAxis />
             <Tooltip />
             <Bar

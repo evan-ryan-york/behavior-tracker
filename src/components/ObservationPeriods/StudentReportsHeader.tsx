@@ -13,7 +13,6 @@ function StudentReportsHeader({ setNewObservationOpen }: Props) {
   const observationPeriodIsActive = useRecoilValue(observationPeriodIsActiveAtom);
 
   const disabled = !(Boolean(selectedStudentId) && observationPeriodIsActive);
-  console.log(disabled)
 
   const handleNewObservationOpen = () => {
     setNewObservationOpen(true);

@@ -28,7 +28,6 @@ function EditFileNameDialog({ selectedFile, open, setOpen }: Props) {
     setFileName(selectedFile.fileName);
   }, [selectedFile]);
 
-  console.log(open);
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFileName(event.target.value);

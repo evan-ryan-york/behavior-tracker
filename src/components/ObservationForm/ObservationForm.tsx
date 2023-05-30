@@ -3,7 +3,12 @@ import { Button } from "@mui/material";
 import { Note } from "../../types/types";
 import { loggedInStaffAtom } from "../../recoil/staffAtoms";
 import { selectedStudentIdAtom } from "../../recoil/studentAtoms";
-import { observationsResetAtom } from "../../recoil/observationAtoms";
+import {
+  activeObservationPeriodIdAtom,
+  manageObservationOpenAtom,
+  observationsResetAtom,
+  selectedObservationPeriodIdAtom,
+} from "../../recoil/observationAtoms";
 import ObservationNotesContainer from "./ObservationNotesContainer";
 import ABCData from "./ABCData";
 import Details from "./Details";
@@ -27,6 +32,9 @@ function ObservationForm({ setOpen }: Props) {
   const loggedInStaff = useRecoilValue(loggedInStaffAtom);
   const selectedStudentId = useRecoilValue(selectedStudentIdAtom);
   const setObservationsReset = useSetRecoilState(observationsResetAtom);
+  const activeObservationPeriodId = useRecoilValue(activeObservationPeriodIdAtom);
+  const setManageObservationOpen = useSetRecoilState(manageObservationOpenAtom);
+  const selectedObservationPeriodId = useRecoilValue(selectedObservationPeriodIdAtom);
 
   const resetForm = () => {
     setAntecedentsArray([]);
@@ -41,7 +49,7 @@ function ObservationForm({ setOpen }: Props) {
   };
 
   const handleSubmit = async () => {
-    if (!loggedInStaff) return;
+    if (!loggedInStaff || !selectedObservationPeriodId) return;
     const data = {
       antecedents: antecedentsArray,
       behaviors: behaviorsArray,
@@ -53,10 +61,12 @@ function ObservationForm({ setOpen }: Props) {
       authorId: loggedInStaff.id,
       studentId: selectedStudentId,
       settingId: settingId,
+      observationPeriodId: selectedObservationPeriodId,
     };
     await addDoc({ col: "observations", data: data });
     resetForm();
     setObservationsReset((pV) => !pV);
+    setManageObservationOpen(false);
   };
 
   return (

@@ -2,7 +2,14 @@ import { useEffect } from "react";
 import useGetDocs from "./useGetDocs";
 import useGetDoc from "./useGetDoc";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import { staffAtom, loggedInStaffAtom, staffResetAtom } from "../recoil/staffAtoms";
+import { filterPermissions } from "../libraries/functions";
+import {
+  staffAtom,
+  loggedInStaffAtom,
+  staffResetAtom,
+  selectPermissionsAtom,
+  allPermissionsAtom,
+} from "../recoil/staffAtoms";
 import {
   parseAntecedentResponse,
   parseBehaviorResponse,
@@ -17,6 +24,7 @@ import {
   parseStrategyResponse,
   parseStudentResponse,
   parseFunctionSurveyQuestionResponse,
+  parsePermissionsResponse,
 } from "../libraries/parsers";
 import {
   AntecedentRecord,
@@ -32,6 +40,7 @@ import {
   ReplacementBehaviorRecord,
   StrategyRecord,
   FunctionSurveyQuestionRecord,
+  PermissionRecord,
 } from "../types/types";
 import { antecedentsAtom, antecedentsResetAtom } from "../recoil/antecedentsAtoms";
 import { behaviorsAtom, behaviorsResetAtom } from "../recoil/behaviorsAtoms";
@@ -71,6 +80,8 @@ const useBootstrapEffect = () => {
   const setFunctionSurveyQuestions = useSetRecoilState<FunctionSurveyQuestionRecord[]>(
     functionSurveyQuestionsAtom
   );
+  const setSelectPermissions = useSetRecoilState<PermissionRecord[]>(selectPermissionsAtom);
+  const setAllPermissions = useSetRecoilState<PermissionRecord[]>(allPermissionsAtom);
 
   //RESETS
   const antecedentsReset = useRecoilValue(antecedentsResetAtom);
@@ -123,6 +134,21 @@ const useBootstrapEffect = () => {
     };
     getBehaviors();
   }, [setBehaviors, getDocs, behaviorsReset, loggedInStaff]);
+
+  useEffect(() => {
+    if (!loggedInStaff) return;
+    const getPermissions = async () => {
+      const response = await getDocs<PermissionRecord>({
+        col: "permissions",
+      });
+      if (response) {
+        const filteredPermissions = filterPermissions({ permissions: response, loggedInStaff });
+        setSelectPermissions(parsePermissionsResponse(filteredPermissions));
+        setAllPermissions(parsePermissionsResponse(response));
+      }
+    };
+    getPermissions();
+  }, [setSelectPermissions, setAllPermissions, getDocs, loggedInStaff]);
 
   useEffect(() => {
     if (!loggedInStaff) return;
@@ -260,8 +286,8 @@ const useBootstrapEffect = () => {
   }, [setGroups, getDocs, groupsReset, loggedInStaff]);
 
   useEffect(() => {
-    if (!loggedInStaff) return;
     const getOrganization = async () => {
+      if (!loggedInStaff || !loggedInStaff.organizationId) return;
       const response = await getDoc<OrganizationRecord>({
         col: "organizations",
         id: loggedInStaff.organizationId,

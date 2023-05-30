@@ -1,11 +1,11 @@
-import { Dialog, Box, Typography, Grid } from "@mui/material";
-import { selectedStudentIdAtom, studentsObjAtom } from "../../recoil/studentAtoms";
+import { Dialog, Box, Typography } from "@mui/material";
+import { selectedStudentAtom } from "../../recoil/studentAtoms";
 import { useRecoilValue } from "recoil";
 import { organizationAtom } from "../../recoil/organizationAtoms";
 import PlanForm from "./PlanForm";
-import PlanFormSideMenu from "./PlanFormSideMenu";
-import { BEHAVIOR_PLAN_STEPS } from "../../libraries/objects";
+import { ProgressLabel } from "./ProgressLabel";
 import { useState } from "react";
+import { BEHAVIOR_PLAN_STAGES } from "../../libraries/objects";
 
 type Props = {
   open: boolean;
@@ -13,17 +13,19 @@ type Props = {
 };
 
 export default function ManageBehaviorPlanDialog({ open, setOpen }: Props) {
-  const [selectedMenuItem, setSelectedMenuItem] = useState<string>(BEHAVIOR_PLAN_STEPS.STEP_ONE);
-  const selectedStudentId = useRecoilValue(selectedStudentIdAtom);
-  const studentObj = useRecoilValue(studentsObjAtom);
   const organization = useRecoilValue(organizationAtom);
+  const selectedStudent = useRecoilValue(selectedStudentAtom);
+  const [behaviorPlanStage, setBehaviorPlanStage] = useState<number>(
+    BEHAVIOR_PLAN_STAGES.SELECT_BEHAVIOR
+  );
+
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
     <>
-      {selectedStudentId && open && organization && (
+      {selectedStudent && open && organization && (
         <Dialog
           maxWidth="lg"
           fullWidth={true}
@@ -39,25 +41,19 @@ export default function ManageBehaviorPlanDialog({ open, setOpen }: Props) {
               color: "white",
             }}
           >
-            <Typography variant="h5" sx={{ padding: 1 }}>
-              New Behavior Plan For{" "}
-              {studentObj
-                ? `${studentObj[selectedStudentId].firstName} ${studentObj[selectedStudentId].lastName}`
-                : "Student Not Found"}
-            </Typography>
+            <Typography
+              variant="h5"
+              sx={{ padding: 1 }}
+            >{`Behavior Plan For ${selectedStudent.firstName} ${selectedStudent.lastName}`}</Typography>
+            <ProgressLabel value={behaviorPlanStage} />
           </Box>
-          <Grid container spacing={0}>
-            <Grid item xs={4} sm={2}>
-              <Box sx={{ height: "75VH", backgroundColor: "#eee" }}>
-                <PlanFormSideMenu setSelectedMenuItem={setSelectedMenuItem} />
-              </Box>
-            </Grid>
-            <Grid item xs={8} sm={10}>
-              <Box sx={{ pl: 4, pr: 4, pt: 4, height: "70vh", overflow: "scroll" }}>
-                <PlanForm selectedMenuItem={selectedMenuItem} setOpen={setOpen} />
-              </Box>
-            </Grid>
-          </Grid>
+          <Box sx={{ padding: 4, height: "100%", overflow: "scroll" }}>
+            <PlanForm
+              setOpen={setOpen}
+              behaviorPlanStage={behaviorPlanStage}
+              setBehaviorPlanStage={setBehaviorPlanStage}
+            />
+          </Box>
         </Dialog>
       )}
     </>

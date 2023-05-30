@@ -37,7 +37,7 @@ export default function SetStaffSites() {
   return (
     <>
       <Typography variant="h6" sx={{ mt: 2 }}>
-        Staff Sites
+        Assigned Sites
       </Typography>
       <Divider />
       <Autocomplete

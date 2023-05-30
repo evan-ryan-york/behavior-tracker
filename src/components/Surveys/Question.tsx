@@ -50,7 +50,6 @@ function Question({
   const color = formatResults(selectedSurvey.responses[question.id]);
 
   const handleEditClick = () => {
-    console.log(selectedSurvey.responses[question.id]);
     setCurrentOption(selectedSurvey.responses[question.id]);
     setSelectedQuestion(question);
     setOpen(true);

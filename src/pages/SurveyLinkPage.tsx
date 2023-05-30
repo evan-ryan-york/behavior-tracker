@@ -83,7 +83,6 @@ function SurveyLinkPage() {
       } else {
         addDoc({ col: "functionSurveyResults", data: data });
       }
-      console.log(data);
       setFunctionSurveyForm(BLANK_FUNCTION_SURVEY_RESULT_FORM);
       setFunctionSurveyResultsReset((pV) => !pV);
     }

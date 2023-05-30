@@ -18,7 +18,7 @@ import FunctionSurveyQuestionsContainer from "./FunctionSurveyQuestionsContainer
 
 export default function SettingsContainer() {
   const [activeSettingSection, setActiveSettingSection] = useState<string>(
-    SettingsSections.ANTECEDENTS
+    SettingsSections.ORG_PROFILE
   );
   const sideMenuHeight = window.innerHeight - 64;
   return (

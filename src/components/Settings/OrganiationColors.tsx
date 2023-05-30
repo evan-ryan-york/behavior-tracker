@@ -1,20 +1,17 @@
-import React from "react";
 import { Box, Container, Chip, Grid } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { organizationAtom, organizationResetAtom } from "../../recoil/organizationAtoms";
 import { getLuma } from "../../libraries/functions";
 import useUpdateDoc from "../../hooks/useUpdateDoc";
-import { TwitterPicker, Color } from "react-color";
-
-type FormState = EventTarget & {
-  value: string;
-  name: string;
-};
+import { TwitterPicker } from "react-color";
+import { userPermissionAtom } from "../../recoil/staffAtoms";
 
 function OrganiationColors() {
   const organization = useRecoilValue(organizationAtom);
   const setOrganizationReset = useSetRecoilState(organizationResetAtom);
   const { sendRequest: updateDoc } = useUpdateDoc();
+  const userPermission = useRecoilValue(userPermissionAtom);
+  const editor = userPermission?.role !== "user" ?? false;
 
   const changePrimaryColor = async (event: any) => {
     if (!organization) return;
@@ -58,13 +55,15 @@ function OrganiationColors() {
                   color="primary"
                   label="Primary Color"
                 />
-                <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-                  <TwitterPicker
-                    triangle="hide"
-                    color={organization.primaryColor}
-                    onChange={changePrimaryColor}
-                  />
-                </Box>
+                {editor && (
+                  <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                    <TwitterPicker
+                      triangle="hide"
+                      color={organization.primaryColor}
+                      onChange={changePrimaryColor}
+                    />
+                  </Box>
+                )}
               </Box>
             </Grid>
             <Grid item xs={12} sm={12} md={6}>
@@ -79,13 +78,15 @@ function OrganiationColors() {
                   color="secondary"
                   label="Secondary Color"
                 />
-                <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-                  <TwitterPicker
-                    color={organization.secondaryColor}
-                    onChange={changeSecondaryColor}
-                    triangle="hide"
-                  />
-                </Box>
+                {editor && (
+                  <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                    <TwitterPicker
+                      color={organization.secondaryColor}
+                      onChange={changeSecondaryColor}
+                      triangle="hide"
+                    />
+                  </Box>
+                )}
               </Box>
             </Grid>
           </Grid>

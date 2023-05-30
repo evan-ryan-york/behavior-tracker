@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
-import { getDatabase, ref, set } from "firebase/database";
-import { ObservationPeriod } from "../types/types";
+import { getDatabase, ref, set, push } from "firebase/database";
+import { ObservationPeriod, ObservationPeriodRecord } from "../types/types";
+import { useRecoilState } from "recoil";
+import { activeObservationPeriodIdAtom } from "../recoil/observationAtoms";
 
 type StartProps = {
   studentId: string;
@@ -9,45 +11,67 @@ type StartProps = {
   observationWindows: ObservationPeriod[];
 };
 
-type WriteToRTDBProps = {
+type AddToRTDBProps = {
   organizationId: string;
   studentId: string;
-  authorId: string;
-  data: ObservationPeriod[];
+  data: ObservationPeriod;
+};
+
+type UpdateToRTDBProps = {
+  organizationId: string;
+  studentId: string;
+  periodId: string;
+  data: ObservationPeriodRecord;
 };
 
 const useTimer = (initialState: number = 0) => {
   const [timer, setTimer] = useState<number>(initialState);
   const [isActive, setIsActive] = useState(false);
+  const [activeObservationPeriodId, setActiveObservationPeriodId] = useRecoilState(
+    activeObservationPeriodIdAtom
+  );
   //   const [isPaused, setIsPaused] = useState(false);
   const countRef = useRef<NodeJS.Timer>();
 
-  function writeToRTDB({ organizationId, authorId, studentId, data }: WriteToRTDBProps) {
+  const addToRTDB = async ({ organizationId, studentId, data }: AddToRTDBProps) => {
     const db = getDatabase();
-    set(ref(db, `observationPeriods/${organizationId}/${studentId}`), data);
+    const entryRef = ref(db, `observationPeriods/${organizationId}/${studentId}`);
+    const newEntry = await push(entryRef, data);
+    return newEntry.key;
+  };
+
+  function updateRTDB({ organizationId, studentId, periodId, data }: UpdateToRTDBProps) {
+    const db = getDatabase();
+    const noId: any = { ...data };
+    delete noId.id;
+    set(ref(db, `observationPeriods/${organizationId}/${studentId}/${periodId}`), noId);
   }
 
-  const handleStart = ({ studentId, organizationId, authorId, observationWindows }: StartProps) => {
+  const handleStart = async ({
+    studentId,
+    organizationId,
+    authorId,
+    observationWindows,
+  }: StartProps) => {
     setIsActive(true);
     // setIsPaused(true);
     countRef.current = setInterval(() => {
       setTimer((timer) => timer + 1);
     }, 1000);
-    const currentObservationWindows = [...observationWindows];
-    currentObservationWindows.push({
+    const data = {
       studentId: studentId,
       organizationId: organizationId,
       authorId: authorId,
       startTime: Date.now(),
       endTime: 0,
-      label: "",
-    });
-    writeToRTDB({
+      label: "Observation Period",
+    };
+    const periodId = await addToRTDB({
       studentId,
       organizationId,
-      authorId,
-      data: currentObservationWindows,
+      data,
     });
+    setActiveObservationPeriodId(periodId);
   };
 
   //   const handlePause = () => {
@@ -79,28 +103,25 @@ const useTimer = (initialState: number = 0) => {
   //     setTimer(0);
   //   };
 
-  const handleStop = (observationPeriods: ObservationPeriod[]) => {
+  const handleStop = (observationPeriods: ObservationPeriodRecord[]) => {
     clearInterval(countRef.current);
     setIsActive(false);
     // setIsPaused(false);
     setTimer(0);
-    const activeIndex = observationPeriods.findIndex(
-      (observationPeriod) => observationPeriod.endTime === 0
+    const activePeriod = observationPeriods.find(
+      (period) => period.id === activeObservationPeriodId
     );
-    if (activeIndex > -1) {
-      const mutableArray = [...observationPeriods];
-      const activePeriod = observationPeriods[activeIndex];
+    if (activePeriod) {
       const updatedPeriod = { ...activePeriod, endTime: Date.now() };
-      mutableArray.splice(activeIndex, 1);
-      mutableArray.push(updatedPeriod);
 
-      writeToRTDB({
+      updateRTDB({
         studentId: activePeriod.studentId,
         organizationId: activePeriod.organizationId,
-        authorId: activePeriod.authorId,
-        data: mutableArray,
+        periodId: activePeriod.id,
+        data: updatedPeriod,
       });
     }
+    setActiveObservationPeriodId(null);
   };
 
   return {

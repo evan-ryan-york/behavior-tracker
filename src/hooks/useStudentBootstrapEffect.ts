@@ -18,9 +18,10 @@ import {
   BehaviorPlanRecord,
   FunctionSurveyResultRecord,
   StudentFileRecord,
+  ObservationPeriodRecord,
 } from "../types/types";
 import { behaviorsResetAtom } from "../recoil/behaviorsAtoms";
-import { behaviorPlansAtom } from "../recoil/behaviorPlansAtoms";
+import { behaviorPlansAtom, behaviorPlansResetAtom } from "../recoil/behaviorPlansAtoms";
 import {
   selectedStudentAtom,
   studentFilesAtom,
@@ -44,7 +45,7 @@ const useStudentBootstrapEffect = () => {
 
   //RESETS
   const observationsReset = useRecoilValue(observationsResetAtom);
-  const behaviorPlansReset = useRecoilValue(behaviorsResetAtom);
+  const behaviorPlansReset = useRecoilValue(behaviorPlansResetAtom);
   const functionSurveyResultsReset = useRecoilValue(functionSurveyResultsResetAtom);
   const studentFilesReset = useRecoilValue(studentFilesResetAtom);
 
@@ -136,8 +137,20 @@ const useStudentBootstrapEffect = () => {
     );
     onValue(observationPeriodsRef, (snapshot) => {
       const data = snapshot.val();
-      if (!data) return;
-      setObservationPeriods(data);
+      if (!data) {
+        setObservationPeriods([]);
+        return;
+      }
+      const keysArray = Object.keys(data);
+      const tempArray: ObservationPeriodRecord[] = [];
+      keysArray.forEach((key) => {
+        tempArray.push({
+          ...data[key],
+          id: key,
+        });
+      });
+      tempArray.sort((a, b) => b.endTime - a.endTime);
+      setObservationPeriods(tempArray);
     });
   }, [selectedStudent, organization, loggedInStaff, setObservationPeriods]);
 };

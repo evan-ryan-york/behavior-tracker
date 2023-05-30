@@ -53,7 +53,6 @@ function InferredFunctionOfBehaviorReports() {
             tempChartReport.bars.push({ name: functionOfBehavior, amt: count });
           }
         });
-        console.log(tempChartReport.bars);
         if (tempChartReport.bars.length > 0) {
           tempChartReports.push(tempChartReport);
         }

@@ -1,15 +1,3 @@
-export enum PERMISSION {
-  EDIT_STAFF = "Edit Staff",
-  EDIT_SETTINGS = "Edit Settings",
-  SEE_ALL_ROASTER = "See All Roasters",
-}
-
-export const PERMISSIONS: Array<PERMISSION> = [
-  PERMISSION.EDIT_STAFF,
-  PERMISSION.EDIT_SETTINGS,
-  PERMISSION.SEE_ALL_ROASTER,
-];
-
 export enum SettingsSections {
   ANTECEDENTS = "Antecedents",
   BEHAVIORS = "Behaviors",
@@ -26,11 +14,15 @@ export enum SettingsSections {
   FUNCTION_SURVEY_QUESTIONS = "Function Survey Questions",
 }
 
-export enum BEHAVIOR_PLAN_STEPS {
-  STEP_ONE = "Step 1",
-  STEP_TWO = "Step 2",
-  STEP_THREE = "Step 3",
-  STEP_FOUR = "Step 4",
+export enum BEHAVIOR_PLAN_STAGES {
+  SELECT_BEHAVIOR = 1,
+  DEFINE_BEHAVIOR = 2,
+  SELECT_REPLACEMENT_BEHAVIOR = 3,
+  SELECT_PREVENTATIVE_STRATEGIES = 4,
+  SELECT_REINFORCEMENT_STRATEGIES = 5,
+  SELECT_EXTINGUISH_STRATEGIES = 6,
+  SELECT_MEASURES_OF_SUCCESS = 7,
+  SUCCESS = 8,
 }
 
 export enum FUNCTION_SURVEY_OPTIONS {
@@ -88,3 +80,78 @@ export enum STRATEGY_TYPES {
   EXTINGUISH = "Extinguish Target Behavior Strategies",
   REINFORCE = "Reinforce Replacement Behavior Strategies",
 }
+
+export enum PERMISSION_ACCESS_LEVELS {
+  ORGANIZATION = "organization",
+  SITE = "site",
+  GROUP = "group",
+  DEVELOPER = "developer",
+}
+
+export enum PERMISSION_ROLES {
+  SUPER_ADMIN = "super-admin",
+  ADMIN = "admin",
+  USER = "user",
+}
+
+export const STATES = [
+  "Alabama",
+  "Alaska",
+  "American Samoa",
+  "Arizona",
+  "Arkansas",
+  "California",
+  "Colorado",
+  "Connecticut",
+  "Delaware",
+  "District of Columbia",
+  "Federated States of Micronesia",
+  "Florida",
+  "Georgia",
+  "Guam",
+  "Hawaii",
+  "Idaho",
+  "Illinois",
+  "Indiana",
+  "Iowa",
+  "Kansas",
+  "Kentucky",
+  "Louisiana",
+  "Maine",
+  "Marshall Islands",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "Minnesota",
+  "Mississippi",
+  "Missouri",
+  "Montana",
+  "Nebraska",
+  "Nevada",
+  "New Hampshire",
+  "New Jersey",
+  "New Mexico",
+  "New York",
+  "North Carolina",
+  "North Dakota",
+  "Northern Mariana Islands",
+  "Ohio",
+  "Oklahoma",
+  "Oregon",
+  "Palau",
+  "Pennsylvania",
+  "Puerto Rico",
+  "Rhode Island",
+  "South Carolina",
+  "South Dakota",
+  "Tennessee",
+  "Texas",
+  "Utah",
+  "Vermont",
+  "Virgin Island",
+  "Virginia",
+  "Washington",
+  "West Virginia",
+  "Wisconsin",
+  "Wyoming",
+];

@@ -1,5 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import ReactQuill from "react-quill";
+import { FUNCTIONS_OF_BEHAVIOR } from "../libraries/objects";
 type FIREBASE_ID = string;
 
 export type BaseRecord = {
@@ -35,14 +36,23 @@ export type Staff = {
   firstName: string;
   lastName: string;
   email: string;
-  permissions: string[];
+  permissionId: string;
   groupIds: FIREBASE_ID[];
   siteIds: FIREBASE_ID[];
   avatar: string;
-  organizationId: FIREBASE_ID;
+  organizationId: FIREBASE_ID | null;
+  accountType: "individual" | "organization";
 };
 
 export type StaffRecord = Staff & BaseRecord;
+
+export type Lead = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
+
+export type LeadRecord = Lead & BaseRecord;
 
 export type Homeroom = {
   id: string;
@@ -97,6 +107,7 @@ export type Observation = {
   authorId: FIREBASE_ID;
   studentId: FIREBASE_ID;
   settingId: FIREBASE_ID;
+  observationPeriodId: string;
 };
 
 export type ObservationRecord = Observation & BaseRecord;
@@ -110,10 +121,16 @@ export type ObservationPeriod = {
   label: string;
 };
 
+export type ObservationPeriodRecord = ObservationPeriod & BaseRecord;
+
 export type Organization = {
   name: string;
   avatar: string;
   description: string;
+  states: string[];
+  primaryPhone: string;
+  primaryEmail: string;
+  primaryDomain: string;
   primaryColor: string;
   secondaryColor: string;
   primaryTextColor: string;
@@ -158,7 +175,7 @@ export type Setting = {
   name: string;
   order: number;
   organizationId: FIREBASE_ID;
-  siteIds: FIREBASE_ID[];
+  siteId: FIREBASE_ID;
 };
 
 export type SettingRecord = Setting & BaseRecord;
@@ -180,7 +197,7 @@ export type BehaviorPlan = {
   targetBehavior: FIREBASE_ID;
   behaviorDefinition: string;
   functionsOfBehavior: { label: string; count: number }[];
-  replacementBehavior: FIREBASE_ID;
+  replacementBehaviors: ReactQuill.Value[];
   antecedents: { label: string; count: number }[];
   antecedentNotes: string;
   preventionStrategies: ReactQuill.Value[];
@@ -188,26 +205,33 @@ export type BehaviorPlan = {
   extinguishStrategies: ReactQuill.Value[];
   studentId: FIREBASE_ID;
   organizationId: FIREBASE_ID;
+  frequencyNumerator: number;
+  frequencyDenominator: "Day" | "Hour";
+  measureMethod: "Frequency" | "Interval" | "";
 };
 
 export type BehaviorPlanRecord = BehaviorPlan & BaseRecord;
 
 export type ReplacementBehavior = {
-  label: string;
+  content: ReactQuill.Value;
   order: number;
-  behaviorId: FIREBASE_ID;
+  title: string;
+  targetBehaviorIds: FIREBASE_ID[];
+  functionsOfBehavior: FUNCTIONS_OF_BEHAVIOR[];
 };
 
 export type ReplacementBehaviorRecord = ReplacementBehavior & BaseRecord;
 
 export type Strategy = {
   title: string;
+  toolTip: ReactQuill.Value;
   content: ReactQuill.Value;
   antecedentIds: FIREBASE_ID[];
   consequenceIds: FIREBASE_ID[];
   targetBehaviorsIds: FIREBASE_ID[];
   replacementBehaviorIds: FIREBASE_ID[];
   organizationId: FIREBASE_ID;
+  functionsOfBehavior: FUNCTIONS_OF_BEHAVIOR[];
   authorId: FIREBASE_ID;
   type: "PREVENTION" | "EXTINGUISH" | "REINFORCE";
 };
@@ -251,3 +275,11 @@ export type StudentFile = {
 };
 
 export type StudentFileRecord = StudentFile & BaseRecord;
+
+export type Permission = {
+  access: "developer" | "organization" | "site" | "group";
+  label: string;
+  role: "user" | "admin" | "super-admin";
+};
+
+export type PermissionRecord = Permission & BaseRecord;

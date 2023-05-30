@@ -16,7 +16,10 @@ import {
   FunctionSurveyQuestionRecord,
   FunctionSurveyResultRecord,
   StudentFileRecord,
+  PermissionRecord,
+  LeadRecord,
 } from "../types/types";
+import { FUNCTIONS_OF_BEHAVIOR } from "./objects";
 
 export const parseStaffResponse = (response: StaffRecord[]): StaffRecord[] =>
   response.map((staff: StaffRecord) => ({
@@ -24,13 +27,14 @@ export const parseStaffResponse = (response: StaffRecord[]): StaffRecord[] =>
     firstName: staff?.firstName ?? "",
     lastName: staff?.lastName ?? "",
     email: staff?.email ?? "",
-    permissions: staff?.permissions ?? [],
+    permissionId: staff?.permissionId ?? "",
     groupIds: staff?.groupIds ?? [],
     siteIds: staff?.siteIds ?? [],
     createdAt: staff?.createdAt ?? null,
     lastUpdatedAt: staff?.lastUpdatedAt ?? null,
-    organizationId: staff?.organizationId ?? "",
+    organizationId: staff?.organizationId ?? null,
     avatar: staff?.avatar ?? "",
+    accountType: staff?.accountType ?? "individual",
   }));
 
 export const parseStudentResponse = (response: StudentRecord[]): StudentRecord[] =>
@@ -43,7 +47,7 @@ export const parseStudentResponse = (response: StudentRecord[]): StudentRecord[]
     siteIds: record?.siteIds ?? [],
     createdAt: record?.createdAt ?? null,
     lastUpdatedAt: record?.lastUpdatedAt ?? null,
-    organizationId: record?.organizationId ?? "",
+    organizationId: record?.organizationId ?? null,
     avatar: record?.avatar ?? "",
     birthday: record?.birthday ?? "",
     localId: record?.localId ?? "",
@@ -84,7 +88,7 @@ export const parseBehaviorPlanResponse = (response: BehaviorPlanRecord[]): Behav
     targetBehavior: record?.targetBehavior ?? "",
     behaviorDefinition: record?.behaviorDefinition ?? "",
     functionsOfBehavior: record?.functionsOfBehavior ?? [],
-    replacementBehavior: record?.replacementBehavior ?? "",
+    replacementBehaviors: record?.replacementBehaviors ?? [],
     antecedents: record?.antecedents ?? [],
     antecedentNotes: record?.antecedentNotes ?? "",
     preventionStrategies: record?.preventionStrategies ?? [],
@@ -94,6 +98,9 @@ export const parseBehaviorPlanResponse = (response: BehaviorPlanRecord[]): Behav
     lastUpdatedAt: record?.lastUpdatedAt ?? null,
     studentId: record?.studentId ?? "",
     organizationId: record?.organizationId ?? "",
+    measureMethod: record?.measureMethod ?? "Frequency",
+    frequencyDenominator: record?.frequencyDenominator ?? "Hour",
+    frequencyNumerator: record?.frequencyNumerator ?? 0,
   }));
 
 export const parseReplacementBehaviorsResponse = (
@@ -101,11 +108,13 @@ export const parseReplacementBehaviorsResponse = (
 ): ReplacementBehaviorRecord[] =>
   response.map((record: ReplacementBehaviorRecord) => ({
     id: record?.id ?? "",
-    label: record?.label ?? "",
+    content: record?.content ?? "",
+    title: record?.title ?? "",
     order: record?.order ?? 0,
     createdAt: record?.createdAt ?? null,
     lastUpdatedAt: record?.lastUpdatedAt ?? null,
-    behaviorId: record?.behaviorId ?? "",
+    targetBehaviorIds: record?.targetBehaviorIds ?? [],
+    functionsOfBehavior: record?.functionsOfBehavior ?? [],
   }));
 
 export const parseObservationResponse = (response: ObservationRecord[]): ObservationRecord[] =>
@@ -123,6 +132,7 @@ export const parseObservationResponse = (response: ObservationRecord[]): Observa
     id: record?.id ?? "",
     studentId: record?.studentId ?? "",
     settingId: record?.settingId ?? "",
+    observationPeriodId: record.observationPeriodId ?? "",
   }));
 
 export const parseOrganization = (response: OrganizationRecord): OrganizationRecord => {
@@ -137,6 +147,10 @@ export const parseOrganization = (response: OrganizationRecord): OrganizationRec
     secondaryColor: response?.secondaryColor ?? null,
     primaryTextColor: response?.primaryTextColor ?? null,
     secondaryTextColor: response?.secondaryTextColor ?? null,
+    states: response?.states ?? [],
+    primaryPhone: response?.primaryPhone ?? "",
+    primaryEmail: response?.primaryEmail ?? "",
+    primaryDomain: response?.primaryDomain ?? "",
   };
 };
 
@@ -180,7 +194,7 @@ export const parseSettingResponse = (response: SettingRecord[]): SettingRecord[]
     createdAt: record?.createdAt ?? null,
     lastUpdatedAt: record?.lastUpdatedAt ?? null,
     order: record?.order ?? 0,
-    siteIds: record?.siteIds ?? [],
+    siteId: record?.siteId ?? "",
   }));
 
 export const parseStrategyResponse = (response: StrategyRecord[]): StrategyRecord[] =>
@@ -197,6 +211,8 @@ export const parseStrategyResponse = (response: StrategyRecord[]): StrategyRecor
     organizationId: record?.organizationId ?? "",
     authorId: record?.authorId ?? "",
     type: record?.type ?? "EXTINGUISH",
+    functionsOfBehavior: record?.functionsOfBehavior ?? [],
+    toolTip: "",
   }));
 
 export const parseFunctionSurveyQuestionResponse = (
@@ -234,6 +250,26 @@ export const parseStudentFilesResponse = (response: StudentFileRecord[]): Studen
     fileName: record?.fileName ?? "",
     studentId: record?.studentId ?? "",
     fileType: record?.fileType ?? "",
+    createdAt: record?.createdAt ?? null,
+    lastUpdatedAt: record?.lastUpdatedAt ?? null,
+  }));
+
+export const parsePermissionsResponse = (response: PermissionRecord[]): PermissionRecord[] =>
+  response.map((record: PermissionRecord) => ({
+    id: record?.id ?? "",
+    access: record?.access ?? "site",
+    role: record?.role ?? "user",
+    label: record?.label ?? "",
+    createdAt: record?.createdAt ?? null,
+    lastUpdatedAt: record?.lastUpdatedAt ?? null,
+  }));
+
+export const parseLeadsResponse = (response: LeadRecord[]): LeadRecord[] =>
+  response.map((record: LeadRecord) => ({
+    id: record?.id ?? "",
+    firstName: record?.firstName ?? "",
+    lastName: record?.lastName ?? "",
+    email: record?.email ?? "",
     createdAt: record?.createdAt ?? null,
     lastUpdatedAt: record?.lastUpdatedAt ?? null,
   }));

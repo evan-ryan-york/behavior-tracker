@@ -2,14 +2,14 @@ import { atom, selector } from "recoil";
 import { GetRecoilValue } from "recoil";
 import { BLANK_STAFF_FORM } from "../libraries/blankForms";
 
-import { Staff, StaffRecord } from "../types/types";
+import { PermissionRecord, Staff, StaffRecord } from "../types/types";
 // import { staffObjGetter } from "./selectors";
 
 type Props = {
   get: GetRecoilValue;
 };
 
-export const staffObjGetter = ({ get }: Props) => {
+const staffObjGetter = ({ get }: Props) => {
   const staff = get(staffAtom);
   if (!staff) return null;
   const tempObj: { [key: string]: StaffRecord } = {};
@@ -17,6 +17,16 @@ export const staffObjGetter = ({ get }: Props) => {
     tempObj[staffMember.id] = staffMember;
   });
   return tempObj;
+};
+
+const staffPermissionGetter = ({ get }: Props) => {
+  const loggedInStaff = get(loggedInStaffAtom);
+  const permissions = get(allPermissionsAtom);
+  if (!permissions || !loggedInStaff) return;
+  const userPermission = permissions.find(
+    (permission) => permission.id === loggedInStaff.permissionId
+  );
+  return userPermission;
 };
 
 export const staffAtom = atom<StaffRecord[]>({
@@ -42,4 +52,19 @@ export const staffResetAtom = atom({
 export const staffObjAtom = selector({
   key: "staffObj",
   get: staffObjGetter,
+});
+
+export const userPermissionAtom = selector({
+  key: "userPermission",
+  get: staffPermissionGetter,
+});
+
+export const selectPermissionsAtom = atom<PermissionRecord[]>({
+  key: "selectPermissions",
+  default: [],
+});
+
+export const allPermissionsAtom = atom<PermissionRecord[]>({
+  key: "allPermissionsAtom",
+  default: [],
 });

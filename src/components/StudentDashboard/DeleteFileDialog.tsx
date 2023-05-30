@@ -43,7 +43,7 @@ export default function DeleteFileDialog({ open, setOpen, selectedStudentFile }:
           <DialogTitle>Delete Confirmation</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Are you sure you want to delete this file? This action can not be undone?
+              Are you sure you want to delete this file? This action cannot be undone?
             </DialogContentText>
           </DialogContent>
           <DialogActions>

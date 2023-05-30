@@ -2,6 +2,7 @@ import {
   BehaviorPlan,
   FunctionSurveyQuestion,
   FunctionSurveyResult,
+  Staff,
   Strategy,
 } from "../types/types";
 
@@ -23,9 +24,11 @@ export const BLANK_CONSEQUENCE_FORM = {
 };
 
 export const BLANK_REPLACEMENT_BEHAVIOR_FORM = {
-  label: "",
+  content: "",
+  title: "",
   order: 0,
-  behaviorId: "",
+  targetBehaviorIds: [],
+  functionsOfBehavior: [],
 };
 
 export const BLANK_SITE_FORM = {
@@ -41,15 +44,16 @@ export const BLANK_GROUP_FORM = {
   siteId: "",
 };
 
-export const BLANK_STAFF_FORM = {
+export const BLANK_STAFF_FORM: Staff = {
   firstName: "",
   lastName: "",
   email: "",
-  permissions: [],
+  permissionId: "",
   groupIds: [],
   siteIds: [],
   avatar: "",
-  organizationId: "",
+  organizationId: null,
+  accountType: "individual",
 };
 
 export const BLANK_STUDENT_FORM = {
@@ -75,14 +79,14 @@ export const BLANK_SETTING_FORM = {
   name: "",
   organizationId: "",
   order: 0,
-  siteIds: [],
+  siteId: "",
 };
 
 export const BLANK_PLAN_FORM: BehaviorPlan = {
   targetBehavior: "",
   behaviorDefinition: "",
   functionsOfBehavior: [],
-  replacementBehavior: "",
+  replacementBehaviors: [],
   antecedents: [],
   antecedentNotes: "",
   preventionStrategies: [],
@@ -90,6 +94,9 @@ export const BLANK_PLAN_FORM: BehaviorPlan = {
   extinguishStrategies: [],
   studentId: "",
   organizationId: "",
+  measureMethod: "",
+  frequencyDenominator: "Hour",
+  frequencyNumerator: 0,
 };
 
 export const BLANK_STRATEGY_FORM: Strategy = {
@@ -102,6 +109,8 @@ export const BLANK_STRATEGY_FORM: Strategy = {
   organizationId: "",
   authorId: "",
   type: "EXTINGUISH",
+  functionsOfBehavior: [],
+  toolTip: "",
 };
 
 export const BLANK_FUNCTION_SURVEY_QUESTION_FORM: FunctionSurveyQuestion = {
@@ -117,4 +126,17 @@ export const BLANK_FUNCTION_SURVEY_RESULT_FORM: FunctionSurveyResult = {
   behaviorId: "",
   descriptionOfBehavior: "",
   responses: {},
+};
+
+export const BLANK_ORGANIZATTION_FORM = {
+  name: "",
+  avatar: "",
+  description: "",
+  states: [],
+  primaryPhone: "",
+  primaryEmail: "",
+  primaryColor: "#ffc032",
+  secondaryColor: "#333",
+  primaryTextColor: "#222",
+  secondaryTextColor: "#fff",
 };

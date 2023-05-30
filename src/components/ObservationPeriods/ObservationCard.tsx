@@ -150,7 +150,7 @@ function ObservationCard({ observation }: Props) {
       <DeleteDialog
         open={deleteOpen}
         setOpen={setDeleteOpen}
-        message={"Are you sure you want to delete this Observation? This can not be undone."}
+        message={"Are you sure you want to delete this Observation? This cannot be undone."}
         collection="observations"
         id={observation.id}
         setReset={setObservationsReset}

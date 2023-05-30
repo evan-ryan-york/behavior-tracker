@@ -98,7 +98,7 @@ function FunctionSurveyQuestionsContainer() {
         <DeleteDialog
           open={deleteOpen}
           setOpen={setDeleteOpen}
-          message={"Are you sure you want to delete this Survey Question? This can not be undone."}
+          message={"Are you sure you want to delete this Survey Question? This cannot be undone."}
           collection="functionSurveyQuestions"
           id={deleteId}
           setReset={setFunctionSurveyQuestionsReset}

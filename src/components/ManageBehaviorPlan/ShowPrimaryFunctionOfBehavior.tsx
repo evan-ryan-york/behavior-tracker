@@ -1,12 +1,16 @@
-import { Avatar, Chip, Grid, Typography } from "@mui/material";
+import { Avatar, Box, Chip, Grid, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import { FUNCTIONS_OF_BEHAVIOR } from "../../libraries/objects";
+import { FUNCTIONS_OF_BEHAVIOR, FUNCTION_SURVEY_OPTIONS } from "../../libraries/objects";
 import { antecedentsAtom, antecedentsObjAtom } from "../../recoil/antecedentsAtoms";
 import { consequencesObjAtom } from "../../recoil/consequencesAtoms";
 import { observationsGroupedByBehaviorAtom } from "../../recoil/observationAtoms";
 import { organizationAtom } from "../../recoil/organizationAtoms";
 import { BehaviorPlan } from "../../types/types";
+import {
+  filteredSurveysByDateAtom,
+  functionSurveyQuestionsAtom,
+} from "../../recoil/functionSurveyAtoms";
 
 type FunctionsOfBehaviorForDisplay = {
   label: string;
@@ -26,12 +30,21 @@ function ShowPrimaryFunctionOfBehavior({ behaviorId, setPlanForm }: Props) {
   const antecedents = useRecoilValue(antecedentsAtom);
   const antecedentsObj = useRecoilValue(antecedentsObjAtom);
   const consequencesObj = useRecoilValue(consequencesObjAtom);
+  const filteredSurveyResults = useRecoilValue(filteredSurveysByDateAtom);
+  const surveyQuestions = useRecoilValue(functionSurveyQuestionsAtom);
   const [functionsOfBehaviorForDisplay, setFunctionsOfBehaviorForDisplay] = useState<
     FunctionsOfBehaviorForDisplay[]
   >([]);
 
   useEffect(() => {
-    if (!observationsGroupedByBehavior || !antecedentsObj || !consequencesObj) return;
+    if (
+      !observationsGroupedByBehavior ||
+      !antecedentsObj ||
+      !consequencesObj ||
+      !filteredSurveyResults ||
+      !surveyQuestions
+    )
+      return;
     if (observationsGroupedByBehavior[behaviorId]) {
       const tempArray: FunctionsOfBehaviorForDisplay[] = [];
       const antecedentIds = observationsGroupedByBehavior[behaviorId].antecedentIds;
@@ -53,6 +66,25 @@ function ShowPrimaryFunctionOfBehavior({ behaviorId, setPlanForm }: Props) {
             count++;
           }
         });
+        const filteredQuestions = surveyQuestions.filter(
+          (question) => question.functionOfBehavior === functionOfBehavior
+        );
+        filteredSurveyResults.forEach((result) => {
+          filteredQuestions.forEach((question) => {
+            if (!result.responses[question.id]) return;
+            const response = result.responses[question.id];
+            switch (response) {
+              case FUNCTION_SURVEY_OPTIONS.AGREE:
+                count++;
+                break;
+              case FUNCTION_SURVEY_OPTIONS.STRONGLY_AGREE:
+                count = count + 2;
+                break;
+              default:
+                break;
+            }
+          });
+        });
         if (count > 0) {
           tempArray.push({ label: functionOfBehavior, count: count });
         }
@@ -68,35 +100,35 @@ function ShowPrimaryFunctionOfBehavior({ behaviorId, setPlanForm }: Props) {
     behaviorId,
     antecedents,
     setPlanForm,
+    filteredSurveyResults,
+    surveyQuestions,
   ]);
 
   return (
     <>
-      <Grid container spacing={2} sx={{ mt: 2 }}>
-        <Grid item xs={12} sm={4}>
-          <Typography variant="h6">Primary Function of Behavior: </Typography>
-        </Grid>
-        <Grid item xs={12} sm={8}>
-          {organization &&
-            functionsOfBehaviorForDisplay.map((functionOfBehavior) => (
-              <Chip
-                key={functionOfBehavior.label}
-                label={functionOfBehavior.label}
-                sx={{ margin: 1 }}
-                avatar={
-                  <Avatar
-                    sx={{
-                      bgcolor: organization.secondaryColor,
-                      color: `${organization.secondaryTextColor} !important`,
-                    }}
-                  >
-                    {functionOfBehavior.count}
-                  </Avatar>
-                }
-              />
-            ))}
-        </Grid>
-      </Grid>
+      <Box sx={{padding: 2, backgroundColor: "#eee", mt: 2, borderRadius: 2}}>
+        <Typography sx={{ mt: 1 }} variant="h6">
+          Based on current data, the function(s) of this behavior is:
+        </Typography>
+        {organization &&
+          functionsOfBehaviorForDisplay.map((functionOfBehavior) => (
+            <Chip
+              key={functionOfBehavior.label}
+              label={functionOfBehavior.label}
+              sx={{ margin: 1 }}
+              avatar={
+                <Avatar
+                  sx={{
+                    bgcolor: organization.secondaryColor,
+                    color: `${organization.secondaryTextColor} !important`,
+                  }}
+                >
+                  {functionOfBehavior.count}
+                </Avatar>
+              }
+            />
+          ))}
+      </Box>
     </>
   );
 }

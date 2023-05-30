@@ -86,7 +86,7 @@ function EnrollStatusContainer() {
           open={deleteOpen}
           setOpen={setDeleteOpen}
           message={
-            "Are you sure you want to delete this Enrollment Status? This can not be undone and all students assigned this enrollment status will lose their enrollment status."
+            "Are you sure you want to delete this Enrollment Status? This cannot be undone and all students assigned this enrollment status will lose their enrollment status."
           }
           collection="enrollStatuses"
           id={deleteId}

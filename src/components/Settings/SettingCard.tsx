@@ -30,13 +30,10 @@ function SettingCard({ setting, setManageOpen, setDeleteOpen, setDeleteId }: Pro
           <Paper sx={{ padding: 2 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={6}>
-                <Typography variant="body1">{`Group: ${setting.name}`}</Typography>
+                <Typography variant="body1">{`Setting: ${setting.name}`}</Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Box sx={{ display: "flex", justifyContent: "end" }}>
-                  {setting.siteIds.map((siteId) => (
-                    <Chip key={siteId} label={sitesObj[siteId].name} />
-                  ))}
                   <Button
                     sx={{ mr: 2, ml: 2 }}
                     variant="outlined"

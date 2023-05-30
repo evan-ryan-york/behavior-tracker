@@ -44,7 +44,6 @@ function SurveyCard({
       {behaviorsObj && (
         <Paper
           sx={{
-            padding: 2,
             mt: 2,
             ":hover": {
               boxShadow: 3,
@@ -54,12 +53,12 @@ function SurveyCard({
         >
           <Box sx={{ cursor: "pointer", position: "relative" }} onClick={handleSurveyClick}>
             <IconButton
-              sx={{ position: "absolute", top: 4, right: 4, zIndex: 1000 }}
+              sx={{ position: "absolute", top: 2, right: 2, zIndex: 1000 }}
               onClick={handleDeleteClick}
             >
               <DeleteForeverIcon color="error" />
             </IconButton>
-            <Grid container spacing={1}>
+            <Grid container spacing={1} sx={{padding: 2}}>
               <Grid item xs={12} sm={12}>
                 <Typography variant="h6">{`Target Behavior: ${
                   behaviorsObj[surveyResult.behaviorId].label

@@ -81,7 +81,7 @@ function BehaviorsContainer() {
         <DeleteDialog
           open={deleteOpen}
           setOpen={setDeleteOpen}
-          message={"Are you sure you want to delete this behavior? This can not be undone."}
+          message={"Are you sure you want to delete this behavior? This cannot be undone."}
           collection="behaviors"
           id={deleteId}
           setReset={setBehaviorsReset}

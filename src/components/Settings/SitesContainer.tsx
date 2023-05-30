@@ -8,7 +8,7 @@ import { updateDragArray } from "../../libraries/functions";
 import useUpdateDoc from "../../hooks/useUpdateDoc";
 import { sitesAtom, sitesResetAtom } from "../../recoil/sitesAtoms";
 import SiteCard from "./SiteCard";
-import ManageSite from "./MagageSite";
+import ManageSite from "./ManageSite";
 
 function SitesContainer() {
   const sites = useRecoilValue(sitesAtom);
@@ -81,7 +81,7 @@ function SitesContainer() {
         <DeleteDialog
           open={deleteOpen}
           setOpen={setDeleteOpen}
-          message={"Are you sure you want to delete this site? This can not be undone."}
+          message={"Are you sure you want to delete this site? This cannot be undone."}
           collection="sites"
           id={deleteId}
           setReset={setSitesReset}

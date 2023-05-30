@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
 import { Box, Typography, Button, Chip, Avatar } from "@mui/material";
-import { ObservationPeriod, ObservationRecord } from "../../types/types";
+import { ObservationPeriodRecord, ObservationRecord } from "../../types/types";
 import ObservationPeriodDelete from "./ObservationPeriodDelete";
 import { getDifferenceForDisplay } from "../../libraries/functions";
 import { behaviorsAtom } from "../../recoil/behaviorsAtoms";
-import { useRecoilValue } from "recoil";
-import ObservationPeriodEdit from "./ObservationPeriodEdit";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  manageObservationOpenAtom,
+  manageObservationPeriodOpenAtom,
+  observationPeriodForEditAtom,
+} from "../../recoil/observationAtoms";
 
 type Props = {
   filteredObservations: ObservationRecord[];
-  observationPeriod: ObservationPeriod;
+  observationPeriod: ObservationPeriodRecord;
 };
 
 type BehaviorCounter = {
@@ -19,14 +23,13 @@ type BehaviorCounter = {
 };
 
 function ObservationPeriodInfoBar({ filteredObservations, observationPeriod }: Props) {
+  const setManageObservationOpen = useSetRecoilState(manageObservationOpenAtom);
+  const setManageObservationPeriodOpen = useSetRecoilState(manageObservationPeriodOpenAtom);
+  const setObservationPeriodForEdit = useSetRecoilState(observationPeriodForEditAtom);
   const behaviors = useRecoilValue(behaviorsAtom);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
   const deleteObservationPeriod = () => {
     setDeleteOpen(true);
-  };
-  const editObservationPeriod = () => {
-    setEditOpen(true);
   };
   const [behaviorCounters, setBehaviorCounters] = useState<BehaviorCounter[]>([]);
 
@@ -56,6 +59,15 @@ function ObservationPeriodInfoBar({ filteredObservations, observationPeriod }: P
   const difference = observationPeriod.endTime - observationPeriod.startTime;
   const differenceForDisplay = getDifferenceForDisplay(difference);
 
+  const handleEditObservationPeriodClick = () => {
+    setObservationPeriodForEdit(observationPeriod);
+    setManageObservationPeriodOpen(true);
+  };
+
+  const handleNewObservationClick = () => {
+    setManageObservationOpen(true);
+  };
+
   return (
     <>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -65,7 +77,7 @@ function ObservationPeriodInfoBar({ filteredObservations, observationPeriod }: P
             sx={{ mr: 2 }}
             variant="contained"
             color="secondary"
-            onClick={editObservationPeriod}
+            onClick={handleEditObservationPeriodClick}
           >
             Edit Observation Session
           </Button>
@@ -87,16 +99,18 @@ function ObservationPeriodInfoBar({ filteredObservations, observationPeriod }: P
           />
         ))}
       </Box>
+      <Box sx={{ mt: 2 }}>
+        <Button variant="contained" sx={{ padding: 2 }} onClick={handleNewObservationClick}>
+          New Observation
+        </Button>
+      </Box>
+      <Typography sx={{ mt: 2 }}>
+        <b>Existing Observations In This Period:</b>
+      </Typography>
       <ObservationPeriodDelete
         observationPeriod={observationPeriod}
         open={deleteOpen}
         setOpen={setDeleteOpen}
-        filteredObservations={filteredObservations}
-      />
-      <ObservationPeriodEdit
-        observationPeriod={observationPeriod}
-        open={editOpen}
-        setOpen={setEditOpen}
         filteredObservations={filteredObservations}
       />
     </>
