@@ -48,7 +48,6 @@ function ReplacementBehaviors({ planForm, setPlanForm }: Props) {
   const [indexToDelete, setIndexToDelete] = useState<number | undefined>(undefined);
 
   useEffect(() => {
-    console.log(replacementBehaviors);
     setFilteredReplacementBehaviors(replacementBehaviors);
   }, [replacementBehaviors]);
 
@@ -80,7 +79,6 @@ function ReplacementBehaviors({ planForm, setPlanForm }: Props) {
 
   const handlePreviewClick = () => {
     setPreviewOpen(true);
-    console.log("Preview Open");
   };
   return (
     <>

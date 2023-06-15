@@ -60,13 +60,7 @@ function DataSelectDialog({ open, setOpen }: Props) {
                 <DateRangePicker
                   value={dateRange}
                   onChange={handleChange}
-                  renderInput={(startProps, endProps) => (
-                    <React.Fragment>
-                      <TextField {...startProps} />
-                      <Box sx={{ mx: 2 }}> to </Box>
-                      <TextField {...endProps} />
-                    </React.Fragment>
-                  )}
+                  slotProps={{ fieldSeparator: { children: "to" } }}
                 />
               </LocalizationProvider>
             </Box>

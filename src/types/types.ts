@@ -70,6 +70,7 @@ export type Student = {
   siteIds: FIREBASE_ID[];
   groupIds: FIREBASE_ID[];
   avatar: string;
+  activeBehaviorPlan: FIREBASE_ID | null;
 };
 
 export type StudentRecord = Student & BaseRecord;
@@ -206,7 +207,7 @@ export type BehaviorPlan = {
   studentId: FIREBASE_ID;
   organizationId: FIREBASE_ID;
   frequencyNumerator: number;
-  frequencyDenominator: "Day" | "Hour";
+  frequencyDenominator: "Day" | "Hour" | "Week";
   measureMethod: "Frequency" | "Interval" | "";
 };
 
@@ -283,3 +284,10 @@ export type Permission = {
 };
 
 export type PermissionRecord = Permission & BaseRecord;
+
+export type WeekObj = {
+  startDate: string;
+  endDate: string;
+  weekNumber: number;
+  incidentsPerHour: number;
+};

@@ -7,6 +7,7 @@ import {
   Button,
   Typography,
   TextField,
+  Alert,
 } from "@mui/material";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ObservationPeriod } from "../../types/types";
@@ -25,6 +26,8 @@ import {
 
 function ManageObservationPeriod() {
   const [open, setOpen] = useRecoilState(manageObservationPeriodOpenAtom);
+  const [mode, setMode] = useState<"New" | "Edit">("New");
+  const [error, setError] = useState<string | null>(null);
   const observationPeriod = useRecoilValue(observationPeriodForEditAtom);
   const { sendRequest: updateRTDoc } = useUpdateRTDoc();
   const { sendRequest: addRTDoc } = useAddRTDoc();
@@ -46,6 +49,7 @@ function ManageObservationPeriod() {
         endTime: observationPeriod.endTime,
         label: observationPeriod.label,
       });
+      setMode("Edit");
     } else {
       setObservationPeriodForm({
         studentId: selectedStudent.id,
@@ -53,10 +57,31 @@ function ManageObservationPeriod() {
         authorId: loggedInStaff.id,
         startTime: Date.now(),
         endTime: Date.now(),
-        label: "Observation Period",
+        label: "Observation Session",
       });
+      setMode("New");
     }
   }, [selectedStudent, organization, loggedInStaff, observationPeriod]);
+
+  useEffect(() => {
+    if (!observationPeriodForm) return;
+    const { startTime, endTime } = observationPeriodForm;
+    if (startTime === 0) {
+      setError("Please select a start date");
+    } else if (endTime === 0) {
+      setError("Please select and end date");
+    } else if (startTime > endTime) {
+      setError(
+        "Your start time is set after your end time. An observation session start time must be before it's end time."
+      );
+    } else if (endTime - startTime > 86399999) {
+      setError(
+        "An observation session can not last more than a day. Please create a unique observation session for each period of time that you observe a child."
+      );
+    } else {
+      setError(null);
+    }
+  }, [observationPeriodForm]);
 
   const handleClose = () => {
     setOpen(false);
@@ -103,34 +128,39 @@ function ManageObservationPeriod() {
     <>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
         <DialogTitle sx={{ fontSize: 44, textAlign: "center" }}>
-          Edit Observation Period
+          {`${mode} Observation Session`}
         </DialogTitle>
         {observationPeriodForm && (
           <DialogContent>
-            <Typography>Observation Period Label</Typography>
+            <Typography>Observation Session Label</Typography>
             <TextField fullWidth value={observationPeriodForm.label} onChange={handleLabelChange} />
-            <Typography sx={{ mt: 2 }}>Observation Period Start Time</Typography>
+            <Typography sx={{ mt: 2 }}>Observation Session Start Time</Typography>
             <LocalizationProvider dateAdapter={AdapterLuxon}>
               <DateTimePicker
                 label="Start Time"
                 value={DateTime.fromMillis(observationPeriodForm.startTime)}
                 onChange={handleStartTimeChange}
-                renderInput={(params) => <TextField sx={{ mt: 1 }} fullWidth {...params} />}
+                slotProps={{ textField: { variant: "outlined", sx: { mt: 2 }, fullWidth: true } }}
               />
             </LocalizationProvider>
-            <Typography sx={{ mt: 2 }}>Observation Period End Time</Typography>
+            <Typography sx={{ mt: 2 }}>Observation Session End Time</Typography>
             <LocalizationProvider dateAdapter={AdapterLuxon}>
               <DateTimePicker
                 label="End Time"
                 value={DateTime.fromMillis(observationPeriodForm.endTime)}
                 onChange={handleEndTimeChange}
-                renderInput={(params) => <TextField sx={{ mt: 1 }} fullWidth {...params} />}
+                slotProps={{ textField: { variant: "outlined", sx: { mt: 2 }, fullWidth: true } }}
               />
             </LocalizationProvider>
+            {error && (
+              <Alert sx={{ mt: 2 }} severity="error">
+                {error}
+              </Alert>
+            )}
           </DialogContent>
         )}
         <DialogActions>
-          <Button color="secondary" onClick={handleSave}>
+          <Button disabled={Boolean(error)} color="secondary" onClick={handleSave}>
             Save
           </Button>
           <Button onClick={handleClose}>Cancel</Button>

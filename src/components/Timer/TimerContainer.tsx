@@ -99,7 +99,7 @@ const TimerContainer = () => {
                 sx={{ height: "100%" }}
                 onClick={handleStartClick}
               >
-                Start Timed Observation Period
+                Start Timed Observation Session
               </Button>
             ) : (
               <Button

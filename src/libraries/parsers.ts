@@ -19,7 +19,6 @@ import {
   PermissionRecord,
   LeadRecord,
 } from "../types/types";
-import { FUNCTIONS_OF_BEHAVIOR } from "./objects";
 
 export const parseStaffResponse = (response: StaffRecord[]): StaffRecord[] =>
   response.map((staff: StaffRecord) => ({
@@ -51,6 +50,7 @@ export const parseStudentResponse = (response: StudentRecord[]): StudentRecord[]
     avatar: record?.avatar ?? "",
     birthday: record?.birthday ?? "",
     localId: record?.localId ?? "",
+    activeBehaviorPlan: record?.activeBehaviorPlan ?? null,
   }));
 
 export const parseAntecedentResponse = (response: AntecedentRecord[]): AntecedentRecord[] =>

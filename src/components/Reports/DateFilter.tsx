@@ -17,13 +17,7 @@ export default function DateFilter() {
         onChange={(dateRange: any) => {
           setFilters({ ...filters, dateRange });
         }}
-        renderInput={(startProps, endProps) => (
-          <React.Fragment>
-            <TextField {...startProps} />
-            <Box sx={{ mx: 2 }}> to </Box>
-            <TextField {...endProps} />
-          </React.Fragment>
-        )}
+        slotProps={{ fieldSeparator: { children: "to" } }}
       />
     </LocalizationProvider>
   );

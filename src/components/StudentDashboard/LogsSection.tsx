@@ -30,7 +30,7 @@ function LogsSection() {
               justifyContent: "space-between",
             }}
           >
-            <Typography variant="h4">ABC Observation Periods</Typography>
+            <Typography variant="h4">ABC Data</Typography>
             <Button variant="contained" color="secondary" onClick={handlePeriodDialogClick}>
               Manage
             </Button>

@@ -8,8 +8,10 @@ import {
   PermissionRecord,
   StaffRecord,
   StudentRecord,
+  WeekObj,
 } from "../types/types";
 import ReactQuill from "react-quill";
+import { DateTime } from "luxon";
 
 type validateStageProps = {
   planForm: BehaviorPlan;
@@ -330,4 +332,25 @@ export const createFrequencyMessage = ({
       instances * (1 / (instances / hours))
     )} times every ${Math.round(instances / hours)} hours.`;
   }
+};
+
+export const createWeeksObj = (behaviorDataDateRange: [DateTime | null, DateTime | null]) => {
+  const MILLI_IN_WEEK = 604800000;
+  if (!behaviorDataDateRange) return [];
+  const [start, end] = behaviorDataDateRange;
+  if (!start || !end) return [];
+  const startWeekNumber = start.plus(0).weekNumber;
+  const endWeekNumber = end.plus(0).weekNumber;
+  if (startWeekNumber > endWeekNumber) return [];
+  const weeksObj: WeekObj[] = [];
+  for (let i = startWeekNumber; i <= endWeekNumber; i++) {
+    const newDt = start.plus((i - startWeekNumber) * MILLI_IN_WEEK);
+    weeksObj.push({
+      startDate: newDt.startOf("week").toFormat("D"),
+      endDate: newDt.endOf("week").toFormat("D"),
+      weekNumber: i,
+      incidentsPerHour: 0,
+    });
+  }
+  return weeksObj;
 };

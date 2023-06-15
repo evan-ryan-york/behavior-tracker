@@ -128,9 +128,9 @@ const ManageStudent = ({ open, setOpen }: Props) => {
           <DialogContentText>Select Birthday:</DialogContentText>
           <LocalizationProvider dateAdapter={AdapterLuxon}>
             <DatePicker
-              value={studentForm.birthday}
+              value={DateTime.fromFormat("D", studentForm.birthday)}
               onChange={handleBirthdayChange}
-              renderInput={(params) => <TextField {...params} fullWidth />}
+              slotProps={{ textField: { variant: "outlined", sx: { mt: 2 }, fullWidth: true } }}
             />
           </LocalizationProvider>
         </Box>

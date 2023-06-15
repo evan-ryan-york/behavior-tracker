@@ -88,7 +88,7 @@ function ObservationPeriodInfoBar({ filteredObservations, observationPeriod }: P
       </Box>
       <Box>
         <Typography sx={{ mb: 1 }}>
-          <b>Behavior Count During Observation Period:</b>
+          <b>Behavior Count During Observation Session:</b>
         </Typography>
         {behaviorCounters.map((behaviorCounter) => (
           <Chip
@@ -105,7 +105,7 @@ function ObservationPeriodInfoBar({ filteredObservations, observationPeriod }: P
         </Button>
       </Box>
       <Typography sx={{ mt: 2 }}>
-        <b>Existing Observations In This Period:</b>
+        <b>Existing Observations In This Session:</b>
       </Typography>
       <ObservationPeriodDelete
         observationPeriod={observationPeriod}

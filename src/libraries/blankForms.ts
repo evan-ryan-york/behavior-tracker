@@ -66,6 +66,7 @@ export const BLANK_STUDENT_FORM = {
   localId: "",
   avatar: "",
   organizationId: "",
+  activeBehaviorPlan: null,
 };
 
 export const BLANK_ENROLL_STATUS_FORM = {

@@ -31,7 +31,7 @@ function ObservationPeriodDialog({ open, setOpen }: Props) {
     <>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
         <Box sx={{ backgroundColor: "#fafafa", padding: 1 }}>
-          <DialogTitle sx={{ fontSize: 44 }}>Observation Periods</DialogTitle>
+          <DialogTitle sx={{ fontSize: 44 }}>Observation Session</DialogTitle>
 
           <DialogContent>
             <InstructionsAccordion />
@@ -47,7 +47,7 @@ function ObservationPeriodDialog({ open, setOpen }: Props) {
               sx={{ padding: 2 }}
               onClick={handleNewObservationPeriodClick}
             >
-              New Observation Period
+              New Observation Session
             </Button>
           </DialogActions>
         </Box>

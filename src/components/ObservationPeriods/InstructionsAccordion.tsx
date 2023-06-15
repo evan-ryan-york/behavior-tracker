@@ -10,25 +10,25 @@ function InstructionsAccordion() {
       </AccordionSummary>
       <AccordionDetails>
         <Typography>
-          Each observation must happen during an observation period. The observation period helps
+          Each observation must happen during an observation session. The observation session helps
           people understand how frequently a behavior is happening. For example, a child who has 3
           observations of eloping over the course of a 7 hour school day is very different than a
           child who has 3 observations of eloping during a 45 minute math lesson.
         </Typography>
         <Typography sx={{ mt: 2 }} variant="h5">
-          To Create an Observation Period
+          To Create an Observation Session
         </Typography>
         <Typography>
-          To create an observation period, you can either click{" "}
+          To create an observation session, you can either click{" "}
           {
             <Button color="secondary" variant="contained">
-              New Observation Period
+              New Observation Session
             </Button>
           }{" "}
           in the lower right corner, or you can start a timed session using the{" "}
           {
             <Button color="secondary" variant="contained">
-              Start Timed Observation Period
+              Start Timed Observation Session
             </Button>
           }{" "}
           button below.
@@ -37,7 +37,7 @@ function InstructionsAccordion() {
           To Create an Observation
         </Typography>
         <Typography>
-          To add a new observation to an observation period, expand the observation period you wish
+          To add a new observation to an observation session, expand the observation session you wish
           to add an observation to and then select{" "}
           {
             <Button color="primary" variant="contained">

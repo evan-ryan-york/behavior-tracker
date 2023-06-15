@@ -64,7 +64,7 @@ const useTimer = (initialState: number = 0) => {
       authorId: authorId,
       startTime: Date.now(),
       endTime: 0,
-      label: "Observation Period",
+      label: "Observation Session",
     };
     const periodId = await addToRTDB({
       studentId,

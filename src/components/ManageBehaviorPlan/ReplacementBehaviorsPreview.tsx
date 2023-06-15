@@ -7,6 +7,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Box,
 } from "@mui/material";
 import { BehaviorPlan, ReplacementBehaviorRecord } from "../../types/types";
 import parse from "html-react-parser";
@@ -67,22 +68,24 @@ function ReplacementBehaviorsPreview({
     <>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
         <DialogTitle sx={{ fontSize: 44, textAlign: "center" }}>Select Strategy</DialogTitle>
-        <DialogContent>
-          {filteredReplacementBehaviors.map((replacementBehavior) => (
-            <Card sx={{ mt: 2 }} key={replacementBehavior.id}>
-              <CardContent>
-                {parse(showWithReplacedKeywords(replacementBehavior.content))}
-              </CardContent>
-              <CardActions sx={{ display: "flex", justifyContent: "right" }}>
-                <Button
-                  onClick={() => selectStrategyHandle(replacementBehavior.content)}
-                  variant="outlined"
-                >
-                  Use Behavior
-                </Button>
-              </CardActions>
-            </Card>
-          ))}
+        <DialogContent sx={{ padding: 4 }}>
+          <Box sx={{ borderRadius: 2, backgroundColor: "#efefef", pl: 2, pr: 2, pb: 2, pt: 1 }}>
+            {filteredReplacementBehaviors.map((replacementBehavior) => (
+              <Card sx={{ mt: 2 }} key={replacementBehavior.id}>
+                <CardContent>
+                  {parse(showWithReplacedKeywords(replacementBehavior.content))}
+                </CardContent>
+                <CardActions sx={{ display: "flex", justifyContent: "right" }}>
+                  <Button
+                    onClick={() => selectStrategyHandle(replacementBehavior.content)}
+                    variant="outlined"
+                  >
+                    Use Behavior
+                  </Button>
+                </CardActions>
+              </Card>
+            ))}
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

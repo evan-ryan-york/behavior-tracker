@@ -6,6 +6,7 @@ import FilesSection from "./FilesSection";
 import BehaviorPlansSection from "./BehaviorPlansSection";
 import ProfileSection from "./ProfileSection";
 import LogsSection from "./LogsSection";
+import GoalTrackingSection from "./GoalTrackingSection";
 
 function StudentDashboardContainer() {
   return (
@@ -18,6 +19,11 @@ function StudentDashboardContainer() {
           </Grid>
           <Grid item xs={12} sm={12} md={8}>
             <BehaviorPlansSection />
+          </Grid>
+        </Grid>
+        <Grid container spacing={2} sx={{ mt: 1 }}>
+          <Grid item xs={12} sm={12} md={12}>
+            <GoalTrackingSection />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ mt: 1 }}>

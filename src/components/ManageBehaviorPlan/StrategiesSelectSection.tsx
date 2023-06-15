@@ -24,7 +24,7 @@ function StrategiesSelectSection({ setOpen, behaviorPlanStage, setBehaviorPlanSt
 
   return (
     <>
-      {behaviorPlanStage > 3 && (
+      {behaviorPlanStage > 0 && (
         <>
           <Typography sx={{ mt: 4 }} variant="h4">
             Stage 2: Strategies
@@ -34,10 +34,10 @@ function StrategiesSelectSection({ setOpen, behaviorPlanStage, setBehaviorPlanSt
             variant="h5"
           >{`Now We're Going To Select Strategies To Use To Change ${selectedStudent?.firstName} Behavior`}</Typography>
           <PreventionStrategies planForm={planForm} setPlanForm={setPlanForm} />
-          {behaviorPlanStage > 3 && (
+          {behaviorPlanStage > 0 && (
             <ReinforcementStrategies planForm={planForm} setPlanForm={setPlanForm} />
           )}
-          {behaviorPlanStage > 3 && (
+          {behaviorPlanStage > 0 && (
             <ExtinguishStrategies planForm={planForm} setPlanForm={setPlanForm} />
           )}
         </>

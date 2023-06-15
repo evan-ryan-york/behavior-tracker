@@ -54,8 +54,8 @@ function ObservationPeriodDelete({
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
         <DialogTitle sx={{ fontSize: 44, textAlign: "center" }}>Delete</DialogTitle>
         <DialogContent>
-          Are you sure you want to delete this Observation Period? This will delete all observations
-          in the given observation period too.
+          Are you sure you want to delete this Observation Session? This will delete all observations
+          in the given observation session too.
         </DialogContent>
         <DialogActions>
           <Button color="error" onClick={handleDelete}>
