@@ -10,8 +10,8 @@ import useGetDocs from "../hooks/useGetDocs";
 import { auth, provider } from "../firebase";
 import { useResetRecoilState, useSetRecoilState } from "recoil";
 import { loggedInStaffAtom } from "../recoil/staffAtoms";
-import { LeadRecord, StaffRecord } from "../types/types";
-import { parseLeadsResponse, parseStaffResponse } from "../libraries/parsers";
+import { StaffRecord } from "../types/types";
+import { parseStaffResponse } from "../libraries/parsers";
 import { organizationAtom } from "../recoil/organizationAtoms";
 
 type EmailPasswordProps = { email: string; password: string };
@@ -63,7 +63,6 @@ const AuthProvider = ({ children }: Props) => {
         config: { where: ["email", "==", user.email] },
       });
       const parsedResults = parseStaffResponse(matchingStaff);
-      console.log(parsedResults);
       if (parsedResults.length === 0) {
         console.log("No Matching User");
       } else if (parsedResults.length > 1) {
@@ -80,7 +79,6 @@ const AuthProvider = ({ children }: Props) => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
         // ...
       })
       .catch((error) => {
@@ -128,20 +126,16 @@ const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user: FirebaseUser | null) => {
-      console.log("On Auth State Changed Fired");
       if (user) {
-        console.log("The logged in user is: ", user);
         setCurrentAuthUser(user);
         const staffRecord = await getStaffRecord(user);
         if (staffRecord) {
-          console.log(staffRecord);
           setLoggedInStaff(staffRecord);
         } else {
           auth.signOut();
         }
       } else {
         setCurrentAuthUser(null);
-        console.log("No Logged In User");
       }
       setLoading(false);
     });

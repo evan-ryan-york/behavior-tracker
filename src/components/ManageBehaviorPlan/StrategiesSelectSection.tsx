@@ -1,12 +1,12 @@
 import { Typography } from "@mui/material";
-import PreventionStrategies from "./PreventionStrategies";
-import ReinforcementStrategies from "./ReinforcementStrategies";
-import ExtinguishStrategies from "./ExtinguishStrategies";
 import { selectedStudentAtom } from "../../recoil/studentAtoms";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { useEffect, useState } from "react";
 import { validateCurrentStage } from "../../libraries/functions";
 import { behaviorPlanFormAtom } from "../../recoil/behaviorPlansAtoms";
+import LibrarySection from "./LibrarySection";
+import { strategiesAtom } from "../../recoil/strategiesAtoms";
+import { LibraryItemRecord } from "../../types/types";
 
 type Props = {
   setOpen: (value: boolean) => void;
@@ -16,11 +16,21 @@ type Props = {
 
 function StrategiesSelectSection({ setOpen, behaviorPlanStage, setBehaviorPlanStage }: Props) {
   const selectedStudent = useRecoilValue(selectedStudentAtom);
-  const [planForm, setPlanForm] = useRecoilState(behaviorPlanFormAtom);
+  const planForm = useRecoilValue(behaviorPlanFormAtom);
+  const strategies = useRecoilValue(strategiesAtom);
+  const [preventionStrategies, setPreventionStrategies] = useState<LibraryItemRecord[]>([]);
+  const [extinguishStrategies, setExtinguishStrategies] = useState<LibraryItemRecord[]>([]);
+  const [reinforcementStrategies, setReinforicementStrategies] = useState<LibraryItemRecord[]>([]);
 
   useEffect(() => {
     validateCurrentStage({ planForm, setBehaviorPlanStage });
   }, [planForm, setBehaviorPlanStage]);
+
+  useEffect(() => {
+    setPreventionStrategies(strategies.filter((strategy) => strategy.type === "PREVENTION"));
+    setExtinguishStrategies(strategies.filter((strategy) => strategy.type === "EXTINGUISH"));
+    setReinforicementStrategies(strategies.filter((strategy) => strategy.type === "REINFORCE"));
+  }, [strategies]);
 
   return (
     <>
@@ -33,12 +43,24 @@ function StrategiesSelectSection({ setOpen, behaviorPlanStage, setBehaviorPlanSt
             sx={{ mt: 2 }}
             variant="h5"
           >{`Now We're Going To Select Strategies To Use To Change ${selectedStudent?.firstName} Behavior`}</Typography>
-          <PreventionStrategies planForm={planForm} setPlanForm={setPlanForm} />
+          <LibrarySection
+            title="Prevention Strategies"
+            library="preventionStrategies"
+            libraryItems={preventionStrategies}
+          />
           {behaviorPlanStage > 0 && (
-            <ReinforcementStrategies planForm={planForm} setPlanForm={setPlanForm} />
+            <LibrarySection
+              title="Reinforcement Strategies"
+              library="reinforcementStrategies"
+              libraryItems={reinforcementStrategies}
+            />
           )}
           {behaviorPlanStage > 0 && (
-            <ExtinguishStrategies planForm={planForm} setPlanForm={setPlanForm} />
+            <LibrarySection
+              title="Extinguish Strategies"
+              library="extinguishStrategies"
+              libraryItems={extinguishStrategies}
+            />
           )}
         </>
       )}

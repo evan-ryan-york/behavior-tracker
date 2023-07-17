@@ -41,11 +41,10 @@ const GoalTrackingSection = () => {
     const weeksArray = calculateGoalFrequency(tempSelectedBehaviorPlan.targetBehavior);
     const tempArray: ChartData[] = [];
     weeksArray.forEach((week) => {
-      console.log(week.incidentsPerHour * 8);
       tempArray.push({
         name: `${week.startDate} - ${week.endDate}`,
         Goal: goal,
-        ["Incidents Per Day"]: Math.round(week.incidentsPerHour * 8),
+        "Incidents Per Day": Math.round(week.incidentsPerHour * 8),
       });
     });
     setChartData(tempArray);

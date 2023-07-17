@@ -20,7 +20,6 @@ import {
   StudentFileRecord,
   ObservationPeriodRecord,
 } from "../types/types";
-import { behaviorsResetAtom } from "../recoil/behaviorsAtoms";
 import { behaviorPlansAtom, behaviorPlansResetAtom } from "../recoil/behaviorPlansAtoms";
 import {
   selectedStudentAtom,

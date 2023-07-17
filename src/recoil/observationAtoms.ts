@@ -45,7 +45,6 @@ const filterObservationsByPeriodsGetter = ({ get }: Props) => {
     const tempObservationsInPeriod = observations.filter(
       (observation) => observation.observationPeriodId === observationPeriod.id
     );
-    console.log(tempObservationsInPeriod);
     tempObservations.push(...tempObservationsInPeriod);
   });
   return tempObservations;

@@ -1,5 +1,5 @@
 import { Timestamp } from "firebase/firestore";
-import { BEHAVIOR_PLAN_STAGES } from "./objects";
+import { BEHAVIOR_PLAN_STAGES, FUNCTIONS_OF_BEHAVIOR } from "./objects";
 import {
   Behavior,
   BehaviorPlan,
@@ -150,27 +150,21 @@ export const validateCurrentStage = ({ planForm, setBehaviorPlanStage }: validat
   switch (true) {
     case planForm.targetBehavior.length < 1:
       setBehaviorPlanStage(BEHAVIOR_PLAN_STAGES.SELECT_BEHAVIOR);
-      console.log("Target Behavior Blank");
       break;
     case planForm.behaviorDefinition.length < 1:
       setBehaviorPlanStage(BEHAVIOR_PLAN_STAGES.DEFINE_BEHAVIOR);
-      console.log("Define Target Behavior Blank");
       break;
     case planForm.replacementBehaviors.length < 1:
       setBehaviorPlanStage(BEHAVIOR_PLAN_STAGES.SELECT_REPLACEMENT_BEHAVIOR);
-      console.log("Replacement Behavior Blank");
       break;
     case planForm.preventionStrategies.length < 1:
       setBehaviorPlanStage(BEHAVIOR_PLAN_STAGES.SELECT_PREVENTATIVE_STRATEGIES);
-      console.log("Replacement Behavior Blank");
       break;
     case planForm.reinforcementStrategies.length < 1:
       setBehaviorPlanStage(BEHAVIOR_PLAN_STAGES.SELECT_REINFORCEMENT_STRATEGIES);
-      console.log("Reinforcement Behavior Blank");
       break;
     case planForm.extinguishStrategies.length < 1:
       setBehaviorPlanStage(BEHAVIOR_PLAN_STAGES.SELECT_EXTINGUISH_STRATEGIES);
-      console.log("Extinguish Behavior Blank");
       break;
     default:
       setBehaviorPlanStage(BEHAVIOR_PLAN_STAGES.SUCCESS);
@@ -353,4 +347,50 @@ export const createWeeksObj = (behaviorDataDateRange: [DateTime | null, DateTime
     });
   }
   return weeksObj;
+};
+
+type FunctionsWithCount = {
+  label: string;
+  count: number;
+}[];
+
+export const selectFunctionsForFilter = (
+  length: number,
+  functionsWithCount: FunctionsWithCount
+) => {
+  const allFunctions = [
+    FUNCTIONS_OF_BEHAVIOR.ATTENTION,
+    FUNCTIONS_OF_BEHAVIOR.ACCESS,
+    FUNCTIONS_OF_BEHAVIOR.ESCAPE,
+    FUNCTIONS_OF_BEHAVIOR.SENSORY,
+  ];
+  if (length === 0) {
+    return allFunctions;
+  } else if (length === 1) {
+    return [functionsWithCount[0].label];
+  } else if (length === 2) {
+    const [first, second] = functionsWithCount;
+    return first.count > second.count ? [first.label] : [first.label, second.label];
+  } else if (length === 3) {
+    const [first, second, third] = functionsWithCount;
+    if (first.count > second.count) {
+      return [first.label];
+    } else if (second.count > third.count) {
+      return [first.label, second.label];
+    } else {
+      return [first.label, second.label, third.label];
+    }
+  } else if (length === 4) {
+    const [first, second, third, fourth] = functionsWithCount;
+    if (first.count > second.count) {
+      return [first.label];
+    } else if (second.count > third.count) {
+      return [first.label, second.label];
+    } else if (third.count > fourth.count) {
+      return [first.label, second.label, third.label];
+    } else {
+      return [first.label, second.label, third.label, fourth.label];
+    }
+  }
+  return allFunctions;
 };

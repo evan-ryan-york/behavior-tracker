@@ -1,6 +1,6 @@
 import { Box, Button, Chip, Divider, Paper, Typography } from "@mui/material";
 import React from "react";
-import { StrategyRecord } from "../../types/types";
+import { LibraryItemRecord } from "../../types/types";
 import parse from "html-react-parser";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { staffObjAtom } from "../../recoil/staffAtoms";
@@ -8,12 +8,10 @@ import { Timestamp } from "firebase/firestore";
 import { antecedentsObjAtom } from "../../recoil/antecedentsAtoms";
 import { consequencesObjAtom } from "../../recoil/consequencesAtoms";
 import { behaviorsObjAtom } from "../../recoil/behaviorsAtoms";
-import { replacementBehaviorsObjAtom } from "../../recoil/replacementBehaviorsAtoms";
 import { strategyFormAtom } from "../../recoil/strategiesAtoms";
-import { FUNCTIONS_OF_BEHAVIOR } from "../../libraries/objects";
 
 type Props = {
-  strategy: StrategyRecord;
+  strategy: LibraryItemRecord;
   manageOpen: boolean;
   setManageOpen: (value: boolean) => void;
   setDeleteOpen: (value: boolean) => void;
@@ -33,7 +31,6 @@ function StrategyCard({ strategy, manageOpen, setManageOpen, setDeleteOpen, setD
   const consequencesObj = useRecoilValue(consequencesObjAtom);
   const behaviorsObj = useRecoilValue(behaviorsObjAtom);
   const setStrategyForm = useSetRecoilState(strategyFormAtom);
-  const replacementBehaviorsObj = useRecoilValue(replacementBehaviorsObjAtom);
   const strategyType =
     strategy.type === "EXTINGUISH"
       ? "Extinguish Target Behavior Strategy"
@@ -76,7 +73,6 @@ function StrategyCard({ strategy, manageOpen, setManageOpen, setDeleteOpen, setD
         </Box>
       </Box>
       <Box>
-        <Typography variant="h5">{strategy.title}</Typography>
         <Box>{parse(strategy.content as string)}</Box>
         {antecedentObj && strategy.antecedentIds.length > 0 && (
           <>
@@ -123,11 +119,11 @@ function StrategyCard({ strategy, manageOpen, setManageOpen, setDeleteOpen, setD
             ))}
           </>
         )}
-        {behaviorsObj && strategy.targetBehaviorsIds.length > 0 && (
+        {behaviorsObj && strategy.targetBehaviorIds.length > 0 && (
           <>
             <Typography variant="h6">Target Behaviors</Typography>
             <Divider />
-            {strategy.targetBehaviorsIds.map((targetBehaviorId) => (
+            {strategy.targetBehaviorIds.map((targetBehaviorId) => (
               <Box component="span" key={targetBehaviorId}>
                 {behaviorsObj[targetBehaviorId] && (
                   <Chip

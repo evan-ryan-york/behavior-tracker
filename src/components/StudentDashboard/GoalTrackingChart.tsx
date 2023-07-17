@@ -23,7 +23,6 @@ type Props = {
 };
 
 const GoalTrackingChart = ({ data }: Props) => {
-  console.log(data);
   const organization = useRecoilValue(organizationAtom);
 
   return (

@@ -2,7 +2,7 @@ import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 import { Button, Dialog, DialogActions, DialogContent, Typography, TextField } from "@mui/material";
 import useUpdateDoc from "../../hooks/useUpdateDoc";
 import useAddDoc from "../../hooks/useAddDoc";
-import { BLANK_REPLACEMENT_BEHAVIOR_FORM } from "../../libraries/blankForms";
+import { BLANK_LIBRARY_ITEM_FORM } from "../../libraries/blankForms";
 import DialogTitle from "@mui/material/DialogTitle";
 import { loggedInStaffAtom } from "../../recoil/staffAtoms";
 import {
@@ -41,7 +41,7 @@ export default function ManageReplacementBehavior({ open, setOpen }: Props) {
 
   const handleClose = () => {
     setOpen(false);
-    setReplacementBehaviorForm(BLANK_REPLACEMENT_BEHAVIOR_FORM);
+    setReplacementBehaviorForm(BLANK_LIBRARY_ITEM_FORM);
   };
 
   const handleSave = async () => {
@@ -60,7 +60,7 @@ export default function ManageReplacementBehavior({ open, setOpen }: Props) {
       await addDoc({ col: "replacementBehaviors", data: formToSubmit });
     }
     handleClose();
-    setReplacementBehaviorForm(BLANK_REPLACEMENT_BEHAVIOR_FORM);
+    setReplacementBehaviorForm(BLANK_LIBRARY_ITEM_FORM);
     setReplacementBehaviorReset((pV) => !pV);
   };
 
@@ -72,14 +72,6 @@ export default function ManageReplacementBehavior({ open, setOpen }: Props) {
             "id" in replacementBehaviorForm ? "Edit" : "New"
           } Replacement Behavior`}</DialogTitle>
           <DialogContent>
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Replacement Behavior Title
-            </Typography>
-            <TextField
-              fullWidth
-              value={replacementBehaviorForm.title}
-              onChange={handleTitleChange}
-            />
             <Typography variant="h6" sx={{ mt: 2 }}>
               Replacement Behavior Description
             </Typography>

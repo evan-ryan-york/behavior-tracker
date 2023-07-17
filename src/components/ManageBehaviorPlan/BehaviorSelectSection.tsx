@@ -18,7 +18,8 @@ import { useEffect, useState } from "react";
 import { selectedStudentAtom } from "../../recoil/studentAtoms";
 import DataSelectDialog from "./DataSelectDialog";
 import { behaviorPlanFormAtom } from "../../recoil/behaviorPlansAtoms";
-import ReplacementBehaviors from "./ReplacementBehaviors";
+import LibrarySection from "./LibrarySection";
+import { replacementBehaviorsAtom } from "../../recoil/replacementBehaviorsAtoms";
 
 type Props = {
   setOpen: (value: boolean) => void;
@@ -37,6 +38,7 @@ function BehaviorSelectSection({
   const selectedStudent = useRecoilValue(selectedStudentAtom);
   const [planForm, setPlanForm] = useRecoilState(behaviorPlanFormAtom);
   const [sourceDataOpen, setSourceDataOpen] = useState(false);
+  const replacementBehaviors = useRecoilValue(replacementBehaviorsAtom);
 
   useEffect(() => {
     validateCurrentStage({ planForm, setBehaviorPlanStage });
@@ -96,15 +98,21 @@ function BehaviorSelectSection({
               fullWidth
               sx={{ mt: 1 }}
             />
-            <ShowPrimaryFunctionOfBehavior
-              behaviorId={planForm.targetBehavior}
-              setPlanForm={setPlanForm}
-            />
+            <Box sx={{ mt: 2 }}>
+              <ShowPrimaryFunctionOfBehavior
+                behaviorId={planForm.targetBehavior}
+                setPlanForm={setPlanForm}
+              />
+            </Box>
           </Box>
         )}
         {behaviorsObj && behaviorPlanStage > 1 && (
           <Box sx={{ mt: 2 }}>
-            <ReplacementBehaviors planForm={planForm} setPlanForm={setPlanForm} />
+            <LibrarySection
+              title="Replacement Behaviors"
+              library="replacementBehaviors"
+              libraryItems={replacementBehaviors}
+            />
           </Box>
         )}
       </Box>

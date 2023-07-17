@@ -8,7 +8,6 @@ import LoginForm from "./LoginForm";
 const LoginContainer = () => {
   const navigate = useNavigate();
   const { currentAuthUser, loading, signInWithGoogle } = useContext(AuthContext);
-  console.log(currentAuthUser)
 
   useEffect(() => {
     if (!loading && currentAuthUser) {

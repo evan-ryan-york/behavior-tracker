@@ -5,6 +5,7 @@ import { strategiesAtom, strategiesResetAtom } from "../../recoil/strategiesAtom
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import StrategyCard from "./StrategyCard";
 import DeleteDialog from "../shared/DeleteDialog";
+import StrategyUpload from "./StrategyUpload";
 
 function StrategiesContainer() {
   const [manageOpen, setManageOpen] = useState(false);
@@ -27,6 +28,7 @@ function StrategiesContainer() {
       >
         Add New Strategy
       </Button>
+      <StrategyUpload />
       <Box>
         {strategies &&
           strategies.map((strategy) => (

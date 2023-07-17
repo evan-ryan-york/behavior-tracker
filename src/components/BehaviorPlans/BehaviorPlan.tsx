@@ -1,11 +1,12 @@
-import { Avatar, Box, Chip, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { Avatar, Box, Chip, Typography } from "@mui/material";
 import parse from "html-react-parser";
 import { BehaviorPlanRecord } from "../../types/types";
 import { useRecoilValue } from "recoil";
 import { behaviorsObjAtom } from "../../recoil/behaviorsAtoms";
-import { replacementBehaviorsObjAtom } from "../../recoil/replacementBehaviorsAtoms";
 import { organizationAtom } from "../../recoil/organizationAtoms";
 import { selectedStudentAtom } from "../../recoil/studentAtoms";
+import { replacementBehaviorsAtom } from "../../recoil/replacementBehaviorsAtoms";
+import { strategiesAtom } from "../../recoil/strategiesAtoms";
 
 type Props = {
   selectedBehaviorPlan: BehaviorPlanRecord | null;
@@ -13,9 +14,10 @@ type Props = {
 
 function BehaviorPlan({ selectedBehaviorPlan }: Props) {
   const behaviorObj = useRecoilValue(behaviorsObjAtom);
-  const replacementBehaviorObj = useRecoilValue(replacementBehaviorsObjAtom);
   const organization = useRecoilValue(organizationAtom);
   const selectedStudent = useRecoilValue(selectedStudentAtom);
+  const replacementBehaviors = useRecoilValue(replacementBehaviorsAtom);
+  const strategies = useRecoilValue(strategiesAtom);
 
   return (
     <>
@@ -70,34 +72,56 @@ function BehaviorPlan({ selectedBehaviorPlan }: Props) {
               }
             />
           ))}
-          {replacementBehaviorObj && (
+          {
             <>
               <Typography sx={{ mt: 3 }} variant="h5">
                 Replacement Behaviors
               </Typography>
-              {selectedBehaviorPlan.replacementBehaviors.map((replacementBehavior) => (
-                <Box key={replacementBehavior as string}>{parse(replacementBehavior as string)}</Box>
+              {selectedBehaviorPlan.replacementBehaviors.map((replacementBehaviorId) => (
+                <Box key={replacementBehaviorId}>
+                  {parse(
+                    (replacementBehaviors.find(
+                      (replacementBehavior) => replacementBehavior.id === replacementBehaviorId
+                    )?.content as string) ?? ""
+                  )}
+                </Box>
               ))}
+              <Box>{parse(selectedBehaviorPlan.replacementBehaviorsNotes as string)}</Box>
             </>
-          )}
+          }
           <Typography sx={{ mt: 3 }} variant="h5">
             Strategies to Prevent the Target Behavior
           </Typography>
-          {selectedBehaviorPlan.preventionStrategies.map((strategy) => (
-            <Box key={strategy as string}>{parse(strategy as string)}</Box>
+          {selectedBehaviorPlan.preventionStrategies.map((strategyId) => (
+            <Box key={strategyId}>
+              {parse(
+                (strategies.find((strategy) => strategy.id === strategyId)?.content as string) ?? ""
+              )}
+            </Box>
           ))}
+          <Box>{parse(selectedBehaviorPlan.preventionStrategiesNotes as string)}</Box>
           <Typography sx={{ mt: 3 }} variant="h5">
             Strategies to Extinguish the Target Behavior
           </Typography>
-          {selectedBehaviorPlan.extinguishStrategies.map((strategy) => (
-            <Box key={strategy as string}>{parse(strategy as string)}</Box>
+          {selectedBehaviorPlan.extinguishStrategies.map((strategyId) => (
+            <Box key={strategyId}>
+              {parse(
+                (strategies.find((strategy) => strategy.id === strategyId)?.content as string) ?? ""
+              )}
+            </Box>
           ))}
+          <Box>{parse(selectedBehaviorPlan.extinguishStrategiesNotes as string)}</Box>
           <Typography sx={{ mt: 3 }} variant="h5">
             Strategies to Reinforce the Replacement Behavior
           </Typography>
-          {selectedBehaviorPlan.reinforcementStrategies.map((strategy) => (
-            <Box key={strategy as string}>{parse(strategy as string)}</Box>
+          {selectedBehaviorPlan.reinforcementStrategies.map((strategyId) => (
+            <Box key={strategyId}>
+              {parse(
+                (strategies.find((strategy) => strategy.id === strategyId)?.content as string) ?? ""
+              )}
+            </Box>
           ))}
+          <Box>{parse(selectedBehaviorPlan.reinforcementStrategiesNotes as string)}</Box>
           <Typography sx={{ mt: 3 }} variant="h5">
             The Behavior Plan Will Be Met When
           </Typography>

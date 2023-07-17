@@ -22,3 +22,8 @@ export const behaviorPlanFormAtom = atom<BehaviorPlan | BehaviorPlanRecord>({
   key: "behaviorPlanForm",
   default: BLANK_PLAN_FORM,
 });
+
+export const functionsWithCountAtom = atom<{ label: string; count: number }[]>({
+  key: "functionsWithCount",
+  default: [],
+});

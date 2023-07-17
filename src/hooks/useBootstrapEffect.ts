@@ -18,13 +18,12 @@ import {
   parseGroupResponse,
   parseOrganization,
   parseSettingResponse,
-  parseReplacementBehaviorsResponse,
   parseSiteResponse,
   parseStaffResponse,
-  parseStrategyResponse,
   parseStudentResponse,
   parseFunctionSurveyQuestionResponse,
   parsePermissionsResponse,
+  parseLibraryItemResponse,
 } from "../libraries/parsers";
 import {
   AntecedentRecord,
@@ -37,8 +36,7 @@ import {
   EnrollStatusRecord,
   StudentRecord,
   SettingRecord,
-  ReplacementBehaviorRecord,
-  StrategyRecord,
+  LibraryItemRecord,
   FunctionSurveyQuestionRecord,
   PermissionRecord,
 } from "../types/types";
@@ -70,13 +68,12 @@ const useBootstrapEffect = () => {
   const setBehaviors = useSetRecoilState<BehaviorRecord[]>(behaviorsAtom);
   const setConsequences = useSetRecoilState<ConsequenceRecord[]>(consequencesAtom);
   const setOrganization = useSetRecoilState<OrganizationRecord | null>(organizationAtom);
-  const setStrategies = useSetRecoilState<StrategyRecord[]>(strategiesAtom);
+  const setStrategies = useSetRecoilState<LibraryItemRecord[]>(strategiesAtom);
   const setSites = useSetRecoilState<SiteRecord[]>(sitesAtom);
   const setGroups = useSetRecoilState<GroupRecord[]>(groupsAtom);
   const setSettings = useSetRecoilState<SettingRecord[]>(settingsAtom);
   const setEnrollStatuses = useSetRecoilState<EnrollStatusRecord[]>(enrollStatusesAtom);
-  const setReplacementBehaviors =
-    useSetRecoilState<ReplacementBehaviorRecord[]>(replacementBehaviorsAtom);
+  const setReplacementBehaviors = useSetRecoilState<LibraryItemRecord[]>(replacementBehaviorsAtom);
   const setFunctionSurveyQuestions = useSetRecoilState<FunctionSurveyQuestionRecord[]>(
     functionSurveyQuestionsAtom
   );
@@ -170,7 +167,7 @@ const useBootstrapEffect = () => {
   useEffect(() => {
     if (!loggedInStaff) return;
     const getReplacementBehaviors = async () => {
-      const response = await getDocs<ReplacementBehaviorRecord>({
+      const response = await getDocs<LibraryItemRecord>({
         col: "replacementBehaviors",
         config: {
           where: ["organizationId", "==", loggedInStaff.organizationId],
@@ -178,7 +175,7 @@ const useBootstrapEffect = () => {
         },
       });
       if (response) {
-        setReplacementBehaviors(parseReplacementBehaviorsResponse(response));
+        setReplacementBehaviors(parseLibraryItemResponse(response));
       }
     };
     getReplacementBehaviors();
@@ -187,14 +184,14 @@ const useBootstrapEffect = () => {
   useEffect(() => {
     if (!loggedInStaff) return;
     const getStrategies = async () => {
-      const response = await getDocs<StrategyRecord>({
+      const response = await getDocs<LibraryItemRecord>({
         col: "strategies",
         config: {
           where: ["organizationId", "==", loggedInStaff.organizationId],
         },
       });
       if (response) {
-        setStrategies(parseStrategyResponse(response));
+        setStrategies(parseLibraryItemResponse(response));
       }
     };
     getStrategies();

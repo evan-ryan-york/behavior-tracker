@@ -14,8 +14,8 @@ function TargetBehaviorsSelect() {
   useEffect(() => {
     if (!strategyForm || !targetBehaviorObj) return;
     const tempTargetBehaviors: BehaviorRecord[] = [];
-    strategyForm.targetBehaviorsIds.forEach((targetBehaviorsId) => {
-      tempTargetBehaviors.push(targetBehaviorObj[targetBehaviorsId]);
+    strategyForm.targetBehaviorIds.forEach((targetBehaviorId) => {
+      tempTargetBehaviors.push(targetBehaviorObj[targetBehaviorId]);
     });
     setSelectedTargetBehaviors(tempTargetBehaviors);
   }, [targetBehaviorObj, strategyForm]);

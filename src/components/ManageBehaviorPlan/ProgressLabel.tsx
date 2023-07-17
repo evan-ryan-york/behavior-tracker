@@ -8,7 +8,6 @@ type Props = {
 };
 
 export function ProgressLabel({ value }: Props) {
-  console.log(value);
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box sx={{ width: "100%", mr: 1 }}>

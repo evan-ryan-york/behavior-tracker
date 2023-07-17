@@ -1,25 +1,25 @@
 import { atom, selector, GetRecoilValue } from "recoil";
-import { ReplacementBehavior, ReplacementBehaviorRecord } from "../types/types";
-import { BLANK_REPLACEMENT_BEHAVIOR_FORM } from "../libraries/blankForms";
+import { LibraryItem, LibraryItemRecord } from "../types/types";
+import { BLANK_LIBRARY_ITEM_FORM } from "../libraries/blankForms";
 
 export const replacementBehaviorsObjectGetter = ({ get }: { get: GetRecoilValue }) => {
   const replacementBehaviors = get(replacementBehaviorsAtom);
   if (!replacementBehaviors) return null;
-  const tempObj: { [key: string]: ReplacementBehaviorRecord } = {};
+  const tempObj: { [key: string]: LibraryItemRecord } = {};
   replacementBehaviors.forEach((replacementBehavior) => {
     tempObj[replacementBehavior.id] = replacementBehavior;
   });
   return tempObj;
 };
 
-export const replacementBehaviorsAtom = atom<ReplacementBehaviorRecord[]>({
+export const replacementBehaviorsAtom = atom<LibraryItemRecord[]>({
   key: "replacementBehaviors",
   default: [],
 });
 
-export const replacementBehaviorFormAtom = atom<ReplacementBehavior | ReplacementBehaviorRecord>({
+export const replacementBehaviorFormAtom = atom<LibraryItem | LibraryItemRecord>({
   key: "replacementBehavior",
-  default: BLANK_REPLACEMENT_BEHAVIOR_FORM,
+  default: BLANK_LIBRARY_ITEM_FORM,
 });
 
 export const replacementBehaviorsResetAtom = atom({

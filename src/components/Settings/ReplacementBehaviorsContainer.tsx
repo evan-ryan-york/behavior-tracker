@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Box, Button } from "@mui/material";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import DeleteDialog from "../shared/DeleteDialog";
-import { DropResult, ReplacementBehaviorRecord } from "../../types/types";
+import { DropResult, LibraryItemRecord } from "../../types/types";
 import { Container, Draggable } from "react-smooth-dnd";
 import { updateDragArray } from "../../libraries/functions";
 import useUpdateDoc from "../../hooks/useUpdateDoc";
@@ -12,11 +12,12 @@ import {
 } from "../../recoil/replacementBehaviorsAtoms";
 import ReplacementBehaviorCard from "./ReplacementBehaviorCard";
 import ManageReplacementBehavior from "./ManageReplacementBehavior";
+import ReplacementBehaviorUpload from "./ReplacementBehaviorUpload";
 
 function ReplacementBehaviorsContainer() {
   const replacementBehaviors = useRecoilValue(replacementBehaviorsAtom);
   const [replacementBehaviorsForDisplay, setReplacementBehaviorsForDisplay] = useState<
-    ReplacementBehaviorRecord[]
+    LibraryItemRecord[]
   >([]);
   const [manageOpen, setManageOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -36,7 +37,7 @@ function ReplacementBehaviorsContainer() {
   const handleDrop = useCallback(
     async (dropResult: DropResult) => {
       if (!replacementBehaviors) return;
-      const result = updateDragArray<ReplacementBehaviorRecord>({
+      const result = updateDragArray<LibraryItemRecord>({
         dropResult,
         arr: replacementBehaviors,
       });
@@ -75,6 +76,7 @@ function ReplacementBehaviorsContainer() {
         >
           Add New Replacement Behavior
         </Button>
+        <ReplacementBehaviorUpload />
         <Container style={{ minHeight: 40 }} lockAxis="y" onDrop={handleOnDrop}>
           {replacementBehaviorsForDisplay &&
             replacementBehaviorsForDisplay.map((replacementBehavior) => (

@@ -2,8 +2,9 @@ import {
   BehaviorPlan,
   FunctionSurveyQuestion,
   FunctionSurveyResult,
+  LibraryItem,
   Staff,
-  Strategy,
+  Student,
 } from "../types/types";
 
 export const BLANK_LABEL_FORM = {
@@ -21,14 +22,6 @@ export const BLANK_CONSEQUENCE_FORM = {
   label: "",
   order: 0,
   functionOfBehavior: "NONE",
-};
-
-export const BLANK_REPLACEMENT_BEHAVIOR_FORM = {
-  content: "",
-  title: "",
-  order: 0,
-  targetBehaviorIds: [],
-  functionsOfBehavior: [],
 };
 
 export const BLANK_SITE_FORM = {
@@ -56,7 +49,7 @@ export const BLANK_STAFF_FORM: Staff = {
   accountType: "individual",
 };
 
-export const BLANK_STUDENT_FORM = {
+export const BLANK_STUDENT_FORM: Student = {
   firstName: "",
   lastName: "",
   birthday: "",
@@ -88,11 +81,15 @@ export const BLANK_PLAN_FORM: BehaviorPlan = {
   behaviorDefinition: "",
   functionsOfBehavior: [],
   replacementBehaviors: [],
+  replacementBehaviorsNotes: "",
   antecedents: [],
   antecedentNotes: "",
   preventionStrategies: [],
+  preventionStrategiesNotes: "",
   reinforcementStrategies: [],
+  reinforcementStrategiesNotes: "",
   extinguishStrategies: [],
+  extinguishStrategiesNotes: "",
   studentId: "",
   organizationId: "",
   measureMethod: "",
@@ -100,18 +97,18 @@ export const BLANK_PLAN_FORM: BehaviorPlan = {
   frequencyNumerator: 0,
 };
 
-export const BLANK_STRATEGY_FORM: Strategy = {
-  title: "",
+export const BLANK_LIBRARY_ITEM_FORM: LibraryItem = {
   content: "",
   antecedentIds: [],
   consequenceIds: [],
-  targetBehaviorsIds: [],
+  targetBehaviorIds: [],
   replacementBehaviorIds: [],
   organizationId: "",
   authorId: "",
   type: "EXTINGUISH",
   functionsOfBehavior: [],
   toolTip: "",
+  order: 0,
 };
 
 export const BLANK_FUNCTION_SURVEY_QUESTION_FORM: FunctionSurveyQuestion = {

@@ -8,16 +8,15 @@ import {
   ObservationRecord,
   OrganizationRecord,
   SettingRecord,
-  ReplacementBehaviorRecord,
   SiteRecord,
   StaffRecord,
-  StrategyRecord,
   StudentRecord,
   FunctionSurveyQuestionRecord,
   FunctionSurveyResultRecord,
   StudentFileRecord,
   PermissionRecord,
   LeadRecord,
+  LibraryItemRecord,
 } from "../types/types";
 
 export const parseStaffResponse = (response: StaffRecord[]): StaffRecord[] =>
@@ -89,11 +88,15 @@ export const parseBehaviorPlanResponse = (response: BehaviorPlanRecord[]): Behav
     behaviorDefinition: record?.behaviorDefinition ?? "",
     functionsOfBehavior: record?.functionsOfBehavior ?? [],
     replacementBehaviors: record?.replacementBehaviors ?? [],
+    replacementBehaviorsNotes: record?.replacementBehaviorsNotes ?? "",
     antecedents: record?.antecedents ?? [],
     antecedentNotes: record?.antecedentNotes ?? "",
     preventionStrategies: record?.preventionStrategies ?? [],
+    preventionStrategiesNotes: record?.preventionStrategiesNotes ?? "",
     reinforcementStrategies: record?.reinforcementStrategies ?? [],
+    reinforcementStrategiesNotes: record?.reinforcementStrategiesNotes ?? "",
     extinguishStrategies: record?.extinguishStrategies ?? [],
+    extinguishStrategiesNotes: record?.extinguishStrategiesNotes ?? "",
     createdAt: record?.createdAt ?? null,
     lastUpdatedAt: record?.lastUpdatedAt ?? null,
     studentId: record?.studentId ?? "",
@@ -101,20 +104,6 @@ export const parseBehaviorPlanResponse = (response: BehaviorPlanRecord[]): Behav
     measureMethod: record?.measureMethod ?? "Frequency",
     frequencyDenominator: record?.frequencyDenominator ?? "Hour",
     frequencyNumerator: record?.frequencyNumerator ?? 0,
-  }));
-
-export const parseReplacementBehaviorsResponse = (
-  response: ReplacementBehaviorRecord[]
-): ReplacementBehaviorRecord[] =>
-  response.map((record: ReplacementBehaviorRecord) => ({
-    id: record?.id ?? "",
-    content: record?.content ?? "",
-    title: record?.title ?? "",
-    order: record?.order ?? 0,
-    createdAt: record?.createdAt ?? null,
-    lastUpdatedAt: record?.lastUpdatedAt ?? null,
-    targetBehaviorIds: record?.targetBehaviorIds ?? [],
-    functionsOfBehavior: record?.functionsOfBehavior ?? [],
   }));
 
 export const parseObservationResponse = (response: ObservationRecord[]): ObservationRecord[] =>
@@ -197,22 +186,22 @@ export const parseSettingResponse = (response: SettingRecord[]): SettingRecord[]
     siteId: record?.siteId ?? "",
   }));
 
-export const parseStrategyResponse = (response: StrategyRecord[]): StrategyRecord[] =>
-  response.map((record: StrategyRecord) => ({
+export const parseLibraryItemResponse = (response: LibraryItemRecord[]): LibraryItemRecord[] =>
+  response.map((record: LibraryItemRecord) => ({
     id: record?.id ?? "",
-    title: record?.title ?? "",
     content: record?.content ?? "",
     createdAt: record?.createdAt ?? null,
     lastUpdatedAt: record?.lastUpdatedAt ?? null,
     antecedentIds: record?.antecedentIds ?? [],
     consequenceIds: record?.consequenceIds ?? [],
-    targetBehaviorsIds: record?.targetBehaviorsIds ?? [],
+    targetBehaviorIds: record?.targetBehaviorIds ?? [],
     replacementBehaviorIds: record?.replacementBehaviorIds ?? [],
     organizationId: record?.organizationId ?? "",
     authorId: record?.authorId ?? "",
     type: record?.type ?? "EXTINGUISH",
     functionsOfBehavior: record?.functionsOfBehavior ?? [],
-    toolTip: "",
+    toolTip: record?.toolTip ?? "",
+    order: record?.order ?? 0,
   }));
 
 export const parseFunctionSurveyQuestionResponse = (

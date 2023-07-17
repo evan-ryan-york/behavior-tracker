@@ -23,7 +23,6 @@ function OrganizationContainer() {
 
   useEffect(() => {
     if (!organization) return;
-    console.log(organization);
     const getImageURL = async () => {
       if (organization.avatar.length > 5) {
         let url = await getDownloadURL(ref(storage, organization.avatar));
@@ -35,7 +34,6 @@ function OrganizationContainer() {
 
   const handleSelectImage = async (event: React.SyntheticEvent) => {
     const ImageState = event.target as ImageState;
-    console.log(ImageState);
     await uploadAvatar({
       image: ImageState.files[0],
       col: "organizations",

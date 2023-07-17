@@ -56,7 +56,7 @@ function ManageObservationPeriod() {
         organizationId: organization.id,
         authorId: loggedInStaff.id,
         startTime: Date.now(),
-        endTime: Date.now(),
+        endTime: Date.now() + 1000 * 60 * 60,
         label: "Observation Session",
       });
       setMode("New");
@@ -73,6 +73,10 @@ function ManageObservationPeriod() {
     } else if (startTime > endTime) {
       setError(
         "Your start time is set after your end time. An observation session start time must be before it's end time."
+      );
+    } else if (endTime - startTime < 1000 * 60) {
+      setError(
+        "Your total observation preiod is less than a minute. Observation periods must be at least one minute long."
       );
     } else if (endTime - startTime > 86399999) {
       setError(

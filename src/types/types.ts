@@ -198,12 +198,16 @@ export type BehaviorPlan = {
   targetBehavior: FIREBASE_ID;
   behaviorDefinition: string;
   functionsOfBehavior: { label: string; count: number }[];
-  replacementBehaviors: ReactQuill.Value[];
+  replacementBehaviors: FIREBASE_ID[];
+  replacementBehaviorsNotes: ReactQuill.Value;
   antecedents: { label: string; count: number }[];
   antecedentNotes: string;
-  preventionStrategies: ReactQuill.Value[];
-  reinforcementStrategies: ReactQuill.Value[];
-  extinguishStrategies: ReactQuill.Value[];
+  preventionStrategies: FIREBASE_ID[];
+  preventionStrategiesNotes: ReactQuill.Value;
+  reinforcementStrategies: FIREBASE_ID[];
+  reinforcementStrategiesNotes: ReactQuill.Value;
+  extinguishStrategies: FIREBASE_ID[];
+  extinguishStrategiesNotes: ReactQuill.Value;
   studentId: FIREBASE_ID;
   organizationId: FIREBASE_ID;
   frequencyNumerator: number;
@@ -213,31 +217,21 @@ export type BehaviorPlan = {
 
 export type BehaviorPlanRecord = BehaviorPlan & BaseRecord;
 
-export type ReplacementBehavior = {
-  content: ReactQuill.Value;
-  order: number;
-  title: string;
-  targetBehaviorIds: FIREBASE_ID[];
-  functionsOfBehavior: FUNCTIONS_OF_BEHAVIOR[];
-};
-
-export type ReplacementBehaviorRecord = ReplacementBehavior & BaseRecord;
-
-export type Strategy = {
-  title: string;
+export type LibraryItem = {
   toolTip: ReactQuill.Value;
   content: ReactQuill.Value;
   antecedentIds: FIREBASE_ID[];
   consequenceIds: FIREBASE_ID[];
-  targetBehaviorsIds: FIREBASE_ID[];
+  targetBehaviorIds: FIREBASE_ID[];
+  order: number;
   replacementBehaviorIds: FIREBASE_ID[];
   organizationId: FIREBASE_ID;
   functionsOfBehavior: FUNCTIONS_OF_BEHAVIOR[];
   authorId: FIREBASE_ID;
-  type: "PREVENTION" | "EXTINGUISH" | "REINFORCE";
+  type: "PREVENTION" | "EXTINGUISH" | "REINFORCE" | "REPLACEMENT";
 };
 
-export type StrategyRecord = Strategy & BaseRecord;
+export type LibraryItemRecord = LibraryItem & BaseRecord;
 
 export type FunctionSurveyQuestion = {
   label: string;
@@ -290,4 +284,14 @@ export type WeekObj = {
   endDate: string;
   weekNumber: number;
   incidentsPerHour: number;
+};
+
+export type FunctionWithCount = {
+  label: string;
+  count: number;
+};
+
+export type LirbraryItemLists = {
+  listOne: LibraryItemRecord[];
+  listTwo: LibraryItemRecord[];
 };

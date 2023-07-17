@@ -1,30 +1,27 @@
-import { Avatar, Box, Chip, Grid, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { useRecoilValue } from "recoil";
+import { Avatar, Box, Chip, Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { FUNCTIONS_OF_BEHAVIOR, FUNCTION_SURVEY_OPTIONS } from "../../libraries/objects";
 import { antecedentsAtom, antecedentsObjAtom } from "../../recoil/antecedentsAtoms";
 import { consequencesObjAtom } from "../../recoil/consequencesAtoms";
 import { observationsGroupedByBehaviorAtom } from "../../recoil/observationAtoms";
 import { organizationAtom } from "../../recoil/organizationAtoms";
-import { BehaviorPlan } from "../../types/types";
+import { BehaviorPlan, FunctionWithCount } from "../../types/types";
 import {
   filteredSurveysByDateAtom,
   functionSurveyQuestionsAtom,
 } from "../../recoil/functionSurveyAtoms";
-
-type FunctionsOfBehaviorForDisplay = {
-  label: string;
-  count: number;
-};
+import { functionsWithCountAtom } from "../../recoil/behaviorPlansAtoms";
 
 type SetterFunction = (pV: BehaviorPlan) => BehaviorPlan;
 
 type Props = {
   setPlanForm: (pV: SetterFunction) => void;
   behaviorId: string;
+  align?: "left" | "center" | "right";
 };
 
-function ShowPrimaryFunctionOfBehavior({ behaviorId, setPlanForm }: Props) {
+function ShowPrimaryFunctionOfBehavior({ behaviorId, setPlanForm, align }: Props) {
   const organization = useRecoilValue(organizationAtom);
   const observationsGroupedByBehavior = useRecoilValue(observationsGroupedByBehaviorAtom);
   const antecedents = useRecoilValue(antecedentsAtom);
@@ -32,9 +29,7 @@ function ShowPrimaryFunctionOfBehavior({ behaviorId, setPlanForm }: Props) {
   const consequencesObj = useRecoilValue(consequencesObjAtom);
   const filteredSurveyResults = useRecoilValue(filteredSurveysByDateAtom);
   const surveyQuestions = useRecoilValue(functionSurveyQuestionsAtom);
-  const [functionsOfBehaviorForDisplay, setFunctionsOfBehaviorForDisplay] = useState<
-    FunctionsOfBehaviorForDisplay[]
-  >([]);
+  const [functionsWithCount, setFunctionsWithCount] = useRecoilState(functionsWithCountAtom);
 
   useEffect(() => {
     if (
@@ -46,7 +41,7 @@ function ShowPrimaryFunctionOfBehavior({ behaviorId, setPlanForm }: Props) {
     )
       return;
     if (observationsGroupedByBehavior[behaviorId]) {
-      const tempArray: FunctionsOfBehaviorForDisplay[] = [];
+      const tempArray: FunctionWithCount[] = [];
       const antecedentIds = observationsGroupedByBehavior[behaviorId].antecedentIds;
       const consequenceIds = observationsGroupedByBehavior[behaviorId].antecedentIds;
       const functionsOfBehaviorArray = Object.values(FUNCTIONS_OF_BEHAVIOR);
@@ -91,7 +86,7 @@ function ShowPrimaryFunctionOfBehavior({ behaviorId, setPlanForm }: Props) {
       });
       tempArray.sort((a, b) => b.count - a.count);
       setPlanForm((pV) => ({ ...pV, functionsOfBehavior: tempArray }));
-      setFunctionsOfBehaviorForDisplay(tempArray);
+      setFunctionsWithCount(tempArray);
     }
   }, [
     observationsGroupedByBehavior,
@@ -102,16 +97,24 @@ function ShowPrimaryFunctionOfBehavior({ behaviorId, setPlanForm }: Props) {
     setPlanForm,
     filteredSurveyResults,
     surveyQuestions,
+    setFunctionsWithCount,
   ]);
 
   return (
     <>
-      <Box sx={{padding: 2, backgroundColor: "#eee", mt: 2, borderRadius: 2}}>
-        <Typography sx={{ mt: 1 }} variant="h6">
-          Based on current data, the function(s) of this behavior is:
+      <Box
+        sx={{
+          padding: 2,
+          backgroundColor: "#eee",
+          borderRadius: 2,
+          textAlign: align ? align : "left",
+        }}
+      >
+        <Typography variant="h6">
+          Based on current data, the function(s) of this behavior is
         </Typography>
         {organization &&
-          functionsOfBehaviorForDisplay.map((functionOfBehavior) => (
+          functionsWithCount.map((functionOfBehavior) => (
             <Chip
               key={functionOfBehavior.label}
               label={functionOfBehavior.label}

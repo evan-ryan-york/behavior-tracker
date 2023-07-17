@@ -1,8 +1,4 @@
 import { GetRecoilValue } from "recoil";
-import { BehaviorReports, ObservationRecord } from "../types/types";
-import { behaviorsAtom } from "./behaviorsAtoms";
-import { filtersAtom } from "./filtersAtoms";
-import { observationsAtom } from "./observationAtoms";
 import { studentsAtom } from "./studentAtoms";
 
 type Props = {
@@ -17,4 +13,3 @@ export const filteredStudentsGetter = ({ get }: Props) => {
   );
   return filteredStudents;
 };
-

@@ -1,11 +1,11 @@
-import { Box, Paper, Typography, Button, Grid } from "@mui/material";
+import { Box, Paper, Button, Grid } from "@mui/material";
 import { useSetRecoilState } from "recoil";
-import { ReplacementBehaviorRecord } from "../../types/types";
+import { LibraryItemRecord } from "../../types/types";
 import parse from "html-react-parser";
 import { replacementBehaviorFormAtom } from "../../recoil/replacementBehaviorsAtoms";
 
 type Props = {
-  replacementBehavior: ReplacementBehaviorRecord;
+  replacementBehavior: LibraryItemRecord;
   setManageOpen: (value: boolean) => void;
   setDeleteOpen: (value: boolean) => void;
   setDeleteId: (value: string | null) => void;
@@ -18,7 +18,7 @@ function ReplacementBehaviorCard({
   setDeleteId,
 }: Props) {
   const setReplacementBehaviorForm = useSetRecoilState(replacementBehaviorFormAtom);
-  const handleFieldEdit = (replacementBehavior: ReplacementBehaviorRecord) => {
+  const handleFieldEdit = (replacementBehavior: LibraryItemRecord) => {
     setReplacementBehaviorForm(replacementBehavior);
     setManageOpen(true);
   };

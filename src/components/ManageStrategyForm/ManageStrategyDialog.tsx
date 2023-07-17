@@ -6,7 +6,7 @@ import { strategiesResetAtom, strategyFormAtom } from "../../recoil/strategiesAt
 import ManageStrategyForm from "./ManageStrategyForm";
 import useAddDoc from "../../hooks/useAddDoc";
 import useUpdateDoc from "../../hooks/useUpdateDoc";
-import { BLANK_STRATEGY_FORM } from "../../libraries/blankForms";
+import { BLANK_LIBRARY_ITEM_FORM } from "../../libraries/blankForms";
 
 type Props = {
   open: boolean;
@@ -38,7 +38,7 @@ export default function ManageStrategyDialog({ open, setOpen }: Props) {
       await addDoc({ col: "strategies", data: data });
     }
     setStrategiesReset((pV) => !pV);
-    setStrategyForm(BLANK_STRATEGY_FORM);
+    setStrategyForm(BLANK_LIBRARY_ITEM_FORM);
     setOpen(false);
   };
 

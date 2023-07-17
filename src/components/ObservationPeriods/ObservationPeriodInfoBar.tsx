@@ -6,9 +6,11 @@ import { getDifferenceForDisplay } from "../../libraries/functions";
 import { behaviorsAtom } from "../../recoil/behaviorsAtoms";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
+  activeObservationPeriodIdAtom,
   manageObservationOpenAtom,
   manageObservationPeriodOpenAtom,
   observationPeriodForEditAtom,
+  selectedObservationPeriodIdAtom,
 } from "../../recoil/observationAtoms";
 
 type Props = {
@@ -28,10 +30,9 @@ function ObservationPeriodInfoBar({ filteredObservations, observationPeriod }: P
   const setObservationPeriodForEdit = useSetRecoilState(observationPeriodForEditAtom);
   const behaviors = useRecoilValue(behaviorsAtom);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const deleteObservationPeriod = () => {
-    setDeleteOpen(true);
-  };
   const [behaviorCounters, setBehaviorCounters] = useState<BehaviorCounter[]>([]);
+  const activeObservationPeriodId = useRecoilValue(activeObservationPeriodIdAtom);
+  const setSelectedObservationPeriodId = useSetRecoilState(selectedObservationPeriodIdAtom);
 
   useEffect(() => {
     const tempBehaviorCounters: BehaviorCounter[] = [];
@@ -61,30 +62,41 @@ function ObservationPeriodInfoBar({ filteredObservations, observationPeriod }: P
 
   const handleEditObservationPeriodClick = () => {
     setObservationPeriodForEdit(observationPeriod);
+    setSelectedObservationPeriodId(observationPeriod.id);
     setManageObservationPeriodOpen(true);
   };
 
   const handleNewObservationClick = () => {
     setManageObservationOpen(true);
+    setSelectedObservationPeriodId(observationPeriod.id);
+  };
+
+  const deleteObservationPeriod = () => {
+    setDeleteOpen(true);
+    setSelectedObservationPeriodId(observationPeriod.id);
   };
 
   return (
     <>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography>{`Number of Observations: ${filteredObservations.length} over the time period of ${differenceForDisplay}`}</Typography>
-        <Box>
-          <Button
-            sx={{ mr: 2 }}
-            variant="contained"
-            color="secondary"
-            onClick={handleEditObservationPeriodClick}
-          >
-            Edit Observation Session
-          </Button>
-          <Button variant="contained" color="error" onClick={deleteObservationPeriod}>
-            Delete Observation Session
-          </Button>
-        </Box>
+        {activeObservationPeriodId !== observationPeriod.id && (
+          <Typography>{`Number of Observations: ${filteredObservations.length} over the time period of ${differenceForDisplay}`}</Typography>
+        )}
+        {activeObservationPeriodId !== observationPeriod.id && (
+          <Box>
+            <Button
+              sx={{ mr: 2 }}
+              variant="contained"
+              color="secondary"
+              onClick={handleEditObservationPeriodClick}
+            >
+              Edit Observation Session
+            </Button>
+            <Button variant="contained" color="error" onClick={deleteObservationPeriod}>
+              Delete Observation Session
+            </Button>
+          </Box>
+        )}
       </Box>
       <Box>
         <Typography sx={{ mb: 1 }}>

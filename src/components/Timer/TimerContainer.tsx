@@ -11,8 +11,9 @@ import {
   observationPeriodIsActiveAtom,
   observationPeriodsAtom,
 } from "../../recoil/observationAtoms";
-import { Box, Button, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { ObservationPeriodRecord } from "../../types/types";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 
 const TimerContainer = () => {
   const [observationPeriods, setObservationPeriods] = useRecoilState(observationPeriodsAtom);
@@ -22,6 +23,7 @@ const TimerContainer = () => {
   const loggedInStaff = useRecoilValue(loggedInStaffAtom);
   const setObservationPeriodIsActive = useSetRecoilState(observationPeriodIsActiveAtom);
   const setActiveObservationPeriodId = useSetRecoilState(activeObservationPeriodIdAtom);
+  const { width } = useWindowDimensions();
 
   const { timer, isActive, handleStart, handleStop, handleSet } = useTimer(0);
 
@@ -81,41 +83,51 @@ const TimerContainer = () => {
 
   return (
     <>
-      <Box
+      <Grid
+        container
+        spacing={0}
+        justifyContent={"space-between"}
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
           mt: 2,
           padding: 2,
           border: isActive ? "2px dashed red" : "none",
         }}
       >
         {!isLoading && (
-          <div className="buttons">
-            {!isActive ? (
-              <Button
-                variant="contained"
-                color="secondary"
-                sx={{ height: "100%" }}
-                onClick={handleStartClick}
-              >
-                Start Timed Observation Session
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                color="secondary"
-                sx={{ height: "100%" }}
-                onClick={handleStopClick}
-                disabled={!isActive}
-              >
-                Stop
-              </Button>
-            )}
-          </div>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <div >
+              {!isActive ? (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  fullWidth
+                  sx={{ height: "100%" }}
+                  onClick={handleStartClick}
+                >
+                  Start Timed Observation Session
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  sx={{ height: "100%" }}
+                  onClick={handleStopClick}
+                  disabled={!isActive}
+                  fullWidth
+                >
+                  Stop
+                </Button>
+              )}
+            </div>
+          </Grid>
         )}
-        <Typography variant="h4">{formatTime(timer)}</Typography>
-      </Box>
+
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Typography sx={{ textAlign: width > 600 ? "right" : "center" }} variant="h4">
+            {formatTime(timer)}
+          </Typography>
+        </Grid>
+      </Grid>
     </>
   );
 };

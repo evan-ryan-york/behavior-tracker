@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { MenuItem, Select, TextField, Typography, SelectChangeEvent } from "@mui/material";
+import { MenuItem, Select, Typography, SelectChangeEvent } from "@mui/material";
 import ReactQuill from "react-quill";
 import "quill-paste-smart";
 import "react-quill/dist/quill.snow.css";
@@ -8,7 +8,6 @@ import { useRecoilState } from "recoil";
 import { strategyFormAtom } from "../../recoil/strategiesAtoms";
 // import AntecedentsSelect from "./AntecedentsSelect";
 // import ConsequencesSelect from "./ConsequencesSelect";
-import ReplacementBehaviorsSelect from "./ReplacementBehaviorsSelect";
 import TargetBehaviorsSelect from "./TargetBehaviorsSelect";
 import FunctionOfBehaviorSelect from "./FunctionOfBehaviorSelect";
 
@@ -29,10 +28,6 @@ function ManageStrategyForm() {
     [setStrategyForm]
   );
 
-  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setStrategyForm((pV) => ({ ...pV, title: event.target.value }));
-  };
-
   const handleSelectChange = (event: SelectChangeEvent) => {
     const type = event.target.value as "PREVENTION" | "EXTINGUISH" | "REINFORCE";
     setStrategyForm((pV) => ({ ...pV, type: type }));
@@ -40,10 +35,8 @@ function ManageStrategyForm() {
 
   return (
     <>
-      <Typography variant="h6">Strategy Title</Typography>
-      <TextField fullWidth value={strategyForm.title} onChange={handleTextChange} />
       <Typography variant="h6" sx={{ mt: 2 }}>
-        Strategy Description
+        Strategy
       </Typography>
       <ReactQuill
         theme="snow"
@@ -72,11 +65,7 @@ function ManageStrategyForm() {
       </Select>
       {/* <AntecedentsSelect />
       <ConsequencesSelect /> */}
-      {strategyForm.type === "REINFORCE" ? (
-        <ReplacementBehaviorsSelect />
-      ) : (
-        <TargetBehaviorsSelect />
-      )}
+      <TargetBehaviorsSelect />
       <FunctionOfBehaviorSelect />
       <Typography variant="h6" sx={{ mt: 2 }}>
         Suggestions for When to Use

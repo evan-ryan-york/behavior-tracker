@@ -1,13 +1,8 @@
-import { atom, selector } from "recoil";
+import { atom } from "recoil";
 import { GetRecoilValue } from "recoil";
 import { BLANK_STAFF_FORM } from "../libraries/blankForms";
 
-import { LeadRecord, PermissionRecord, Staff, StaffRecord } from "../types/types";
-// import { staffObjGetter } from "./selectors";
-
-type Props = {
-  get: GetRecoilValue;
-};
+import { LeadRecord, Staff } from "../types/types";
 
 export const leadsAtom = atom<LeadRecord[]>({
   key: "leads",
