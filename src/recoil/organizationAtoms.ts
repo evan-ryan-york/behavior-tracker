@@ -10,3 +10,8 @@ export const organizationResetAtom = atom({
   key: "organizationReset",
   default: false,
 });
+
+export const loadingAtom = atom({
+  key: "loading",
+  default: false,
+});

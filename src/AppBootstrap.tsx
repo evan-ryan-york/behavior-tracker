@@ -10,6 +10,7 @@ import { Backdrop, CircularProgress } from "@mui/material";
 import { AuthContext } from "./providers/AuthProvider";
 import { useContext } from "react";
 import { LicenseInfo } from "@mui/x-license-pro";
+import LoadingBackdrop from "./components/shared/LoadingBackdrop";
 
 const KEY = process.env.REACT_APP_DATATABLE_KEY ?? "";
 LicenseInfo.setLicenseKey(KEY);
@@ -60,12 +61,14 @@ function AppBootstrap() {
   });
   return (
     <>
-      {!loading && (
+      {!loading ? (
         <ThemeProvider theme={theme}>
           <Router>
             <main className="root">{routes}</main>
           </Router>
         </ThemeProvider>
+      ) : (
+        <LoadingBackdrop open={loading} message="Loading" />
       )}
     </>
   );

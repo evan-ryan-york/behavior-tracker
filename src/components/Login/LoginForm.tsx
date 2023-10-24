@@ -35,6 +35,7 @@ function LoginForm() {
           <Typography sx={{ textAlign: "center" }} variant="h4">
             Sign In
           </Typography>
+          <Typography textAlign={"center"} variant="body2">Demo Login Email: test@test.com and Password: TestPassword1</Typography>
           <form onSubmit={handleSubmit}>
             <FormControl fullWidth>
               <FormLabel sx={{ mt: 2 }} id="email-label">
