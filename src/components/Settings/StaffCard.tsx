@@ -92,11 +92,11 @@ export default function StaffCard({
             badgeContent={
               <>
                 {editor && (
-                  <label htmlFor="icon-button-file">
+                  <label htmlFor={`icon-button-file-${staffMember.id}`}>
                     <input
                       hidden
                       accept="image/*"
-                      id="icon-button-file"
+                      id={`icon-button-file-${staffMember.id}`}
                       type="file"
                       onChange={handleSelectImage}
                     />

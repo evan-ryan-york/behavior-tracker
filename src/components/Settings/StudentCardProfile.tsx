@@ -107,7 +107,7 @@ export default function StudentCardProfile({ student }: Props) {
               Enrollment Status:{" "}
             </Typography>
             <Typography variant="body1" component="span">
-              {enrollStatusesObj[student.enrollStatus].name}
+              {enrollStatusesObj[student.enrollStatus]?.name}
             </Typography>
           </Box>
           <Box>

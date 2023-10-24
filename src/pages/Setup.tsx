@@ -16,6 +16,8 @@ function Setup() {
   const [selectedPlan, setSelectedPlan] = useState<Plan>(null);
   const [stage, setStage] = useState("");
 
+  console.log(stage)
+
   useEffect(() => {
     if (!selectedPlan && !loggedInStaff) {
       setStage("select-plan");

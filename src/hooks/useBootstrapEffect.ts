@@ -40,13 +40,25 @@ import {
   FunctionSurveyQuestionRecord,
   PermissionRecord,
 } from "../types/types";
-import { antecedentsAtom, antecedentsResetAtom } from "../recoil/antecedentsAtoms";
+import {
+  antecedentsAtom,
+  antecedentsResetAtom,
+} from "../recoil/antecedentsAtoms";
 import { behaviorsAtom, behaviorsResetAtom } from "../recoil/behaviorsAtoms";
-import { consequencesAtom, consequencesResetAtom } from "../recoil/consequencesAtoms";
-import { organizationAtom, organizationResetAtom } from "../recoil/organizationAtoms";
+import {
+  consequencesAtom,
+  consequencesResetAtom,
+} from "../recoil/consequencesAtoms";
+import {
+  organizationAtom,
+  organizationResetAtom,
+} from "../recoil/organizationAtoms";
 import { sitesAtom, sitesResetAtom } from "../recoil/sitesAtoms";
 import { groupsAtom, groupsResetAtom } from "../recoil/groupAtoms";
-import { enrollStatusesAtom, enrollStatusesResetAtom } from "../recoil/enrollStatusAtoms";
+import {
+  enrollStatusesAtom,
+  enrollStatusesResetAtom,
+} from "../recoil/enrollStatusAtoms";
 import { studentsAtom, studentsResetAtom } from "../recoil/studentAtoms";
 import { settingsAtom, settingsResetAtom } from "../recoil/settingsAtoms";
 import {
@@ -66,25 +78,36 @@ const useBootstrapEffect = () => {
   const setStudents = useSetRecoilState<StudentRecord[]>(studentsAtom);
   const setAntecedents = useSetRecoilState<AntecedentRecord[]>(antecedentsAtom);
   const setBehaviors = useSetRecoilState<BehaviorRecord[]>(behaviorsAtom);
-  const setConsequences = useSetRecoilState<ConsequenceRecord[]>(consequencesAtom);
-  const setOrganization = useSetRecoilState<OrganizationRecord | null>(organizationAtom);
+  const setConsequences =
+    useSetRecoilState<ConsequenceRecord[]>(consequencesAtom);
+  const setOrganization = useSetRecoilState<OrganizationRecord | null>(
+    organizationAtom
+  );
   const setStrategies = useSetRecoilState<LibraryItemRecord[]>(strategiesAtom);
   const setSites = useSetRecoilState<SiteRecord[]>(sitesAtom);
   const setGroups = useSetRecoilState<GroupRecord[]>(groupsAtom);
   const setSettings = useSetRecoilState<SettingRecord[]>(settingsAtom);
-  const setEnrollStatuses = useSetRecoilState<EnrollStatusRecord[]>(enrollStatusesAtom);
-  const setReplacementBehaviors = useSetRecoilState<LibraryItemRecord[]>(replacementBehaviorsAtom);
-  const setFunctionSurveyQuestions = useSetRecoilState<FunctionSurveyQuestionRecord[]>(
-    functionSurveyQuestionsAtom
+  const setEnrollStatuses =
+    useSetRecoilState<EnrollStatusRecord[]>(enrollStatusesAtom);
+  const setReplacementBehaviors = useSetRecoilState<LibraryItemRecord[]>(
+    replacementBehaviorsAtom
   );
-  const setSelectPermissions = useSetRecoilState<PermissionRecord[]>(selectPermissionsAtom);
-  const setAllPermissions = useSetRecoilState<PermissionRecord[]>(allPermissionsAtom);
+  const setFunctionSurveyQuestions = useSetRecoilState<
+    FunctionSurveyQuestionRecord[]
+  >(functionSurveyQuestionsAtom);
+  const setSelectPermissions = useSetRecoilState<PermissionRecord[]>(
+    selectPermissionsAtom
+  );
+  const setAllPermissions =
+    useSetRecoilState<PermissionRecord[]>(allPermissionsAtom);
 
   //RESETS
   const antecedentsReset = useRecoilValue(antecedentsResetAtom);
   const behaviorsReset = useRecoilValue(behaviorsResetAtom);
   const consequencesReset = useRecoilValue(consequencesResetAtom);
-  const replacementBehaviorsReset = useRecoilValue(replacementBehaviorsResetAtom);
+  const replacementBehaviorsReset = useRecoilValue(
+    replacementBehaviorsResetAtom
+  );
   const staffReset = useRecoilValue(staffResetAtom);
   const studentsReset = useRecoilValue(studentsResetAtom);
   const organizationReset = useRecoilValue(organizationResetAtom);
@@ -93,7 +116,9 @@ const useBootstrapEffect = () => {
   const enrollStatusesReset = useRecoilValue(enrollStatusesResetAtom);
   const settingsReset = useRecoilValue(settingsResetAtom);
   const strategiesReset = useRecoilValue(strategiesResetAtom);
-  const functionSurveyQuestionReset = useRecoilValue(functionSurveyQuestionsResetAtom);
+  const functionSurveyQuestionReset = useRecoilValue(
+    functionSurveyQuestionsResetAtom
+  );
 
   //VALUES
   const loggedInStaff = useRecoilValue(loggedInStaffAtom);
@@ -110,6 +135,7 @@ const useBootstrapEffect = () => {
       });
       if (response) {
         setAntecedents(parseAntecedentResponse(response));
+        console.log(response);
       }
     };
     getAntecedents();
@@ -139,7 +165,10 @@ const useBootstrapEffect = () => {
         col: "permissions",
       });
       if (response) {
-        const filteredPermissions = filterPermissions({ permissions: response, loggedInStaff });
+        const filteredPermissions = filterPermissions({
+          permissions: response,
+          loggedInStaff,
+        });
         setSelectPermissions(parsePermissionsResponse(filteredPermissions));
         setAllPermissions(parsePermissionsResponse(response));
       }
@@ -179,7 +208,12 @@ const useBootstrapEffect = () => {
       }
     };
     getReplacementBehaviors();
-  }, [setReplacementBehaviors, getDocs, replacementBehaviorsReset, loggedInStaff]);
+  }, [
+    setReplacementBehaviors,
+    getDocs,
+    replacementBehaviorsReset,
+    loggedInStaff,
+  ]);
 
   useEffect(() => {
     if (!loggedInStaff) return;
@@ -301,10 +335,6 @@ const useBootstrapEffect = () => {
     const getEnrollStatuses = async () => {
       const response = await getDocs<EnrollStatusRecord>({
         col: "enrollStatuses",
-        config: {
-          where: ["organizationId", "==", loggedInStaff?.organizationId],
-          orderBy: ["order"],
-        },
       });
       if (response) {
         setEnrollStatuses(parseEnrollStatusesResponse(response));
@@ -324,11 +354,18 @@ const useBootstrapEffect = () => {
         },
       });
       if (response) {
-        setFunctionSurveyQuestions(parseFunctionSurveyQuestionResponse(response));
+        setFunctionSurveyQuestions(
+          parseFunctionSurveyQuestionResponse(response)
+        );
       }
     };
     getFunctionSurveyQuestions();
-  }, [setFunctionSurveyQuestions, getDocs, functionSurveyQuestionReset, loggedInStaff]);
+  }, [
+    setFunctionSurveyQuestions,
+    getDocs,
+    functionSurveyQuestionReset,
+    loggedInStaff,
+  ]);
 };
 
 export default useBootstrapEffect;
